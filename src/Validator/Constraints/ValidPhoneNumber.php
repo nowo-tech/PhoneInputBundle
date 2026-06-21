@@ -44,6 +44,8 @@ final class ValidPhoneNumber extends Constraint
 
         if ($mode instanceof PhoneValidationMode) {
             $this->mode = $mode;
+        } elseif (\is_array($options) && isset($options['mode']) && $options['mode'] instanceof PhoneValidationMode) {
+            $this->mode = $options['mode'];
         }
 
         if (null !== $message) {

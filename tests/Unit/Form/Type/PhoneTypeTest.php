@@ -360,5 +360,10 @@ final class PhoneTypeTest extends TypeTestCase
 
         $this->assertSame('', $resolver->resolve(['value_format' => ValueFormat::CONCATENATED])['empty_data']);
         $this->assertNull($resolver->resolve(['value_format' => ValueFormat::OBJECT])['empty_data']);
+        $this->assertSame([
+            'iso' => '',
+            'prefix' => '',
+            'national_number' => '',
+        ], $resolver->resolve(['value_format' => 'separated'])['empty_data']);
     }
 }
