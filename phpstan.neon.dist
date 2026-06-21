@@ -1,0 +1,20 @@
+parameters:
+    level: 8
+    treatPhpDocTypesAsCertain: false
+    paths:
+        - src
+        - tests
+    excludePaths:
+        - demo (?)
+    ignoreErrors:
+        -
+            message: '#no value type specified in iterable type array#'
+            paths:
+                - tests/*
+        -
+            message: '#libphonenumber|forward_static_call|undefined method object#'
+            path: src/Phone/PhoneValidator.php
+
+includes:
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor/phpstan/phpstan-symfony/extension.neon

@@ -1,0 +1,104 @@
+{
+    "name": "nowo-tech/phone-input-bundle",
+    "description": "Symfony bundle providing a phone form type with optional country prefix selector and flexible value formats",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "keywords": [
+        "symfony",
+        "bundle",
+        "form",
+        "phone",
+        "tel",
+        "country",
+        "prefix",
+        "e164"
+    ],
+    "homepage": "https://github.com/nowo-tech/PhoneInputBundle",
+    "support": {
+        "issues": "https://github.com/nowo-tech/PhoneInputBundle/issues",
+        "source": "https://github.com/nowo-tech/PhoneInputBundle"
+    },
+    "authors": [
+        {
+            "name": "Héctor Franco Aceituno",
+            "email": "hectorfranco@nowo.tech",
+            "homepage": "https://github.com/HecFranco",
+            "role": "Developer"
+        },
+        {
+            "name": "Nowo.tech",
+            "homepage": "https://nowo.tech"
+        }
+    ],
+    "require": {
+        "php": ">=8.1 <8.6",
+        "symfony/form": "^6.0 || ^7.0 || ^8.0",
+        "symfony/framework-bundle": "^6.0 || ^7.0 || ^8.0",
+        "symfony/twig-bundle": "^6.0 || ^7.0 || ^8.0",
+        "symfony/validator": "^6.4 || ^7.0 || ^8.0"
+    },
+    "suggest": {
+        "symfony/ux-icons": "Optional SVG country flags via ux_icon (circle-flags:xx) in flag_display=UX_ICON mode",
+        "symfony/http-client": "Required by symfony/ux-icons to fetch Iconify icons unless icons are locked locally",
+        "giggsey/libphonenumber-for-php": "Optional E.164 validation and formatting via libphonenumber"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "rector/rector": "^2.0",
+        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan-symfony": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "symfony/yaml": "^6.0 || ^7.0 || ^8.0",
+        "symfony/http-kernel": "^6.4 || ^7.0 || ^8.0",
+        "symfony/dependency-injection": "^6.4 || ^7.0 || ^8.0"
+    },
+    "archive": {
+        "exclude": ["/demo", "/.cursor"]
+    },
+    "autoload": {
+        "psr-4": {
+            "Nowo\\PhoneInputBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Nowo\\PhoneInputBundle\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "scripts": {
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-html coverage --coverage-clover coverage.xml --coverage-text",
+        "cs-check": "php-cs-fixer fix --dry-run --diff",
+        "cs-fix": "php-cs-fixer fix",
+        "rector": "rector process",
+        "rector-dry": "rector process --dry-run",
+        "phpstan": "phpstan analyse --memory-limit=512M",
+        "qa": [
+            "@cs-check",
+            "@test"
+        ],
+        "update": "composer update",
+        "validate": "composer validate --strict"
+    },
+    "scripts-descriptions": {
+        "test": "Run PHPUnit tests",
+        "test-coverage": "Run PHPUnit tests with code coverage",
+        "cs-check": "Check code style with PHP-CS-Fixer",
+        "cs-fix": "Fix code style with PHP-CS-Fixer",
+        "rector": "Apply Rector refactoring",
+        "rector-dry": "Run Rector in dry-run mode",
+        "phpstan": "Run PHPStan static analysis",
+        "qa": "Run all quality assurance checks",
+        "update": "Update composer.lock",
+        "validate": "Validate composer.json"
+    }
+}

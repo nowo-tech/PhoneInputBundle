@@ -1,0 +1,8 @@
+{#
+  Renders a country flag for the phone prefix selector.
+
+  Variables:
+  - country: { iso, name, dial_code, flag, flag_icon }
+  - flag_display: EMOJI|CSS_ICON|UX_ICON|NONE
+#}
+{{ nowo_phone_country_flag(country, flag_display|default('CSS_ICON')) }}

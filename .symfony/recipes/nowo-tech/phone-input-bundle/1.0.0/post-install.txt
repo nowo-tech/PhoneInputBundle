@@ -1,0 +1,10 @@
+  * Add the form theme to config/packages/twig.yaml:
+      twig:
+          form_themes:
+              - '@NowoPhoneInputBundle/Form/phone_input_widget.html.twig'
+
+  * Run assets:install and include CSS in your layout:
+      php bin/console assets:install
+      <!-- flag-icons.min.css + phone_input.css from bundles/nowophoneinput/css/ -->
+
+  * See docs/INSTALLATION.md and docs/USAGE.md for full integration.
