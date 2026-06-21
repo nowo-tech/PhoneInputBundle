@@ -4,13 +4,23 @@ This document describes how to upgrade between versions of Phone Input Bundle.
 
 ## 1.x
 
+### 1.1.0
+
+**Breaking:** requires PHP **>= 8.2** (bundle uses `readonly` classes).
+
+If you are on PHP 8.1, upgrade PHP before updating the bundle:
+
+```bash
+composer require nowo-tech/phone-input-bundle:^1.1
+```
+
 ### 1.0.0
 
 First release — no prior versions to upgrade from.
 
-**Requirements**
+**Requirements** (at first release; use **^1.1** for the supported PHP floor)
 
-- PHP >= 8.1, < 8.6
+- PHP >= 8.2, < 8.6 (1.0.x composer.json listed 8.1; 1.1.0 aligns requirement with `readonly` classes)
 - Symfony ^6.0 || ^7.0 || ^8.0
 - `symfony/validator`
 

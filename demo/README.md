@@ -47,7 +47,7 @@ make install-symfony8
 
 ## Demos
 
-- **symfony6** — PHP 8.1+, Symfony 6.4
+- **symfony6** — PHP 8.2+, Symfony 6.4
 - **symfony7** — PHP 8.2+, Symfony 7.4
 - **symfony8** — PHP 8.2+, Symfony 8.1
 
