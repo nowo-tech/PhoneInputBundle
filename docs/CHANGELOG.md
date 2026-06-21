@@ -8,9 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.0.1] - 2026-06-20](#101---2026-06-20)
 - [[1.0.0] - 2026-06-20](#100---2026-06-20)
 
 ## [Unreleased]
+
+## [1.0.1] - 2026-06-20
+
+### Fixed
+
+- `ValidPhoneNumber` legacy `options['mode']` string now applies correctly on Symfony 8 / PHP 8.4+ (CI test failure)
+- Code coverage threshold in CI (`coveredelements` ≥ 95%) met with additional unit tests
 
 ## [1.0.0] - 2026-06-20
 

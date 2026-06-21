@@ -38,4 +38,13 @@ final class E164ParserTest extends TestCase
         $this->assertSame('ES', $parser->emptyParts()['iso']);
         $this->assertSame('+34', $parser->emptyParts()['prefix']);
     }
+
+    public function testParseUsesDefaultCountryWhenIsoIsUnknown(): void
+    {
+        $provider = TestFixtures::countryProvider(defaultCountry: 'ES');
+        $parser = TestFixtures::e164Parser($provider);
+
+        $this->assertSame('ES', $parser->parse('612345678', 'ZZ')['iso']);
+        $this->assertSame('ES', $parser->emptyParts('ZZ')['iso']);
+    }
 }

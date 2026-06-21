@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nowo\PhoneInputBundle\Tests\Unit\Country;
 
 use Nowo\PhoneInputBundle\Country\Country;
+use Nowo\PhoneInputBundle\Country\CountryProvider;
 use Nowo\PhoneInputBundle\Tests\TestFixtures;
 use PHPUnit\Framework\TestCase;
 
@@ -56,6 +57,51 @@ final class CountryProviderTest extends TestCase
 
         $this->assertNotContains('FR', $isos);
         $this->assertContains('ES', $isos);
+    }
+
+    public function testGetDefaultCountry(): void
+    {
+        $provider = TestFixtures::countryProvider(defaultCountry: 'FR');
+
+        $this->assertSame('FR', $provider->getDefaultCountry()->iso);
+    }
+
+    public function testGetByIsoReturnsNullForUnknownCountry(): void
+    {
+        $provider = TestFixtures::countryProvider();
+
+        $this->assertNull($provider->getByIso('ZZ'));
+    }
+
+    public function testFieldLevelPreferredCountriesOverride(): void
+    {
+        $provider = TestFixtures::countryProvider(preferred: ['ES']);
+        $countries = $provider->getCountriesForSelector(null, null, ['GB', 'ES']);
+
+        $this->assertSame('GB', $countries[0]->iso);
+        $this->assertSame('ES', $countries[1]->iso);
+    }
+
+    public function testGetRawCountriesThrowsOnInvalidJson(): void
+    {
+        $path = sys_get_temp_dir().'/nowo-phone-countries-invalid-'.uniqid('', true).'.json';
+        file_put_contents($path, 'not-json');
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        try {
+            (new CountryProvider($path))->getAllCountries();
+        } finally {
+            @unlink($path);
+        }
+    }
+
+    public function testGetRawCountriesThrowsOnMissingFile(): void
+    {
+        $provider = new CountryProvider('/tmp/nowo-phone-countries-missing-'.uniqid('', true).'.json');
+
+        $this->expectException(\InvalidArgumentException::class);
+        @$provider->getAllCountries();
     }
 
     public function testCountryFromArray(): void

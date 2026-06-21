@@ -19,6 +19,19 @@ final class TwigPathsPassTest extends TestCase
         $this->assertFalse($container->hasDefinition('twig.loader.native'));
     }
 
+    public function testProcessAddsPathToNativeLoaderDefinition(): void
+    {
+        $container = new ContainerBuilder();
+        $container->setDefinition('twig.loader.native', new Definition(\stdClass::class));
+
+        (new TwigPathsPass())->process($container);
+
+        $methodCalls = $container->getDefinition('twig.loader.native')->getMethodCalls();
+        $this->assertCount(1, $methodCalls);
+        $this->assertSame('addPath', $methodCalls[0][0]);
+        $this->assertSame('NowoPhoneInputBundle', $methodCalls[0][1][1]);
+    }
+
     public function testProcessAddsPathToNativeFilesystemLoaderDefinition(): void
     {
         $container = new ContainerBuilder();
