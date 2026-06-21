@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- **PHP** >= 8.1, < 8.6
+- **PHP** >= 8.2, < 8.6
 - **Symfony** ^6.0 || ^7.0 || ^8.0
 - **symfony/form**, **symfony/framework-bundle**, **symfony/twig-bundle**, **symfony/validator**
 

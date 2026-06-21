@@ -1,6 +1,6 @@
 # Phone Input Bundle
 
-[![CI](https://github.com/nowo-tech/PhoneInputBundle/actions/workflows/ci.yml/badge.svg)](https://github.com/nowo-tech/PhoneInputBundle/actions/workflows/ci.yml) [![Packagist Version](https://img.shields.io/packagist/v/nowo-tech/phone-input-bundle.svg?style=flat)](https://packagist.org/packages/nowo-tech/phone-input-bundle) [![Packagist Downloads](https://img.shields.io/packagist/dt/nowo-tech/phone-input-bundle.svg)](https://packagist.org/packages/nowo-tech/phone-input-bundle) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![PHP](https://img.shields.io/badge/PHP-8.1%2B-777BB4?logo=php)](https://php.net) [![Symfony](https://img.shields.io/badge/Symfony-6.0%2B%20%7C%207.4%2B%20%7C%208.0%20%7C%208.1%2B-000000?logo=symfony)](https://symfony.com) [![GitHub stars](https://img.shields.io/github/stars/nowo-tech/PhoneInputBundle.svg?style=social&label=Star)](https://github.com/nowo-tech/PhoneInputBundle) [![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)](#tests-and-coverage)
+[![CI](https://github.com/nowo-tech/PhoneInputBundle/actions/workflows/ci.yml/badge.svg)](https://github.com/nowo-tech/PhoneInputBundle/actions/workflows/ci.yml) [![Packagist Version](https://img.shields.io/packagist/v/nowo-tech/phone-input-bundle.svg?style=flat)](https://packagist.org/packages/nowo-tech/phone-input-bundle) [![Packagist Downloads](https://img.shields.io/packagist/dt/nowo-tech/phone-input-bundle.svg)](https://packagist.org/packages/nowo-tech/phone-input-bundle) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![PHP](https://img.shields.io/badge/PHP-8.2%2B-777BB4?logo=php)](https://php.net) [![Symfony](https://img.shields.io/badge/Symfony-6.0%2B%20%7C%207.4%2B%20%7C%208.0%20%7C%208.1%2B-000000?logo=symfony)](https://symfony.com) [![GitHub stars](https://img.shields.io/github/stars/nowo-tech/PhoneInputBundle.svg?style=social&label=Star)](https://github.com/nowo-tech/PhoneInputBundle) [![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)](#tests-and-coverage)
 
 Symfony bundle providing a phone form type with optional country prefix selector and flexible value formats (E.164 string, separated array, or `PhoneNumber` value object).
 
@@ -62,7 +62,7 @@ Demos use **FrankenPHP** without worker mode in development (changes visible on 
 
 ## Requirements
 
-- PHP >= 8.1, < 8.6
+- PHP >= 8.2, < 8.6
 - Symfony ^6.0 || ^7.0 || ^8.0
 
 ## Development
