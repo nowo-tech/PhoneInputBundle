@@ -72,21 +72,32 @@ jobs:
             echo "HAS_CHANGELOG=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Build release body
+        id: release_body
+        env:
+          TAG_MESSAGE: ${{ steps.tag_message.outputs.MESSAGE }}
+          HAS_CHANGELOG: ${{ steps.changelog.outputs.HAS_CHANGELOG }}
+          CHANGELOG_ENTRY: ${{ steps.changelog.outputs.ENTRY }}
+        run: |
+          {
+            echo "BODY<<EOF"
+            printf '%s\n' "$TAG_MESSAGE"
+            if [ "$HAS_CHANGELOG" = "true" ]; then
+              printf '\n## Changelog\n\n'
+              printf '%s\n' "$CHANGELOG_ENTRY"
+            fi
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.tag.outputs.TAG_NAME }}
           name: Release ${{ steps.tag.outputs.TAG_NAME }}
-          body: |
-            ${{ steps.tag_message.outputs.MESSAGE }}
-            ${{ steps.changelog.outputs.HAS_CHANGELOG == 'true' && format('
-
-## Changelog
-
-{0}', steps.changelog.outputs.ENTRY) || '' }}
+          body: ${{ steps.release_body.outputs.BODY }}
           draft: false
           prerelease: ${{ contains(steps.tag.outputs.TAG_NAME, '-alpha') || contains(steps.tag.outputs.TAG_NAME, '-beta') || contains(steps.tag.outputs.TAG_NAME, '-rc') }}
-          generate_release_notes: true  # GitHub generará notas automáticas basadas en los commits
+          generate_release_notes: true
 
 # Maintainer: Héctor Franco Aceituno (@HecFranco)
 # Organization: nowo-tech (https://github.com/nowo-tech)
