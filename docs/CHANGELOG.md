@@ -8,10 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.0.2] - 2026-06-20](#102---2026-06-20)
 - [[1.0.1] - 2026-06-20](#101---2026-06-20)
 - [[1.0.0] - 2026-06-20](#100---2026-06-20)
 
 ## [Unreleased]
+
+## [1.0.2] - 2026-06-20
+
+### Fixed
+
+- `CountryFlagRenderer::render()` default parameter compatible with PHP 8.1 (no enum in constant expression)
 
 ## [1.0.1] - 2026-06-20
 

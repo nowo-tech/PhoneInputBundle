@@ -21,7 +21,7 @@ final class CountryFlagRenderer
     /**
      * @param array{iso: string, name?: string, dial_code?: string, flag?: string, flag_icon?: string} $country
      */
-    public function render(array $country, string $flagDisplay = FlagDisplay::CSS_ICON->value): string
+    public function render(array $country, string $flagDisplay = 'CSS_ICON'): string
     {
         if (FlagDisplay::NONE->value === $flagDisplay) {
             return '';
