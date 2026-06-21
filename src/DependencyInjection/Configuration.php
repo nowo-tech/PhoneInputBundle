@@ -1,0 +1,121 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Nowo\PhoneInputBundle\DependencyInjection;
+
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
+
+/**
+ * Configuration definition for Phone Input Bundle.
+ */
+class Configuration implements ConfigurationInterface
+{
+    public function getConfigTreeBuilder(): TreeBuilder
+    {
+        $treeBuilder = new TreeBuilder('nowo_phone_input');
+
+        $treeBuilder->getRootNode()
+            ->children()
+                ->booleanNode('country_prefix_selector')
+                    ->defaultTrue()
+                    ->info('Enable country prefix selector by default')
+                ->end()
+                ->scalarNode('default_country')
+                    ->defaultValue('ES')
+                    ->info('Default ISO 3166-1 alpha-2 country code')
+                    ->cannotBeEmpty()
+                ->end()
+                ->arrayNode('preferred_countries')
+                    ->defaultValue([])
+                    ->scalarPrototype()->end()
+                    ->info('Preferred countries shown first in the selector')
+                ->end()
+                ->arrayNode('allowed_countries')
+                    ->defaultValue([])
+                    ->scalarPrototype()->end()
+                    ->info('Only offer these ISO country codes in the prefix selector (empty = all bundled countries)')
+                ->end()
+                ->arrayNode('excluded_countries')
+                    ->defaultValue([])
+                    ->scalarPrototype()->end()
+                    ->info('Remove these ISO country codes from the prefix selector')
+                ->end()
+                ->enumNode('value_format')
+                    ->values(['CONCATENATED', 'SEPARATED', 'OBJECT'])
+                    ->defaultValue('CONCATENATED')
+                    ->info('Default model value format')
+                ->end()
+                ->enumNode('prefix_display')
+                    ->values(['FULL', 'PREFIX_ONLY', 'FLAG_ONLY', 'FLAG_AND_PREFIX', 'ISO_AND_PREFIX'])
+                    ->defaultValue('FLAG_AND_PREFIX')
+                    ->info('How country prefixes are displayed in the selector')
+                ->end()
+                ->booleanNode('show_flag')
+                    ->defaultTrue()
+                    ->info('Show country flags in the prefix selector (set false for prefix-only UI)')
+                ->end()
+                ->booleanNode('prefix_search')
+                    ->defaultTrue()
+                    ->info('Show a search box in the visual prefix dropdown')
+                ->end()
+                ->enumNode('flag_display')
+                    ->values(['EMOJI', 'CSS_ICON', 'UX_ICON', 'NONE'])
+                    ->defaultValue('CSS_ICON')
+                    ->info('How country flags are rendered in the prefix selector')
+                ->end()
+                ->arrayNode('container_classes')
+                    ->defaultValue(['input-group', 'nowo-phone-input'])
+                    ->scalarPrototype()->end()
+                    ->validate()
+                        ->ifTrue(static fn ($v): bool => !\is_array($v))
+                        ->thenInvalid('container_classes must be an array')
+                    ->end()
+                ->end()
+                ->arrayNode('prefix_selector_classes')
+                    ->defaultValue(['form-select', 'nowo-phone-input__prefix'])
+                    ->scalarPrototype()->end()
+                    ->validate()
+                        ->ifTrue(static fn ($v): bool => !\is_array($v))
+                        ->thenInvalid('prefix_selector_classes must be an array')
+                    ->end()
+                ->end()
+                ->arrayNode('national_number_classes')
+                    ->defaultValue(['form-control', 'nowo-phone-input__number'])
+                    ->scalarPrototype()->end()
+                    ->validate()
+                        ->ifTrue(static fn ($v): bool => !\is_array($v))
+                        ->thenInvalid('national_number_classes must be an array')
+                    ->end()
+                ->end()
+                ->booleanNode('use_phone_form_theme')
+                    ->defaultTrue()
+                    ->info('Use the bundle form theme for rendering')
+                ->end()
+                ->booleanNode('trim')
+                    ->defaultTrue()
+                    ->info('Trim whitespace from national number input')
+                ->end()
+                ->scalarNode('invalid_message')
+                    ->defaultValue('The phone number is invalid.')
+                    ->cannotBeEmpty()
+                    ->validate()
+                        ->ifTrue(static fn ($v): bool => !\is_string($v) || '' === trim($v))
+                        ->thenInvalid('invalid_message must be a non-empty string')
+                    ->end()
+                ->end()
+                ->enumNode('phone_validation')
+                    ->values(['COUNTRY', 'PREFIX', 'NONE'])
+                    ->defaultValue('COUNTRY')
+                    ->info('Validate national numbers using country ISO (COUNTRY), dial prefix (PREFIX) or disable (NONE)')
+                ->end()
+                ->booleanNode('use_libphonenumber')
+                    ->defaultTrue()
+                    ->info('Use giggsey/libphonenumber-for-php when installed for validation')
+                ->end()
+            ->end();
+
+        return $treeBuilder;
+    }
+}

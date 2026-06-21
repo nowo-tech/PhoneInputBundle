@@ -1,0 +1,42 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Nowo\PhoneInputBundle\Country\CountryProvider:
+    arguments:
+      $countriesFile: '%nowo_phone_input.countries_file%'
+      $defaultCountryIso: 'ES'
+      $preferredCountries: []
+      $allowedCountries: []
+      $excludedCountries: []
+
+  Nowo\PhoneInputBundle\IconSupport\:
+    resource: '../../IconSupport/*'
+
+  Nowo\PhoneInputBundle\Phone\:
+    resource: '../../Phone/*'
+
+  Nowo\PhoneInputBundle\Phone\PhonePatternCatalog:
+    arguments:
+      $patternsFile: '%nowo_phone_input.patterns_file%'
+
+  Nowo\PhoneInputBundle\Phone\PhoneValidator:
+    arguments:
+      $useLibPhoneNumber: '%nowo_phone_input.use_libphonenumber%'
+
+  Nowo\PhoneInputBundle\Validator\:
+    resource: '../../Validator/*'
+
+  Nowo\PhoneInputBundle\Twig\:
+    resource: '../../Twig/*'
+
+  Nowo\PhoneInputBundle\Twig\CountryFlagRenderer:
+    arguments:
+      $iconRenderer: null
+
+  Nowo\PhoneInputBundle\Form\Type\PhoneType:
+    arguments:
+      $defaults: '%nowo_phone_input.defaults%'
+    tags: ['form.type']

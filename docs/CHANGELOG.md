@@ -1,0 +1,40 @@
+# Changelog
+
+All notable changes to this project are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## Table of contents
+
+- [[Unreleased]](#unreleased)
+- [[1.0.0] - 2026-06-20](#100---2026-06-20)
+
+## [Unreleased]
+
+## [1.0.0] - 2026-06-20
+
+First stable release.
+
+### Added
+
+- **`PhoneType`** Symfony form type extending `TelType` with optional country prefix selector
+- **Value formats**: `CONCATENATED` (E.164 string), `SEPARATED` (array), `OBJECT` (`PhoneNumber` VO)
+- **Prefix display modes**: `FULL`, `PREFIX_ONLY`, `FLAG_ONLY`, `FLAG_AND_PREFIX`, `ISO_AND_PREFIX`
+- **Flag display**: `EMOJI`, `CSS_ICON`, `UX_ICON`, `NONE` (bundled `flag-icons` CSS + optional UX Icons)
+- **Prefix search** autocomplete in the visual country dropdown (`prefix_search`)
+- **Country filtering**: global and per-field `allowed_countries`, `excluded_countries`, `preferred_countries`
+- **Phone validation**: `ValidPhoneNumber` constraint with modes `COUNTRY`, `PREFIX`, `NONE`
+- Optional **libphonenumber** integration when `giggsey/libphonenumber-for-php` is installed
+- Bundled **country catalog** (`countries.json`) and **national-number patterns** (`phone_patterns.json`)
+- Framework-agnostic widget via configurable CSS classes (Bootstrap, Tailwind, Foundation, custom)
+- **Twig** form theme and `nowo_phone_country_flag` helper
+- **Symfony Flex recipe** (`1.0.0`) with default `nowo_phone_input.yaml`
+- **Demos** for Symfony 6.4, 7.0 and 8.0 (FrankenPHP, Web Profiler, Twig Inspector)
+- CI (PHPUnit matrix, PHPStan, PHP-CS-Fixer, coverage ≥95%), release workflows, and full bundle documentation
+
+### Requirements
+
+- PHP >= 8.1, < 8.6
+- Symfony ^6.0 || ^7.0 || ^8.0
+- `symfony/validator` (required)

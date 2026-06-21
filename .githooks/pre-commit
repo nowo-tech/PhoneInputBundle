@@ -1,0 +1,7 @@
+#!/bin/sh
+set -e
+
+if [ -f composer.json ] && command -v composer >/dev/null 2>&1; then
+  composer cs-check
+  composer test
+fi
