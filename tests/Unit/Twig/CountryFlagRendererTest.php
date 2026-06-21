@@ -73,4 +73,19 @@ final class CountryFlagRendererTest extends TestCase
         $this->assertStringContainsString('data-icon="circle-flags:es"', $html);
         $this->assertStringContainsString('nowo-phone-input__flag--ux', $html);
     }
+
+    public function testUxIconRendererWithoutRenderIconMethodFallsBackToCss(): void
+    {
+        $renderer = new CountryFlagRenderer(
+            new IconSupportChecker(uxIconsAvailable: true, httpClientAvailable: true),
+            new \stdClass(),
+        );
+
+        $html = $renderer->render(['iso' => 'ES', 'flag_icon' => 'circle-flags:es'], FlagDisplay::UX_ICON->value);
+
+        $this->assertSame(
+            '<span class="nowo-phone-input__flag fi fi-es" aria-hidden="true"></span>',
+            $html,
+        );
+    }
 }

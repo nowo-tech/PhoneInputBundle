@@ -42,4 +42,11 @@ final class IconSupportCheckerTest extends TestCase
 
         $this->assertFalse($checker->isUxIconsAvailable());
     }
+
+    public function testRuntimeClassExistsUsesDefaultChecker(): void
+    {
+        $checker = new IconSupportChecker(httpClientAvailable: true);
+
+        $this->assertIsBool($checker->isUxIconsAvailable());
+    }
 }
