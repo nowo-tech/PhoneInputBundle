@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.1.2] - 2026-06-30](#112---2026-06-30)
 - [[1.1.1] - 2026-06-30](#111---2026-06-30)
 - [[1.1.0] - 2026-06-20](#110---2026-06-20)
 - [[1.0.2] - 2026-06-20](#102---2026-06-20)
@@ -15,6 +16,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [[1.0.0] - 2026-06-20](#100---2026-06-20)
 
 ## [Unreleased]
+
+## [1.1.2] - 2026-06-30
+
+### Fixed
+
+- Demo Makefiles: define `COMPOSE` and `SERVICE_PHP` before including shared `update-deps` script
+
+### Changed
+
+- Sync `composer.lock` and demo Symfony lock files (dev dependencies)
 
 ## [1.1.1] - 2026-06-30
 
