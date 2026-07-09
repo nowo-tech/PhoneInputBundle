@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.1.3] - 2026-07-09](#113---2026-07-09)
 - [[1.1.2] - 2026-06-30](#112---2026-06-30)
 - [[1.1.1] - 2026-06-30](#111---2026-06-30)
 - [[1.1.0] - 2026-06-20](#110---2026-06-20)
@@ -16,6 +17,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [[1.0.0] - 2026-06-20](#100---2026-06-20)
 
 ## [Unreleased]
+
+## [1.1.3] - 2026-07-09
+
+### Added
+
+- GitHub Spec Kit baseline: `specs/001-baseline/` (spec + 100% `src/` code inventory), `.specify/` scaffolding, and Cursor Agent `speckit-*` skills
+- `docs/SPEC-KIT.md` — Spec Kit installation, structure, and maintainer usage
+
+### Changed
+
+- Expanded `docs/SPEC-DRIVEN-DEVELOPMENT.md` with Spec Kit layers, user stories, `REQ-*` workflow, and contributor checklist
+- Demo Dockerfiles: install `intl` PHP extension alongside `zip`
+- Sync `composer.lock` and demo Symfony lock files (dev dependencies)
 
 ## [1.1.2] - 2026-06-30
 
