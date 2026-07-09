@@ -50,7 +50,7 @@ See [docs/INSTALLATION.md](docs/INSTALLATION.md) for form theme, CSS assets, and
 
 ## Demo
 
-Demos for Symfony 6.4, 7.0 and 8.0 live under `demo/`. From the bundle root:
+Demos for Symfony 7.0 and 8.0 live under `demo/`. From the bundle root:
 
 ```bash
 make -C demo up-symfony8
