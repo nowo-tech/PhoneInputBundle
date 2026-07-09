@@ -1,6 +1,6 @@
 # Phone Input Bundle - Demo
 
-Three demo projects (Symfony 6.4, 7.4, 8.1) showing **all `PhoneType` format combinations**:
+Two demo projects (Symfony 7.4, 8.1) showing **all `PhoneType` format combinations**:
 
 | # | Field | `value_format` | `country_prefix_selector` |
 |---|-------|----------------|---------------------------|
@@ -47,7 +47,6 @@ make install-symfony8
 
 ## Demos
 
-- **symfony6** — PHP 8.2+, Symfony 6.4
 - **symfony7** — PHP 8.2+, Symfony 7.4
 - **symfony8** — PHP 8.2+, Symfony 8.1
 

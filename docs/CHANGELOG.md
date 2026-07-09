@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+
+- `demo/symfony6` demo application (Symfony 6.4); use `demo/symfony7` or `demo/symfony8`
+
 ## [1.1.3] - 2026-07-09
 
 ### Added
