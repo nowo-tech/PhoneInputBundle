@@ -26,6 +26,7 @@ Symfony bundle providing a phone form type with optional country prefix selector
 - [Security](docs/SECURITY.md)
 - [Engram](docs/ENGRAM.md)
 - [Spec-driven development](docs/SPEC-DRIVEN-DEVELOPMENT.md)
+- [GitHub Spec Kit](docs/SPEC-KIT.md)
 
 ### Additional documentation
 
