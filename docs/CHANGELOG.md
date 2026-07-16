@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.1.4] - 2026-07-16](#114---2026-07-16)
 - [[1.1.3] - 2026-07-09](#113---2026-07-09)
 - [[1.1.2] - 2026-06-30](#112---2026-06-30)
 - [[1.1.1] - 2026-06-30](#111---2026-06-30)
@@ -18,9 +19,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.4] - 2026-07-16
+
 ### Removed
 
 - `demo/symfony6` demo application (Symfony 6.4); use `demo/symfony7` or `demo/symfony8`
+
+### Added
+
+- Contributor Covenant **Code of Conduct** (`CODE_OF_CONDUCT.md`)
+- `docs/GITHUB_CI.md` and CI job enforcing **REQ-GIT-001** (no Cursor co-author trailers in git history)
+- Git hooks / Make targets: `commit-msg`, `check-no-cursor-coauthor`, `strip-cursor-coauthor-from-history`
+- Unit tests covering transformer paths without prefix selector, option normalizers, multi-country dial prefixes, and libphonenumber validation
+
+### Changed
+
+- `make release-check` now includes `check-no-cursor-coauthor`
+- Contributing and release docs updated for git hygiene workflow
 
 ## [1.1.3] - 2026-07-09
 

@@ -1,0 +1,5 @@
+[
+  {"iso": "ES", "name": "Spain", "dial_code": "+34", "flag": "🇪🇸"},
+  {"iso": "US", "name": "United States", "dial_code": "+1", "flag": "🇺🇸"},
+  {"iso": "CA", "name": "Canada", "dial_code": "+1", "flag": "🇨🇦"}
+]

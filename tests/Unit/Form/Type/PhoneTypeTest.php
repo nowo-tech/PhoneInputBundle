@@ -366,4 +366,57 @@ final class PhoneTypeTest extends TypeTestCase
             'national_number' => '',
         ], $resolver->resolve(['value_format' => 'separated'])['empty_data']);
     }
+
+    public function testFlagDisplayNormalizerAcceptsEnumInstance(): void
+    {
+        $resolver = new OptionsResolver();
+        $provider = TestFixtures::countryProvider();
+        $phoneType = new PhoneType(
+            $provider,
+            TestFixtures::e164Parser($provider),
+            new IconSupportChecker(),
+        );
+        $phoneType->configureOptions($resolver);
+
+        $resolved = $resolver->resolve([
+            'show_flag' => true,
+            'flag_display' => FlagDisplay::EMOJI,
+        ]);
+
+        $this->assertSame(FlagDisplay::EMOJI, $resolved['flag_display']);
+    }
+
+    public function testPhoneValidationNormalizerAcceptsEnumInstance(): void
+    {
+        $resolver = new OptionsResolver();
+        $provider = TestFixtures::countryProvider();
+        $phoneType = new PhoneType(
+            $provider,
+            TestFixtures::e164Parser($provider),
+            new IconSupportChecker(),
+        );
+        $phoneType->configureOptions($resolver);
+
+        $resolved = $resolver->resolve([
+            'phone_validation' => PhoneValidationMode::PREFIX,
+        ]);
+
+        $this->assertSame(PhoneValidationMode::PREFIX, $resolved['phone_validation']);
+    }
+
+    public function testEmptyDataNormalizerAcceptsStringValueFormat(): void
+    {
+        $resolver = new OptionsResolver();
+        $provider = TestFixtures::countryProvider();
+        $phoneType = new PhoneType(
+            $provider,
+            TestFixtures::e164Parser($provider),
+            new IconSupportChecker(),
+        );
+        $phoneType->configureOptions($resolver);
+
+        $resolved = $resolver->resolve(['value_format' => 'object']);
+
+        $this->assertNull($resolved['empty_data']);
+    }
 }

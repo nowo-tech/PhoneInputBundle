@@ -2,7 +2,7 @@
 
 1. Update [CHANGELOG.md](CHANGELOG.md): move entries from `[Unreleased]` to a new `[X.Y.Z] - YYYY-MM-DD` section. (This project does not store version in `composer.json`; Packagist uses the git tag.)
 2. Update [UPGRADING.md](UPGRADING.md) if the release has upgrade notes.
-3. Run pre-release checks: `make release-check` (cs-fix, cs-check, rector-dry, phpstan, test-coverage, demo healthchecks).
+3. Run pre-release checks: `make release-check` (includes `check-no-cursor-coauthor`, cs-fix, cs-check, rector-dry, phpstan, test-coverage, and optionally demo healthchecks).
 4. Commit all changes, create an annotated tag (e.g. `v1.0.0`), and push branch and tag. The release workflow creates the GitHub Release from the tag and changelog.
 5. Publish on Packagist (usually automatic when the tag is pushed and the package is registered).
 

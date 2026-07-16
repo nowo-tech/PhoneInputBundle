@@ -112,6 +112,51 @@ final class PhoneValidatorTest extends TestCase
 
         $this->assertTrue($validator->isValid('12345678', PhoneValidationMode::COUNTRY, 'ES'));
     }
+
+    public function testUsesLibPhoneNumberWhenAvailable(): void
+    {
+        if (!class_exists(\libphonenumber\PhoneNumberUtil::class, false)) {
+            eval(<<<'PHP'
+namespace libphonenumber;
+final class PhoneNumberUtil
+{
+    public static function getInstance(): self
+    {
+        return new self();
+    }
+
+    public function parse(string $number, string $region): object
+    {
+        if ('999999999' === $number) {
+            throw new \RuntimeException('parse failed');
+        }
+
+        return (object) ['number' => $number, 'region' => $region];
+    }
+
+    public function isValidNumber(object $number): bool
+    {
+        return is_object($number) && property_exists($number, 'number') && '111111111' !== $number->number;
+    }
+}
+PHP);
+        }
+
+        $provider = TestFixtures::countryProvider();
+        $validator = new PhoneValidator(
+            new E164Parser($provider),
+            new PhonePatternCatalog(
+                __DIR__.'/../../../src/Resources/data/phone_patterns.json',
+                $provider,
+            ),
+            useLibPhoneNumber: true,
+        );
+
+        // Digit-only nationals (letters stripped; leading zeros trimmed by normalizeNationalNumber).
+        $this->assertTrue($validator->isValid(['iso' => 'ES', 'prefix' => '+34', 'national_number' => '612345678'], PhoneValidationMode::COUNTRY, 'ES'));
+        $this->assertFalse($validator->isValid(['iso' => 'ES', 'prefix' => '+34', 'national_number' => '111111111'], PhoneValidationMode::COUNTRY, 'ES'));
+        $this->assertFalse($validator->isValid(['iso' => 'ES', 'prefix' => '+34', 'national_number' => '999999999'], PhoneValidationMode::COUNTRY, 'ES'));
+    }
 }
 
 final class PhonePatternTest extends TestCase

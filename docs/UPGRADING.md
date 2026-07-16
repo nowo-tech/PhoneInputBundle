@@ -4,6 +4,12 @@ This document describes how to upgrade between versions of Phone Input Bundle.
 
 ## 1.x
 
+### 1.1.4
+
+No application code changes required.
+
+**Maintainers / local demos:** `demo/symfony6` was removed. Use `demo/symfony7` or `demo/symfony8` (see [demo/README.md](../demo/README.md)).
+
 ### 1.1.0
 
 **Breaking:** requires PHP **>= 8.2** (bundle uses `readonly` classes).

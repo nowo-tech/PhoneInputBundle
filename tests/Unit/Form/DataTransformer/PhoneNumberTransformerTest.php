@@ -192,6 +192,82 @@ final class PhoneNumberTransformerTest extends TestCase
         $this->assertSame('+34612345678', $model);
     }
 
+    public function testWithoutSelectorReverseTransformUsesDefaultCountryForNationalNumber(): void
+    {
+        $provider = TestFixtures::countryProvider();
+        $transformer = new PhoneNumberTransformer(
+            valueFormat: ValueFormat::CONCATENATED,
+            countryPrefixSelector: false,
+            countryProvider: $provider,
+            e164Parser: TestFixtures::e164Parser($provider),
+            defaultCountryIso: 'ES',
+        );
+
+        $model = $transformer->reverseTransform(['national_number' => '612345678']);
+
+        $this->assertSame('+34612345678', $model);
+    }
+
+    public function testWithoutSelectorReverseTransformReturnsEmptyModelForBlankNationalNumber(): void
+    {
+        $provider = TestFixtures::countryProvider();
+        $transformer = new PhoneNumberTransformer(
+            valueFormat: ValueFormat::CONCATENATED,
+            countryPrefixSelector: false,
+            countryProvider: $provider,
+            e164Parser: TestFixtures::e164Parser($provider),
+            defaultCountryIso: 'ES',
+        );
+
+        $this->assertSame('', $transformer->reverseTransform(['national_number' => '']));
+    }
+
+    public function testWithoutSelectorReverseTransformParsesE164NationalNumber(): void
+    {
+        $provider = TestFixtures::countryProvider();
+        $transformer = new PhoneNumberTransformer(
+            valueFormat: ValueFormat::CONCATENATED,
+            countryPrefixSelector: false,
+            countryProvider: $provider,
+            e164Parser: TestFixtures::e164Parser($provider),
+            defaultCountryIso: 'ES',
+        );
+
+        $this->assertSame('+34612345678', $transformer->reverseTransform(['national_number' => '+34612345678']));
+    }
+
+    public function testBuildModelWithoutSelectorParsesLeadingPlusViaReflection(): void
+    {
+        $provider = TestFixtures::countryProvider();
+        $transformer = new PhoneNumberTransformer(
+            valueFormat: ValueFormat::CONCATENATED,
+            countryPrefixSelector: false,
+            countryProvider: $provider,
+            e164Parser: TestFixtures::e164Parser($provider),
+            defaultCountryIso: 'ES',
+        );
+
+        $method = new \ReflectionMethod(PhoneNumberTransformer::class, 'buildModelWithoutSelector');
+        $result = $method->invoke($transformer, '+34612345678');
+
+        $this->assertSame('+34612345678', $result);
+    }
+
+    public function testWithoutSelectorReverseTransformUsesDefaultCountryWhenIsoMissing(): void
+    {
+        $provider = TestFixtures::countryProvider(defaultCountry: 'ES');
+
+        $transformer = new PhoneNumberTransformer(
+            valueFormat: ValueFormat::CONCATENATED,
+            countryPrefixSelector: false,
+            countryProvider: $provider,
+            e164Parser: TestFixtures::e164Parser($provider),
+            defaultCountryIso: 'ZZ',
+        );
+
+        $this->assertSame('+34612345678', $transformer->reverseTransform(['national_number' => '612345678']));
+    }
+
     private function createTransformer(ValueFormat $format): PhoneNumberTransformer
     {
         $provider = TestFixtures::countryProvider();
