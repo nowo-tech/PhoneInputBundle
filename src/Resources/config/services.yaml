@@ -17,6 +17,9 @@ services:
 
   Nowo\PhoneInputBundle\Phone\:
     resource: '../../Phone/*'
+    exclude:
+      - '../../Phone/LibPhoneNumberChecker.php'
+      - '../../Phone/NationalPhoneNumberChecker.php'
 
   Nowo\PhoneInputBundle\Phone\PhonePatternCatalog:
     arguments:
@@ -25,6 +28,7 @@ services:
   Nowo\PhoneInputBundle\Phone\PhoneValidator:
     arguments:
       $useLibPhoneNumber: '%nowo_phone_input.use_libphonenumber%'
+      $nationalPhoneNumberChecker: null
 
   Nowo\PhoneInputBundle\Validator\:
     resource: '../../Validator/*'

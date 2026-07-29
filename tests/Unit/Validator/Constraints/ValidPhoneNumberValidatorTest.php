@@ -12,7 +12,10 @@ use Nowo\PhoneInputBundle\Validation\PhoneValidationMode;
 use Nowo\PhoneInputBundle\Validator\Constraints\ValidPhoneNumber;
 use Nowo\PhoneInputBundle\Validator\Constraints\ValidPhoneNumberValidator;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 final class ValidPhoneNumberValidatorTest extends TestCase
@@ -80,15 +83,15 @@ final class ValidPhoneNumberValidatorTest extends TestCase
 
     public function testWrongConstraintTypeThrows(): void
     {
-        $this->expectException(\Symfony\Component\Validator\Exception\UnexpectedTypeException::class);
+        $this->expectException(UnexpectedTypeException::class);
 
-        $this->constraintValidator->validate('+34612345678', new class extends \Symfony\Component\Validator\Constraint {
+        $this->constraintValidator->validate('+34612345678', new class extends Constraint {
         });
     }
 
     public function testUnexpectedValueTypeThrows(): void
     {
-        $this->expectException(\Symfony\Component\Validator\Exception\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
 
         $this->constraintValidator->validate(12345, new ValidPhoneNumber());
     }

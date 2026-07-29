@@ -6,15 +6,12 @@ parameters:
         - tests
     excludePaths:
         - demo (?)
-    ignoreErrors:
-        -
-            message: '#no value type specified in iterable type array#'
-            paths:
-                - tests/*
-        -
-            message: '#libphonenumber|forward_static_call|undefined method object#'
-            path: src/Phone/PhoneValidator.php
+    # REQ-CS-006: never silence findings here — fix the code instead
+    ignoreErrors: []
 
 includes:
     - vendor/phpstan/phpstan-phpunit/extension.neon
     - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/nowo-tech/phpstan-frankenphp/extension.neon
+    - vendor/nowo-tech/phpstan-frankenphp/ruleset-classic.neon
+    - vendor/nowo-tech/phpstan-frankenphp/ruleset-worker.neon

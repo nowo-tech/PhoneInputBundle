@@ -4,6 +4,20 @@ This document describes how to upgrade between versions of Phone Input Bundle.
 
 ## 1.x
 
+### 1.1.5
+
+**Assets:** the bundle registers the named package `nowo_phone_input` and requires `symfony/asset`. Prefer:
+
+```twig
+{{ asset('css/phone_input.css', 'nowo_phone_input') }}
+```
+
+instead of hard-coded `bundles/nowophoneinput/…` paths. Run `assets:install` and clear cache after upgrade.
+
+**Demos / FrankenPHP:** Symfony 8 demo image uses PHP 8.5; set `FRANKENPHP_MODE=classic|worker` (default `worker`) in the demo `.env`.
+
+No other intentional breaking changes for application installs. Continue requiring `nowo-tech/phone-input-bundle: ^1.1`.
+
 ### 1.1.4
 
 No application code changes required.
@@ -40,7 +54,7 @@ composer require nowo-tech/phone-input-bundle:^1.0
 
 1. Register `NowoPhoneInputBundle` in `config/bundles.php` (or use Flex).
 2. Add the form theme `@NowoPhoneInputBundle/Form/phone_input_widget.html.twig` (or set `use_phone_form_theme: true`).
-3. Run `php bin/console assets:install` and include `flag-icons.min.css` + `phone_input.css` in your layout.
+3. Run `php bin/console assets:install` and include CSS via `asset('css/…', 'nowo_phone_input')` (see [INSTALLATION.md](INSTALLATION.md)).
 4. (Optional) `composer require symfony/ux-icons symfony/http-client` for `flag_display: UX_ICON`.
 5. (Optional) `composer require giggsey/libphonenumber-for-php` for libphonenumber validation.
 

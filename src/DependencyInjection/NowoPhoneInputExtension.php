@@ -4,16 +4,24 @@ declare(strict_types=1);
 
 namespace Nowo\PhoneInputBundle\DependencyInjection;
 
+use libphonenumber\PhoneNumberUtil;
 use Nowo\PhoneInputBundle\Country\CountryProvider;
+use Nowo\PhoneInputBundle\Phone\LibPhoneNumberChecker;
+use Nowo\PhoneInputBundle\Phone\NationalPhoneNumberChecker;
+use Nowo\PhoneInputBundle\Phone\PhoneValidator;
+use Nowo\PhoneInputBundle\Twig\CountryFlagRenderer;
+use Symfony\Component\Asset\Package;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Dependency injection extension for the Phone Input bundle.
  */
-class NowoPhoneInputExtension extends Extension
+class NowoPhoneInputExtension extends Extension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -34,17 +42,59 @@ class NowoPhoneInputExtension extends Extension
         $countryProviderDefinition->replaceArgument('$allowedCountries', $config['allowed_countries']);
         $countryProviderDefinition->replaceArgument('$excludedCountries', $config['excluded_countries']);
 
-        $countryFlagRendererDefinition = $container->getDefinition(\Nowo\PhoneInputBundle\Twig\CountryFlagRenderer::class);
+        $countryFlagRendererDefinition = $container->getDefinition(CountryFlagRenderer::class);
         if ($container->has('Symfony\UX\Icons\IconRendererInterface')) {
             $countryFlagRendererDefinition->setArgument(
                 '$iconRenderer',
-                new \Symfony\Component\DependencyInjection\Reference('Symfony\UX\Icons\IconRendererInterface'),
+                new Reference('Symfony\UX\Icons\IconRendererInterface'),
             );
         }
+
+        $phoneValidatorDefinition = $container->getDefinition(PhoneValidator::class);
+        if (class_exists(PhoneNumberUtil::class)) {
+            if (!$container->hasDefinition(PhoneNumberUtil::class)) {
+                $container->register(PhoneNumberUtil::class)
+                    ->setFactory([PhoneNumberUtil::class, 'getInstance'])
+                    ->setPublic(false);
+            }
+            $container->register(LibPhoneNumberChecker::class)
+                ->setAutowired(true)
+                ->setAutoconfigured(true)
+                ->setPublic(false);
+            $container->setAlias(NationalPhoneNumberChecker::class, LibPhoneNumberChecker::class);
+            $phoneValidatorDefinition->setArgument(
+                '$nationalPhoneNumberChecker',
+                new Reference(NationalPhoneNumberChecker::class),
+            );
+        } else {
+            $phoneValidatorDefinition->setArgument('$nationalPhoneNumberChecker', null);
+        }
+    }
+
+    public function prepend(ContainerBuilder $container): void
+    {
+        if (!$container->hasExtension('framework')) {
+            return;
+        }
+
+        // Only register the package when the Asset component is available (host apps / demos).
+        if (!class_exists(Package::class)) {
+            return;
+        }
+
+        $container->prependExtensionConfig('framework', [
+            'assets' => [
+                'packages' => [
+                    Configuration::ALIAS => [
+                        'base_path' => '/bundles/nowophoneinput',
+                    ],
+                ],
+            ],
+        ]);
     }
 
     public function getAlias(): string
     {
-        return 'nowo_phone_input';
+        return Configuration::ALIAS;
     }
 }

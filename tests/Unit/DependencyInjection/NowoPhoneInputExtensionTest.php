@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace Nowo\PhoneInputBundle\Tests\Unit\DependencyInjection;
 
+use libphonenumber\PhoneNumberUtil;
 use Nowo\PhoneInputBundle\Country\CountryProvider;
 use Nowo\PhoneInputBundle\DependencyInjection\NowoPhoneInputExtension;
 use Nowo\PhoneInputBundle\Form\Type\PhoneType;
+use Nowo\PhoneInputBundle\Phone\LibPhoneNumberChecker;
+use Nowo\PhoneInputBundle\Phone\PhoneValidator;
 use Nowo\PhoneInputBundle\Twig\CountryFlagRenderer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Reference;
 
 final class NowoPhoneInputExtensionTest extends TestCase
@@ -38,7 +42,7 @@ final class NowoPhoneInputExtensionTest extends TestCase
         $this->assertTrue($container->hasParameter('nowo_phone_input.countries_file'));
         $this->assertTrue($container->hasParameter('nowo_phone_input.patterns_file'));
         $this->assertTrue($container->hasParameter('nowo_phone_input.use_libphonenumber'));
-        $this->assertTrue($container->hasDefinition(\Nowo\PhoneInputBundle\Phone\PhoneValidator::class));
+        $this->assertTrue($container->hasDefinition(PhoneValidator::class));
     }
 
     public function testLoadWithCustomConfig(): void
@@ -80,5 +84,42 @@ final class NowoPhoneInputExtensionTest extends TestCase
             new Reference('Symfony\UX\Icons\IconRendererInterface'),
             $renderer->getArgument('$iconRenderer'),
         );
+    }
+
+    public function testPrependRegistersAssetPackage(): void
+    {
+        $container = new ContainerBuilder();
+        $container->registerExtension(new class extends Extension {
+            public function getAlias(): string
+            {
+                return 'framework';
+            }
+
+            public function load(array $configs, ContainerBuilder $container): void
+            {
+            }
+        });
+
+        $this->extension->prepend($container);
+
+        $frameworkConfig = $container->getExtensionConfig('framework');
+        $this->assertSame(
+            '/bundles/nowophoneinput',
+            $frameworkConfig[0]['assets']['packages']['nowo_phone_input']['base_path'] ?? null,
+        );
+    }
+
+    public function testLoadWiresLibPhoneNumberCheckerWhenAvailable(): void
+    {
+        if (!class_exists(PhoneNumberUtil::class)) {
+            $this->markTestSkipped('giggsey/libphonenumber-for-php not installed');
+        }
+
+        $container = new ContainerBuilder();
+        $this->extension->load([], $container);
+
+        $this->assertTrue($container->hasDefinition(LibPhoneNumberChecker::class));
+        $validator = $container->getDefinition(PhoneValidator::class);
+        $this->assertInstanceOf(Reference::class, $validator->getArgument('$nationalPhoneNumberChecker'));
     }
 }

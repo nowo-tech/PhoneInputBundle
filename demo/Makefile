@@ -2,6 +2,9 @@
 # Each demo has its own docker-compose.yml and can be run independently
 
 # Define available demos (folder names = demo names: symfony7, symfony8)
+# Prefer Compose V2 plugin (GitHub Actions / modern Docker Desktop); fall back to docker-compose V1 (REQ-MAKE-010).
+COMPOSE ?= $(shell docker compose version >/dev/null 2>&1 && echo "docker compose" || echo "docker-compose")
+
 DEMOS := symfony7 symfony8
 
 # Helper function to get port from .env file (defaults to 8001)
@@ -83,12 +86,12 @@ up-$(1):
 		docker rm $$$$CONTAINER 2>/dev/null || true; \
 		echo "✅ Port $$$$PORT is now free"; \
 	fi && \
-	docker-compose build && \
-	docker-compose up -d && \
+	$(COMPOSE) build && \
+	$(COMPOSE) up -d && \
 	echo "⏳ Waiting for demo to be ready..." && \
 	sleep 5 && \
 	echo "Installing dependencies..." && \
-	docker-compose exec -T -e COMPOSER_MEMORY_LIMIT=-1 php composer install --no-interaction && \
+	$(COMPOSE) exec -T -e COMPOSER_MEMORY_LIMIT=-1 php composer install --no-interaction && \
 	PORT=$$$$(grep "^PORT=" .env 2>/dev/null | cut -d= -f2 | tr -d '\r'); \
 	[ -z "$$$$PORT" ] && PORT=$$$$(grep "^PORT=" .env.example 2>/dev/null | cut -d= -f2 | tr -d '\r'); \
 	echo "Demo started at: http://localhost:$$$$PORT" && \
@@ -112,7 +115,7 @@ define down-target-template
 down-$(1):
 	@VERSION=$$(echo $(1) | sed 's/symfony/Symfony /' | sed 's/6/6.4/' | sed 's/7/7.0/' | sed 's/8/8.0/' | sed 's/-php85/ + PHP 8.5/'); \
 	echo "🛑 Stopping $$VERSION demo..."; \
-	cd $(1) && docker-compose down; \
+	cd $(1) && $(COMPOSE) down; \
 	echo "✅ $$VERSION demo stopped!"
 endef
 
@@ -121,27 +124,27 @@ define install-target-template
 install-$(1):
 	@VERSION=$$(echo $(1) | sed 's/symfony/Symfony /' | sed 's/6/6.4/' | sed 's/7/7.0/' | sed 's/8/8.0/' | sed 's/-php85/ + PHP 8.5/'); \
 	echo "📦 Installing $$VERSION dependencies..."; \
-	cd $(1) && docker-compose exec php composer install || \
+	cd $(1) && $(COMPOSE) exec php composer install || \
 		(PORT=$$(grep "^PORT=" .env 2>/dev/null | cut -d= -f2 | head -1 || echo 8001); \
 		CONTAINER=$$(docker ps --format "{{.Names}}" --filter "publish=$$PORT" 2>/dev/null | head -1); \
 		if [ -n "$$CONTAINER" ]; then \
 			docker stop $$CONTAINER 2>/dev/null || true; \
 			docker rm $$CONTAINER 2>/dev/null || true; \
 		fi; \
-		docker-compose up -d && sleep 2 && docker-compose exec php composer install); \
+		$(COMPOSE) up -d && sleep 2 && $(COMPOSE) exec php composer install); \
 	echo "✅ $$VERSION dependencies installed!"
 endef
 
 # Generate shell targets for each demo
 define shell-target-template
 shell-$(1):
-	@cd $(1) && docker-compose exec php sh
+	@cd $(1) && $(COMPOSE) exec php sh
 endef
 
 # Generate logs targets for each demo
 define logs-target-template
 logs-$(1):
-	@cd $(1) && docker-compose logs -f
+	@cd $(1) && $(COMPOSE) logs -f
 endef
 
 # Generate test targets for each demo
@@ -149,14 +152,14 @@ define test-target-template
 test-$(1):
 	@VERSION=$$(echo $(1) | sed 's/symfony/Symfony /' | sed 's/6/6.4/' | sed 's/7/7.0/' | sed 's/8/8.0/' | sed 's/-php85/ + PHP 8.5/'); \
 	echo "🧪 Running $$VERSION tests..."; \
-	cd $(1) && docker-compose exec php composer test || \
+	cd $(1) && $(COMPOSE) exec php composer test || \
 		(PORT=$$(grep "^PORT=" .env 2>/dev/null | cut -d= -f2 | head -1 || echo 8001); \
 		CONTAINER=$$(docker ps --format "{{.Names}}" --filter "publish=$$PORT" 2>/dev/null | head -1); \
 		if [ -n "$$CONTAINER" ]; then \
 			docker stop $$CONTAINER 2>/dev/null || true; \
 			docker rm $$CONTAINER 2>/dev/null || true; \
 		fi; \
-		docker-compose up -d && sleep 2 && docker-compose exec php composer test)
+		$(COMPOSE) up -d && sleep 2 && $(COMPOSE) exec php composer test)
 endef
 
 # Generate test-coverage targets for each demo
@@ -164,14 +167,14 @@ define test-coverage-target-template
 test-coverage-$(1):
 	@VERSION=$$(echo $(1) | sed 's/symfony/Symfony /' | sed 's/6/6.4/' | sed 's/7/7.0/' | sed 's/8/8.0/' | sed 's/-php85/ + PHP 8.5/'); \
 	echo "🧪 Running $$VERSION tests with coverage..."; \
-	cd $(1) && docker-compose exec php composer test-coverage || \
+	cd $(1) && $(COMPOSE) exec php composer test-coverage || \
 		(PORT=$$(grep "^PORT=" .env 2>/dev/null | cut -d= -f2 | head -1 || echo 8001); \
 		CONTAINER=$$(docker ps --format "{{.Names}}" --filter "publish=$$PORT" 2>/dev/null | head -1); \
 		if [ -n "$$CONTAINER" ]; then \
 			docker stop $$CONTAINER 2>/dev/null || true; \
 			docker rm $$CONTAINER 2>/dev/null || true; \
 		fi; \
-		docker-compose up -d && sleep 2 && docker-compose exec php composer test-coverage)
+		$(COMPOSE) up -d && sleep 2 && $(COMPOSE) exec php composer test-coverage)
 endef
 
 # Generate all targets for each demo
@@ -329,4 +332,5 @@ clean:
 
 # REQ-MAKE-008: update-deps-all (REQ-MAKE-008)
 BUNDLE_ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
-include $(BUNDLE_ROOT)/../.scripts/Makefile.demo-aggregate-update-deps.mk
+# Optional: monorepo helper absent on standalone GitHub Actions checkout (REQ-MAKE-009).
+-include $(BUNDLE_ROOT)/../.scripts/Makefile.demo-aggregate-update-deps.mk

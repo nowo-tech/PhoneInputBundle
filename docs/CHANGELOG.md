@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.1.5] - 2026-07-29](#115---2026-07-29)
 - [[1.1.4] - 2026-07-16](#114---2026-07-16)
 - [[1.1.3] - 2026-07-09](#113---2026-07-09)
 - [[1.1.2] - 2026-06-30](#112---2026-06-30)
@@ -18,6 +19,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [[1.0.0] - 2026-06-20](#100---2026-06-20)
 
 ## [Unreleased]
+
+## [1.1.5] - 2026-07-29
+
+### Added
+
+- Symfony asset package `nowo_phone_input` (`base_path` `/bundles/nowophoneinput`) — use `asset('css/…', 'nowo_phone_input')` (requires `symfony/asset`; now a hard dependency).
+- Make targets: `check-open-prs`, `coverage-check` (≥99% lines), `demo-smoke`.
+- FrankenPHP Friendly Worker Mode banner in README; Symfony 8 demo on PHP **8.5**; demo entrypoints honor `FRANKENPHP_MODE` (default `worker`).
+- Product threat model in `docs/SECURITY.md`.
+- **REQ-CS-005:** PHPStan includes `nowo-tech/phpstan-frankenphp` classic + worker rulesets.
+- `LibPhoneNumberChecker` / `NationalPhoneNumberChecker` for clearer libphonenumber wiring in DI.
+
+### Changed
+
+- PHPStan `ignoreErrors` emptied (REQ-CS-006); `SYMFONY_DEPRECATIONS_HELPER=max[direct]=0` in PHPUnit.
+- Docs/demos no longer hard-code `/bundles/nowophoneinput/…` asset URLs.
+
+### Documentation
+
+- [INSTALLATION.md](INSTALLATION.md), [DEMO-FRANKENPHP.md](DEMO-FRANKENPHP.md), [UPGRADING.md](UPGRADING.md), [RELEASE.md](RELEASE.md) updated for 1.1.5.
 
 ## [1.1.4] - 2026-07-16
 

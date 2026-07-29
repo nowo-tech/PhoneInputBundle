@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Nowo\PhoneInputBundle\Tests\Unit\Phone;
 
+use Nowo\PhoneInputBundle\Country\CountryProvider;
 use Nowo\PhoneInputBundle\Phone\PhonePatternCatalog;
 use Nowo\PhoneInputBundle\Tests\TestFixtures;
 use PHPUnit\Framework\TestCase;
@@ -36,7 +37,7 @@ final class PhonePatternCatalogTest extends TestCase
 
     public function testForPrefixFallsBackToDefaultWhenMultipleCountriesShareDialCode(): void
     {
-        $provider = new \Nowo\PhoneInputBundle\Country\CountryProvider(
+        $provider = new CountryProvider(
             __DIR__.'/../Fixtures/countries-multi-plus-one.json',
         );
         $catalog = new PhonePatternCatalog(

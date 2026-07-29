@@ -5,6 +5,7 @@
 - **PHP** >= 8.2, < 8.6
 - **Symfony** ^6.0 || ^7.0 || ^8.0
 - **symfony/form**, **symfony/framework-bundle**, **symfony/twig-bundle**, **symfony/validator**
+- **symfony/asset** — required to use the named package `nowo_phone_input` (`asset('css/…', 'nowo_phone_input')`)
 
 Optional:
 
@@ -39,11 +40,11 @@ Or enable `use_phone_form_theme: true` in bundle configuration (default).
 
 ## Styles
 
-After `assets:install`, include in your layout:
+After `assets:install`, files are published under `public/bundles/nowophoneinput/`. The bundle registers a named Symfony asset package (`nowo_phone_input`), so templates should load CSS via that package instead of hard-coding the public path:
 
-```html
-<link rel="stylesheet" href="{{ asset('bundles/nowophoneinput/css/flag-icons.min.css') }}">
-<link rel="stylesheet" href="{{ asset('bundles/nowophoneinput/css/phone_input.css') }}">
+```twig
+<link rel="stylesheet" href="{{ asset('css/flag-icons.min.css', 'nowo_phone_input') }}">
+<link rel="stylesheet" href="{{ asset('css/phone_input.css', 'nowo_phone_input') }}">
 ```
 
 ## Optional UX Icons

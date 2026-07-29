@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Nowo\PhoneInputBundle\Form\DataTransformer;
 
+use Nowo\PhoneInputBundle\Country\Country;
 use Nowo\PhoneInputBundle\Country\CountryProvider;
 use Nowo\PhoneInputBundle\Form\Model\PhoneNumber;
 use Nowo\PhoneInputBundle\Form\ValueFormat;
@@ -67,7 +68,7 @@ final class PhoneNumberTransformer implements DataTransformerInterface
         }
 
         $country = $this->countryProvider->getByIso($countryIso);
-        if (!$country instanceof \Nowo\PhoneInputBundle\Country\Country) {
+        if (!$country instanceof Country) {
             throw new TransformationFailedException(\sprintf('Unknown country ISO code "%s".', $countryIso));
         }
 
@@ -106,7 +107,7 @@ final class PhoneNumberTransformer implements DataTransformerInterface
 
             if ('' === $prefix) {
                 $country = $this->countryProvider->getByIso($iso);
-                $prefix = $country instanceof \Nowo\PhoneInputBundle\Country\Country ? $country->dialCode : '';
+                $prefix = $country instanceof Country ? $country->dialCode : '';
             }
 
             return [

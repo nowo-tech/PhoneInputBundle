@@ -14,13 +14,15 @@ final class TestFixtures
         return __DIR__.'/Fixtures/countries.json';
     }
 
+    /**
+     * @param list<string> $preferred
+     * @param list<string> $allowed
+     * @param list<string> $excluded
+     */
     public static function countryProvider(
         string $defaultCountry = 'ES',
-        /* @var list<string> $preferred */
         array $preferred = ['ES', 'FR'],
-        /* @var list<string> $allowed */
         array $allowed = [],
-        /* @var list<string> $excluded */
         array $excluded = [],
     ): CountryProvider {
         return new CountryProvider(

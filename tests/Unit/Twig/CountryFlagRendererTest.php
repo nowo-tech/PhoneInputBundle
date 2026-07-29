@@ -57,6 +57,9 @@ final class CountryFlagRendererTest extends TestCase
     public function testUxIconUsesIconRendererWhenAvailable(): void
     {
         $iconRenderer = new class {
+            /**
+             * @param array<string, mixed> $attributes
+             */
             public function renderIcon(string $name, array $attributes = []): string
             {
                 return '<svg data-icon="'.$name.'" class="'.$attributes['class'].'"></svg>';

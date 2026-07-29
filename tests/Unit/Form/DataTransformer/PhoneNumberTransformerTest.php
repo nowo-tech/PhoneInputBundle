@@ -9,6 +9,7 @@ use Nowo\PhoneInputBundle\Form\Model\PhoneNumber;
 use Nowo\PhoneInputBundle\Form\ValueFormat;
 use Nowo\PhoneInputBundle\Tests\TestFixtures;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 final class PhoneNumberTransformerTest extends TestCase
 {
@@ -67,7 +68,7 @@ final class PhoneNumberTransformerTest extends TestCase
     {
         $transformer = $this->createTransformer(ValueFormat::CONCATENATED);
 
-        $this->expectException(\Symfony\Component\Form\Exception\TransformationFailedException::class);
+        $this->expectException(TransformationFailedException::class);
 
         $transformer->reverseTransform([
             'country_iso' => 'ZZ',
@@ -79,7 +80,7 @@ final class PhoneNumberTransformerTest extends TestCase
     {
         $transformer = $this->createTransformer(ValueFormat::CONCATENATED);
 
-        $this->expectException(\Symfony\Component\Form\Exception\TransformationFailedException::class);
+        $this->expectException(TransformationFailedException::class);
 
         $transformer->reverseTransform('invalid');
     }
@@ -122,7 +123,7 @@ final class PhoneNumberTransformerTest extends TestCase
     {
         $transformer = $this->createTransformer(ValueFormat::CONCATENATED);
 
-        $this->expectException(\Symfony\Component\Form\Exception\TransformationFailedException::class);
+        $this->expectException(TransformationFailedException::class);
 
         /* @phpstan-ignore argument.type */
         $transformer->transform(12345);

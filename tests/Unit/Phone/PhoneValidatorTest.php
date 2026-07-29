@@ -6,6 +6,7 @@ namespace Nowo\PhoneInputBundle\Tests\Unit\Phone;
 
 use Nowo\PhoneInputBundle\Form\Model\PhoneNumber;
 use Nowo\PhoneInputBundle\Phone\E164Parser;
+use Nowo\PhoneInputBundle\Phone\NationalPhoneNumberChecker;
 use Nowo\PhoneInputBundle\Phone\PhonePattern;
 use Nowo\PhoneInputBundle\Phone\PhonePatternCatalog;
 use Nowo\PhoneInputBundle\Phone\PhoneValidator;
@@ -115,32 +116,16 @@ final class PhoneValidatorTest extends TestCase
 
     public function testUsesLibPhoneNumberWhenAvailable(): void
     {
-        if (!class_exists(\libphonenumber\PhoneNumberUtil::class, false)) {
-            eval(<<<'PHP'
-namespace libphonenumber;
-final class PhoneNumberUtil
-{
-    public static function getInstance(): self
-    {
-        return new self();
-    }
+        $checker = new class implements NationalPhoneNumberChecker {
+            public function isValid(string $regionIso, string $nationalNumber): bool
+            {
+                if ('999999999' === $nationalNumber) {
+                    return false;
+                }
 
-    public function parse(string $number, string $region): object
-    {
-        if ('999999999' === $number) {
-            throw new \RuntimeException('parse failed');
-        }
-
-        return (object) ['number' => $number, 'region' => $region];
-    }
-
-    public function isValidNumber(object $number): bool
-    {
-        return is_object($number) && property_exists($number, 'number') && '111111111' !== $number->number;
-    }
-}
-PHP);
-        }
+                return '111111111' !== $nationalNumber;
+            }
+        };
 
         $provider = TestFixtures::countryProvider();
         $validator = new PhoneValidator(
@@ -150,6 +135,7 @@ PHP);
                 $provider,
             ),
             useLibPhoneNumber: true,
+            nationalPhoneNumberChecker: $checker,
         );
 
         // Digit-only nationals (letters stripped; leading zeros trimmed by normalizeNationalNumber).

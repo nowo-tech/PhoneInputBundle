@@ -24,6 +24,9 @@ final class PhoneInputWidgetTemplateTest extends TestCase
     public function testUxIconRendererFallsBackWhenRenderThrows(): void
     {
         $iconRenderer = new class {
+            /**
+             * @param array<string, mixed> $attributes
+             */
             public function renderIcon(string $name, array $attributes = []): string
             {
                 throw new \RuntimeException('icon unavailable');

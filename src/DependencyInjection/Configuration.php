@@ -12,9 +12,11 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+    public const ALIAS = 'nowo_phone_input';
+
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('nowo_phone_input');
+        $treeBuilder = new TreeBuilder(self::ALIAS);
 
         $treeBuilder->getRootNode()
             ->children()

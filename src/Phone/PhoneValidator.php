@@ -16,6 +16,7 @@ final class PhoneValidator
         private readonly E164Parser $e164Parser,
         private readonly PhonePatternCatalog $patternCatalog,
         private readonly bool $useLibPhoneNumber = true,
+        private readonly ?NationalPhoneNumberChecker $nationalPhoneNumberChecker = null,
     ) {
     }
 
@@ -31,8 +32,8 @@ final class PhoneValidator
             return true;
         }
 
-        if ($this->useLibPhoneNumber && class_exists(\libphonenumber\PhoneNumberUtil::class)) {
-            return $this->isValidWithLibPhoneNumber($parts['iso'], $parts['national_number']);
+        if ($this->useLibPhoneNumber && null !== $this->nationalPhoneNumberChecker) {
+            return $this->nationalPhoneNumberChecker->isValid($parts['iso'], $parts['national_number']);
         }
 
         $pattern = match ($mode) {
@@ -80,24 +81,6 @@ final class PhoneValidator
         }
 
         return $this->e164Parser->emptyParts($defaultCountryIso);
-    }
-
-    private function isValidWithLibPhoneNumber(string $iso, string $nationalNumber): bool
-    {
-        try {
-            $utilClass = 'libphonenumber\PhoneNumberUtil';
-            if (!class_exists($utilClass)) {
-                return false;
-            }
-
-            /** @var object $util */
-            $util = forward_static_call([$utilClass, 'getInstance']);
-            $parsed = $util->parse($nationalNumber, $iso);
-
-            return $util->isValidNumber($parsed);
-        } catch (\Throwable) {
-            return false;
-        }
     }
 
     private function normalizeNationalNumber(string $value): string
