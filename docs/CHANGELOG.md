@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.2.0] - 2026-08-04](#120---2026-08-04)
 - [[1.1.5] - 2026-07-29](#115---2026-07-29)
 - [[1.1.4] - 2026-07-16](#114---2026-07-16)
 - [[1.1.3] - 2026-07-09](#113---2026-07-09)
@@ -19,6 +20,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [[1.0.0] - 2026-06-20](#100---2026-06-20)
 
 ## [Unreleased]
+
+## [1.2.0] - 2026-08-04
+
+### Added
+- **REQ-TWIG-004:** require `twig/extra-bundle` + `twig/string-extra`; `make check-twig-extra` in `release-check`; demos register `TwigExtraBundle`.
+- **Twig-CS-Fixer:** `vincentlanglet/twig-cs-fixer`, `.twig-cs-fixer.php`, `composer twig:lint` / `twig:fix`.
+
+[1.2.0]: https://github.com/nowo-tech/PhoneInputBundle/releases/tag/v1.2.0
 
 ## [1.1.5] - 2026-07-29
 

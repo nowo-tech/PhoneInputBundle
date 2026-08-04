@@ -63,3 +63,29 @@ See [INSTALLATION.md](INSTALLATION.md) and [USAGE.md](USAGE.md) for details.
 **Demos / path repository**
 
 If you mount the bundle source in Docker demos, use `dev-main as 1.0.99` in demo `composer.json` with `minimum-stability: dev` and `prefer-stable: true`.
+
+## Unreleased
+
+## To 1.2.0
+
+From **1.1.5** — Adds required Twig Extra (REQ-TWIG-004) and Twig-CS-Fixer. Register TwigExtraBundle if Flex did not.
+
+```bash
+composer update nowo-tech/phone-input-bundle
+php bin/console cache:clear
+```
+
+### Twig Extra Bundle (REQ-TWIG-004)
+
+Hosts that render this bundle's Twig templates must install:
+
+```bash
+composer require twig/extra-bundle twig/string-extra
+```
+
+and enable `Twig\Extra\TwigExtraBundle\TwigExtraBundle`. Flex recipes usually register it automatically.
+
+### Twig-CS-Fixer (maintainers)
+
+Package maintainers: `composer twig:lint` / `composer twig:fix` use `.twig-cs-fixer.php` over `src/` (and `templates/` when present).
+

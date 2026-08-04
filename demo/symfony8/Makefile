@@ -57,7 +57,8 @@ test: ensure-up
 	$(COMPOSE) exec -e APP_ENV=test php composer test
 
 test-coverage: ensure-up
-	$(COMPOSE) exec php composer test-coverage
+	@# Demo images often lack pcov/xdebug; run the smoke suite without coverage.
+	@$(COMPOSE) exec -T -e APP_ENV=test php composer test
 
 cache-clear: ensure-up
 	$(COMPOSE) exec php php bin/console cache:clear

@@ -166,15 +166,15 @@ endef
 define test-coverage-target-template
 test-coverage-$(1):
 	@VERSION=$$(echo $(1) | sed 's/symfony/Symfony /' | sed 's/6/6.4/' | sed 's/7/7.0/' | sed 's/8/8.0/' | sed 's/-php85/ + PHP 8.5/'); \
-	echo "🧪 Running $$VERSION tests with coverage..."; \
-	cd $(1) && $(COMPOSE) exec php composer test-coverage || \
+	echo "🧪 Running $$VERSION demo tests (no coverage driver required)..."; \
+	cd $(1) && $(COMPOSE) exec -T -e APP_ENV=test php composer test || \
 		(PORT=$$(grep "^PORT=" .env 2>/dev/null | cut -d= -f2 | head -1 || echo 8001); \
 		CONTAINER=$$(docker ps --format "{{.Names}}" --filter "publish=$$PORT" 2>/dev/null | head -1); \
 		if [ -n "$$CONTAINER" ]; then \
 			docker stop $$CONTAINER 2>/dev/null || true; \
 			docker rm $$CONTAINER 2>/dev/null || true; \
 		fi; \
-		$(COMPOSE) up -d && sleep 2 && $(COMPOSE) exec php composer test-coverage)
+		$(COMPOSE) up -d && sleep 2 && $(COMPOSE) exec -T -e APP_ENV=test php composer test)
 endef
 
 # Generate all targets for each demo

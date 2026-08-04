@@ -32,7 +32,7 @@ final class PhoneValidator
             return true;
         }
 
-        if ($this->useLibPhoneNumber && null !== $this->nationalPhoneNumberChecker) {
+        if ($this->useLibPhoneNumber && $this->nationalPhoneNumberChecker instanceof NationalPhoneNumberChecker) {
             return $this->nationalPhoneNumberChecker->isValid($parts['iso'], $parts['national_number']);
         }
 
