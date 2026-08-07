@@ -122,4 +122,56 @@ final class NowoPhoneInputExtensionTest extends TestCase
         $validator = $container->getDefinition(PhoneValidator::class);
         $this->assertInstanceOf(Reference::class, $validator->getArgument('$nationalPhoneNumberChecker'));
     }
+
+    public function testPrependSkipsWhenFrameworkExtensionMissing(): void
+    {
+        $container = new ContainerBuilder();
+
+        $this->extension->prepend($container);
+
+        $this->assertFalse($container->hasExtension('framework'));
+        $this->assertSame([], $container->getExtensionConfig('framework'));
+    }
+
+    public function testPrependSkipsWhenAssetPackageUnavailable(): void
+    {
+        $extension = new class extends NowoPhoneInputExtension {
+            protected function supportsAssetPackage(): bool
+            {
+                return false;
+            }
+        };
+
+        $container = new ContainerBuilder();
+        $container->registerExtension(new class extends Extension {
+            public function getAlias(): string
+            {
+                return 'framework';
+            }
+
+            public function load(array $configs, ContainerBuilder $container): void
+            {
+            }
+        });
+
+        $extension->prepend($container);
+
+        $this->assertSame([], $container->getExtensionConfig('framework'));
+    }
+
+    public function testLoadSetsNullNationalCheckerWhenLibPhoneNumberUnavailable(): void
+    {
+        $extension = new class extends NowoPhoneInputExtension {
+            protected function supportsLibPhoneNumber(): bool
+            {
+                return false;
+            }
+        };
+
+        $container = new ContainerBuilder();
+        $extension->load([], $container);
+
+        $validator = $container->getDefinition(PhoneValidator::class);
+        $this->assertNull($validator->getArgument('$nationalPhoneNumberChecker'));
+    }
 }

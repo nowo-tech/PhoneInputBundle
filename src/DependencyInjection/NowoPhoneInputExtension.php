@@ -51,7 +51,7 @@ class NowoPhoneInputExtension extends Extension implements PrependExtensionInter
         }
 
         $phoneValidatorDefinition = $container->getDefinition(PhoneValidator::class);
-        if (class_exists(PhoneNumberUtil::class)) {
+        if ($this->supportsLibPhoneNumber()) {
             if (!$container->hasDefinition(PhoneNumberUtil::class)) {
                 $container->register(PhoneNumberUtil::class)
                     ->setFactory([PhoneNumberUtil::class, 'getInstance'])
@@ -78,7 +78,7 @@ class NowoPhoneInputExtension extends Extension implements PrependExtensionInter
         }
 
         // Only register the package when the Asset component is available (host apps / demos).
-        if (!class_exists(Package::class)) {
+        if (!$this->supportsAssetPackage()) {
             return;
         }
 
@@ -91,6 +91,22 @@ class NowoPhoneInputExtension extends Extension implements PrependExtensionInter
                 ],
             ],
         ]);
+    }
+
+    /**
+     * @internal overridable for unit tests when the optional dependency is installed
+     */
+    protected function supportsLibPhoneNumber(): bool
+    {
+        return class_exists(PhoneNumberUtil::class);
+    }
+
+    /**
+     * @internal overridable for unit tests when symfony/asset is installed
+     */
+    protected function supportsAssetPackage(): bool
+    {
+        return class_exists(Package::class);
     }
 
     public function getAlias(): string

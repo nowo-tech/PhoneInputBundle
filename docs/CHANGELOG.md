@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.2.1] - 2026-08-07](#121---2026-08-07)
 - [[1.2.0] - 2026-08-04](#120---2026-08-04)
 - [[1.1.5] - 2026-07-29](#115---2026-07-29)
 - [[1.1.4] - 2026-07-16](#114---2026-07-16)
@@ -20,6 +21,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [[1.0.0] - 2026-06-20](#100---2026-06-20)
 
 ## [Unreleased]
+
+## [1.2.1] - 2026-08-07
+
+### Fixed
+
+- CI coverage gate: raise measured coverage to **100%** (elements/lines) with unit tests for optional DI branches, ambiguous prefix pattern fallback, and `empty_data` value-format coercion.
+
+[1.2.1]: https://github.com/nowo-tech/PhoneInputBundle/releases/tag/v1.2.1
 
 ## [1.2.0] - 2026-08-04
 

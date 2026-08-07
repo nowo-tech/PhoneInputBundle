@@ -66,6 +66,14 @@ If you mount the bundle source in Docker demos, use `dev-main as 1.0.99` in demo
 
 ## Unreleased
 
+## To 1.2.1
+
+No application code changes required. Patch release restores CI coverage gate (100% PHPUnit coverage on `src/`).
+
+```bash
+composer update nowo-tech/phone-input-bundle
+```
+
 ## To 1.2.0
 
 From **1.1.5** — Adds required Twig Extra (REQ-TWIG-004) and Twig-CS-Fixer. Register TwigExtraBundle if Flex did not.

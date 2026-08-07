@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class PhoneTypeTest extends TypeTestCase
@@ -418,5 +419,38 @@ final class PhoneTypeTest extends TypeTestCase
         $resolved = $resolver->resolve(['value_format' => 'object']);
 
         $this->assertNull($resolved['empty_data']);
+    }
+
+    public function testEmptyDataNormalizerCoercesNonEnumValueFormat(): void
+    {
+        $resolver = new OptionsResolver();
+        $provider = TestFixtures::countryProvider();
+        $phoneType = new PhoneType(
+            $provider,
+            TestFixtures::e164Parser($provider),
+            new IconSupportChecker(),
+        );
+        $phoneType->configureOptions($resolver);
+
+        $normalizersProperty = new \ReflectionProperty(OptionsResolver::class, 'normalizers');
+        /** @var array<string, callable(Options): mixed> $normalizers */
+        $normalizers = $normalizersProperty->getValue($resolver);
+
+        $options = $this->createMock(Options::class);
+        $options->method('offsetGet')->willReturnCallback(
+            static fn (mixed $key): mixed => 'value_format' === $key ? 'separated' : null,
+        );
+        $options->method('offsetExists')->willReturnCallback(
+            static fn (mixed $key): bool => 'value_format' === $key,
+        );
+
+        $emptyDataNormalizer = $normalizers['empty_data'][0];
+        $emptyData = $emptyDataNormalizer($options);
+
+        $this->assertSame([
+            'iso' => '',
+            'prefix' => '',
+            'national_number' => '',
+        ], $emptyData);
     }
 }

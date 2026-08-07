@@ -49,4 +49,34 @@ final class PhonePatternCatalogTest extends TestCase
 
         $this->assertTrue($pattern->matches('2125551234'));
     }
+
+    public function testForPrefixFallsBackWhenNoPrefixPatternAndAmbiguousDialCode(): void
+    {
+        $provider = new CountryProvider(
+            __DIR__.'/../../Fixtures/countries-multi-plus-one.json',
+        );
+        $catalog = new PhonePatternCatalog(
+            __DIR__.'/../../Fixtures/phone-patterns-no-prefixes.json',
+            $provider,
+        );
+
+        $pattern = $catalog->forPrefix('+1');
+
+        $this->assertTrue($pattern->matches('2125551234'));
+    }
+
+    public function testForPrefixFallsBackWhenPatternsFileMissingAndUnknownPrefix(): void
+    {
+        $provider = new CountryProvider(
+            __DIR__.'/../../Fixtures/countries-multi-plus-one.json',
+        );
+        $catalog = new PhonePatternCatalog(
+            __DIR__.'/../../Fixtures/missing-phone-patterns.json',
+            $provider,
+        );
+
+        $pattern = $catalog->forPrefix('+999');
+
+        $this->assertTrue($pattern->matches('123456'));
+    }
 }
