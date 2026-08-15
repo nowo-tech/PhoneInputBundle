@@ -6,5 +6,6 @@
   * Run assets:install and include CSS in your layout:
       php bin/console assets:install
       <!-- flag-icons.min.css + phone_input.css from bundles/nowophoneinput/css/ -->
+      <!-- phone picker JS is loaded by the form theme (CSP-safe external script) -->
 
   * See docs/INSTALLATION.md and docs/USAGE.md for full integration.

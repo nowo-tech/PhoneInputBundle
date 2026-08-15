@@ -66,6 +66,28 @@ If you mount the bundle source in Docker demos, use `dev-main as 1.0.99` in demo
 
 ## Unreleased
 
+## To 1.3.0
+
+**CSP / JavaScript:** the widget no longer embeds an inline `<script>` (blocked when `script-src` uses nonces). After `assets:install`, the form theme loads:
+
+```twig
+<script src="{{ asset('js/nowo-phone-prefix-picker.js', 'nowo_phone_input') }}" defer></script>
+```
+
+once per request when possible. Ensure `public/bundles/nowophoneinput/js/` is published and that CSP allows that script URL (or a nonce on `<script src>`).
+
+**Progressive enhancement:** until the picker JS runs, the native country `<select>` stays visible; the custom toggle appears only after enhancement.
+
+**Optional Stimulus:** markup keeps `data-controller="phone-prefix-picker"` and `data-action` hooks. Hosts that prefer Stimulus may omit the IIFE (override the widget or strip the script tag) and register a Stimulus controller named `phone-prefix-picker` instead. Do not run both on the same element.
+
+`PhoneType` options are unchanged.
+
+```bash
+composer update nowo-tech/phone-input-bundle
+php bin/console assets:install
+php bin/console cache:clear
+```
+
 ## To 1.2.1
 
 No application code changes required. Patch release restores CI coverage gate (100% PHPUnit coverage on `src/`).

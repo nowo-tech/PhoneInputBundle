@@ -18,7 +18,24 @@ final class PhoneInputWidgetTemplateTest extends TestCase
 
         $this->assertStringContainsString('nowo-phone-input', $content);
         $this->assertStringContainsString('prefix_search', $content);
-        $this->assertStringContainsString('_phone_country_flag.html.twig', $content);
+        $this->assertStringContainsString('@NowoPhoneInputBundle/Form/_phone_country_flag.html.twig', $content);
+        $this->assertStringContainsString('data-controller="phone-prefix-picker"', $content);
+        $this->assertStringContainsString('data-nowo-phone-prefix-picker', $content);
+        $this->assertStringContainsString("asset('js/nowo-phone-prefix-picker.js', 'nowo_phone_input')", $content);
+        $this->assertMatchesRegularExpression('/<script\s+src=/', $content);
+        $this->assertDoesNotMatchRegularExpression('/<script>(?!\s*<\/script>)/', $content);
+        $this->assertStringNotContainsString('(function ()', $content);
+    }
+
+    public function testPrefixPickerScriptAssetExists(): void
+    {
+        $path = __DIR__.'/../../../src/Resources/public/js/nowo-phone-prefix-picker.js';
+        $this->assertFileExists($path);
+
+        $content = (string) file_get_contents($path);
+        $this->assertStringContainsString('NowoPhonePrefixPicker', $content);
+        $this->assertStringContainsString('phone-prefix-picker', $content);
+        $this->assertStringContainsString('nowo-phone-input__prefix-dropdown--portaled', $content);
     }
 
     public function testUxIconRendererFallsBackWhenRenderThrows(): void

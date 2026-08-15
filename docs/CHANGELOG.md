@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.3.0] - 2026-08-15](#130---2026-08-15)
 - [[1.2.1] - 2026-08-07](#121---2026-08-07)
 - [[1.2.0] - 2026-08-04](#120---2026-08-04)
 - [[1.1.5] - 2026-07-29](#115---2026-07-29)
@@ -21,6 +22,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [[1.0.0] - 2026-06-20](#100---2026-06-20)
 
 ## [Unreleased]
+
+## [1.3.0] - 2026-08-15
+
+### Added
+
+- CSP-safe prefix picker: external `js/nowo-phone-prefix-picker.js` (vanilla IIFE) loaded via `asset(..., 'nowo_phone_input')` with `defer`; no inline `<script>` in the Twig widget.
+- Stimulus-compatible markup (`data-controller="phone-prefix-picker"` + `data-action` hooks) so hosts may register a Stimulus controller instead of the IIFE.
+- Portal dropdown (`--portaled`) so the menu is not clipped by `overflow: auto` dialogs/panels.
+
+### Changed
+
+- Progressive enhancement CSS: native `<select>` remains usable until JS adds `--enhanced`; custom toggle shows only after enhancement.
+- Widget CSS: focus styles, portaled z-index, and dark `prefers-color-scheme` dropdown shadow.
+
+### Documentation
+
+- [UPGRADING.md](UPGRADING.md), [USAGE.md](USAGE.md), [CONFIGURATION.md](CONFIGURATION.md), [INSTALLATION.md](INSTALLATION.md), [RELEASE.md](RELEASE.md) for 1.3.0 CSP / Stimulus notes.
+
+[1.3.0]: https://github.com/nowo-tech/PhoneInputBundle/releases/tag/v1.3.0
 
 ## [1.2.1] - 2026-08-07
 

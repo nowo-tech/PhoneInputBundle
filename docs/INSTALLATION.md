@@ -47,6 +47,14 @@ After `assets:install`, files are published under `public/bundles/nowophoneinput
 <link rel="stylesheet" href="{{ asset('css/phone_input.css', 'nowo_phone_input') }}">
 ```
 
+The phone widget loads the CSP-safe picker script automatically:
+
+```twig
+<script src="{{ asset('js/nowo-phone-prefix-picker.js', 'nowo_phone_input') }}" defer></script>
+```
+
+You do not need to add that tag in the layout unless you override the form theme and omit it. See [USAGE.md](USAGE.md) for Stimulus alternatives.
+
 ## Optional UX Icons
 
 For `flag_display: UX_ICON`:

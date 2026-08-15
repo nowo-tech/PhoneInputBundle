@@ -1,12 +1,26 @@
 # Release process
 
-> Current release target: **1.2.1** (`v1.2.1`).
+> Current release target: **1.3.0** (`v1.3.0`).
 
 1. Update [CHANGELOG.md](CHANGELOG.md): move entries from `[Unreleased]` to a new `[X.Y.Z] - YYYY-MM-DD` section. (This project does not store version in `composer.json`; Packagist uses the git tag.)
 2. Update [UPGRADING.md](UPGRADING.md) if the release has upgrade notes.
 3. Run pre-release checks: `make release-check` (includes `check-no-cursor-coauthor`, cs-fix, cs-check, rector-dry, phpstan, test-coverage, and optionally demo healthchecks).
-4. Commit all changes, create an annotated tag (e.g. `v1.1.5`), and push branch and tag. The release workflow creates the GitHub Release from the tag and changelog.
+4. Commit all changes, create an annotated tag (e.g. `v1.3.0`), and push branch and tag. The release workflow creates the GitHub Release from the tag and changelog.
 5. Publish on Packagist (usually automatic when the tag is pushed and the package is registered).
+
+## Example for v1.3.0
+
+```bash
+git add -A
+git status   # review
+git commit -m "Release 1.3.0: CSP-safe phone prefix picker"
+git tag -a v1.3.0 -m "Release 1.3.0
+
+CSP-safe external prefix picker (vanilla IIFE), Stimulus-compatible
+markup, and progressive-enhancement CSS."
+git push origin main
+git push origin v1.3.0
+```
 
 ## Example for v1.2.1
 

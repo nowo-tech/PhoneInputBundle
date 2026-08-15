@@ -433,7 +433,7 @@ final class PhoneTypeTest extends TypeTestCase
         $phoneType->configureOptions($resolver);
 
         $normalizersProperty = new \ReflectionProperty(OptionsResolver::class, 'normalizers');
-        /** @var array<string, callable(Options): mixed> $normalizers */
+        /** @var array<string, list<callable(Options<array<string, mixed>>): mixed>> $normalizers */
         $normalizers = $normalizersProperty->getValue($resolver);
 
         $options = $this->createMock(Options::class);
