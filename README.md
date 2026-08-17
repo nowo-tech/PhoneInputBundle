@@ -17,6 +17,7 @@ This bundle is **FrankenPHP worker mode friendly**.
 - Validation by country ISO, dial prefix, or disabled (`phone_validation`)
 - Configurable prefix/flag display modes and CSS classes (Bootstrap, Tailwind, Foundation, custom)
 - Bundled country catalog and CSS flag icons; optional UX Icons for SVG flags
+- **CSP-safe prefix picker** (`nowo-phone-prefix-picker.js` IIFE): no inline scripts; Stimulus-compatible markup; portaled dropdown; progressive enhancement
 
 ## Quick start
 
