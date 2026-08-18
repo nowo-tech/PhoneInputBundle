@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.3.1] - 2026-08-18](#131---2026-08-18)
 - [[1.3.0] - 2026-08-15](#130---2026-08-15)
 - [[1.2.1] - 2026-08-07](#121---2026-08-07)
 - [[1.2.0] - 2026-08-04](#120---2026-08-04)
@@ -22,6 +23,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [[1.0.0] - 2026-06-20](#100---2026-06-20)
 
 ## [Unreleased]
+
+## [1.3.1] - 2026-08-18
+
+### Changed
+
+- **Demos:** pin `nowo-tech/hot-reload-bundle` to `^1.4` with FrankenPHP Mercure/`hot_reload` (`dev`/`test` only).
+- **Demos:** Symfony 8 only; Symfony 6/7 demo apps removed.
+
+[1.3.1]: https://github.com/nowo-tech/PhoneInputBundle/releases/tag/v1.3.1
 
 ## [1.3.0] - 2026-08-15
 

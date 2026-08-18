@@ -66,6 +66,14 @@ If you mount the bundle source in Docker demos, use `dev-main as 1.0.99` in demo
 
 ## Unreleased
 
+## To 1.3.1
+
+From **1.3.0** — No application upgrade steps. **Demos only:** Hot Reload Bundle `^1.4` (FrankenPHP Mercure/`hot_reload`, `dev`/`test`). Shipped demos are Symfony 8 only (Symfony 6/7 demo apps removed).
+
+```bash
+composer update nowo-tech/phone-input-bundle
+```
+
 ## To 1.3.0
 
 **CSP / JavaScript:** the widget no longer embeds an inline `<script>` (blocked when `script-src` uses nonces). After `assets:install`, the form theme loads:
