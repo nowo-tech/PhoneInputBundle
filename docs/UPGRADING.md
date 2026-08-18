@@ -22,7 +22,7 @@ No other intentional breaking changes for application installs. Continue requiri
 
 No application code changes required.
 
-**Maintainers / local demos:** `demo/symfony6` was removed. Use `demo/symfony7` or `demo/symfony8` (see [demo/README.md](../demo/README.md)).
+**Maintainers / local demos:** `demo/symfony8` was removed. Use `demo/symfony8` or `demo/symfony8` (see [demo/README.md](../demo/README.md)).
 
 ### 1.1.0
 

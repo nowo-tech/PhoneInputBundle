@@ -1,11 +1,11 @@
 # Makefile for Phone Input Bundle Demo
 # Each demo has its own docker-compose.yml and can be run independently
 
-# Define available demos (folder names = demo names: symfony7, symfony8)
+# Define available demos (folder names = demo names: symfony8)
 # Prefer Compose V2 plugin (GitHub Actions / modern Docker Desktop); fall back to docker-compose V1 (REQ-MAKE-010).
 COMPOSE ?= $(shell docker compose version >/dev/null 2>&1 && echo "docker compose" || echo "docker-compose")
 
-DEMOS := symfony7 symfony8
+DEMOS := symfony8
 
 # Helper function to get port from .env file (defaults to 8001)
 get-port = $(shell grep -E '^PORT=' $(1)/.env 2>/dev/null | cut -d '=' -f2 || echo "8001")
@@ -54,7 +54,7 @@ help:
 	@echo "Other commands:"
 	@echo "  clean              Remove vendor and cache from all demos"
 	@echo ""
-	@echo "Each demo has its own Makefile (e.g. make -C symfony7 help or cd symfony7 && make help)."
+	@echo "Each demo has its own Makefile (e.g. make -C symfony8 help or cd symfony8 && make help)."
 	@echo ""
 	@echo "Access URLs:"
 	@for demo in $(DEMOS); do \
@@ -328,7 +328,6 @@ clean:
 	@echo "🧹 Cleaning vendor and cache from all demos..."
 	@$(foreach demo,$(DEMOS),rm -rf $(demo)/vendor $(demo)/var $(demo)/.phpunit.cache;)
 	@echo "✅ Cleaned!"
-
 
 # REQ-MAKE-008: update-deps-all (REQ-MAKE-008)
 BUNDLE_ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)

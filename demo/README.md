@@ -47,7 +47,6 @@ make install-symfony8
 
 ## Demos
 
-- **symfony7** — PHP 8.2+, Symfony 7.4
 - **symfony8** — PHP 8.2+, Symfony 8.1
 
 Each demo is independent (own `docker-compose.yml`, FrankenPHP, tests).

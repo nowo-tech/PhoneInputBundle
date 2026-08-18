@@ -1,9 +1,0 @@
-nowo_phone_input:
-    country_prefix_selector: true
-    default_country: ES
-    preferred_countries: [ES, FR, PT, GB, US]
-    value_format: CONCATENATED
-    prefix_display: FLAG_AND_PREFIX
-    flag_display: CSS_ICON
-    use_phone_form_theme: true
-    trim: true
