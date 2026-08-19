@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.3.2] - 2026-08-19](#132---2026-08-19)
 - [[1.3.1] - 2026-08-18](#131---2026-08-18)
 - [[1.3.0] - 2026-08-15](#130---2026-08-15)
 - [[1.2.1] - 2026-08-07](#121---2026-08-07)
@@ -23,6 +24,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [[1.0.0] - 2026-06-20](#100---2026-06-20)
 
 ## [Unreleased]
+
+## [1.3.2] - 2026-08-19
+
+### Security
+
+- **CI:** run `composer audit --locked` after dependency install (REQ-SEC / P3).
+
+[1.3.2]: https://github.com/nowo-tech/PhoneInputBundle/releases/tag/v1.3.2
 
 ## [1.3.1] - 2026-08-18
 
