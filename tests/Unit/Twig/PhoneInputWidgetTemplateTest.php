@@ -17,6 +17,7 @@ final class PhoneInputWidgetTemplateTest extends TestCase
         $content = (string) file_get_contents($path);
 
         $this->assertStringContainsString('nowo-phone-input', $content);
+        $this->assertStringContainsString('<nowo-phone-input', $content);
         $this->assertStringContainsString('prefix_search', $content);
         $this->assertStringContainsString('@NowoPhoneInputBundle/Form/_phone_country_flag.html.twig', $content);
         $this->assertStringContainsString('data-controller="phone-prefix-picker"', $content);
@@ -34,6 +35,8 @@ final class PhoneInputWidgetTemplateTest extends TestCase
 
         $content = (string) file_get_contents($path);
         $this->assertStringContainsString('NowoPhonePrefixPicker', $content);
+        $this->assertStringContainsString('nowo-phone-input', $content);
+        $this->assertStringContainsString('customElements.define(TAG, NowoPhoneInputElement)', $content);
         $this->assertStringContainsString('phone-prefix-picker', $content);
         $this->assertStringContainsString('nowo-phone-input__prefix-dropdown--portaled', $content);
     }

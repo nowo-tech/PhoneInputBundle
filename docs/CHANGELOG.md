@@ -25,6 +25,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Web Component:** the widget now renders `<nowo-phone-input>` (light DOM: country picker + national number). `nowo-phone-prefix-picker.js` defines the custom element; the inner prefix picker still initializes via `data-nowo-phone-prefix-picker`.
+
 
 ## [1.3.3] - 2026-08-24
 
