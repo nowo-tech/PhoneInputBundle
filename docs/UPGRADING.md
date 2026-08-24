@@ -2,7 +2,12 @@
 
 ## Table of contents
 
+- [Unreleased](#unreleased)
 - [From 1.3.2 to 1.3.3](#from-132-to-133)
+
+## Unreleased
+
+The widget host is now `<nowo-phone-input>`. The same `nowo-phone-prefix-picker.js` asset defines the custom element. If you copied `phone_input_widget.html.twig`, switch the outer `<div class="… nowo-phone-input">` to `<nowo-phone-input>`.
 
 ## From 1.3.2 to 1.3.3
 

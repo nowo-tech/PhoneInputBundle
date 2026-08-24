@@ -55,13 +55,13 @@ Symfony resolves `@NowoPhoneInputBundle/Form/...` to your copies automatically.
 
 ## CSP-safe prefix picker
 
-The widget loads an external vanilla IIFE (no Stimulus required):
+The widget is `<nowo-phone-input>` (light DOM: country picker + national number). It loads an external vanilla IIFE (no Stimulus required):
 
 ```twig
 <script src="{{ asset('js/nowo-phone-prefix-picker.js', 'nowo_phone_input') }}" defer></script>
 ```
 
-That script enhances `[data-controller="phone-prefix-picker"]` and `[data-nowo-phone-prefix-picker]`. Markup also includes Stimulus-style `data-action` attributes so hosts can register a Stimulus controller named `phone-prefix-picker` instead of the IIFE (omit the script in that case). Prefer one approach per page to avoid double-binding.
+That script defines the custom element and enhances `[data-controller="phone-prefix-picker"]` and `[data-nowo-phone-prefix-picker]`. Markup also includes Stimulus-style `data-action` attributes so hosts can register a Stimulus controller named `phone-prefix-picker` instead of the IIFE (omit the script in that case). Prefer one approach per page to avoid double-binding.
 
 Under a nonce-based CSP, allow the script URL (or nonce on `<script src>`); do not expect inline scripts to run.
 

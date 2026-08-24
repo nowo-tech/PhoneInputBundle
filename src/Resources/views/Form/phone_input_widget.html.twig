@@ -16,7 +16,7 @@
     {%- set selected_country = countries_list[0] -%}
   {%- endif -%}
 
-  <div class="{{ (container_classes ?? ['input-group', 'nowo-phone-input'])|join(' ') }}">
+  <nowo-phone-input class="{{ (container_classes ?? ['input-group', 'nowo-phone-input'])|join(' ') }}">
     {%- if prefix_selector and form.country_iso is defined -%}
       <div data-controller="phone-prefix-picker" data-nowo-phone-prefix-picker class="nowo-phone-input__prefix-picker{% if display == 'FLAG_ONLY' %} nowo-phone-input__prefix-picker--flag-only{% endif %}{% if not show_flag %} nowo-phone-input__prefix-picker--no-flag{% endif %}{% if not prefix_search %} nowo-phone-input__prefix-picker--no-search{% endif %}" data-flag-display="{{ flags }}" data-prefix-display="{{ display }}" data-show-flag="{{ show_flag ? '1' : '0' }}" data-prefix-search="{{ prefix_search ? '1' : '0' }}">
         <select
@@ -158,7 +158,7 @@
       {% if form.national_number.vars.disabled|default(false) %}disabled="disabled"{% endif %}
       {% if form.national_number.vars.readonly|default(false) %}readonly="readonly"{% endif %}
     />
-  </div>
+  </nowo-phone-input>
 
   {#- External script is CSP-safe (nonce on script-src). Load once per request when possible. -#}
   {%- if prefix_selector and form.country_iso is defined -%}

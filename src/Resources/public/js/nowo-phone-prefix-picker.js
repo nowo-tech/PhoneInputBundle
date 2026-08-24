@@ -416,6 +416,21 @@
     enhanceAll: enhanceAll,
   };
 
+  var TAG = 'nowo-phone-input';
+
+  class NowoPhoneInputElement extends HTMLElement {
+    connectedCallback() {
+      var picker = this.querySelector('[data-nowo-phone-prefix-picker], [data-controller~="phone-prefix-picker"]');
+      if (picker instanceof HTMLElement) {
+        createPicker(picker);
+      }
+    }
+  }
+
+  if (typeof customElements !== 'undefined' && customElements.get(TAG) === undefined) {
+    customElements.define(TAG, NowoPhoneInputElement);
+  }
+
   function boot() {
     enhanceAll(document);
   }
