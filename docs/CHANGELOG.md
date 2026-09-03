@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.4.0] - 2026-09-03](#140---2026-09-03)
 - [[1.3.2] - 2026-08-19](#132---2026-08-19)
 - [[1.3.1] - 2026-08-18](#131---2026-08-18)
 - [[1.3.0] - 2026-08-15](#130---2026-08-15)
@@ -25,10 +26,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-09-03
+
 ### Changed
 
 - **Web Component:** the widget now renders `<nowo-phone-input>` (light DOM: country picker + national number). `nowo-phone-prefix-picker.js` defines the custom element; the inner prefix picker still initializes via `data-nowo-phone-prefix-picker`.
+- **Deps (dev):** bump `friendsofphp/php-cs-fixer`; refresh Composer lockfiles.
 
+### Notes
+
+- Compound Symfony field submission is unchanged (light DOM). Custom theme overrides should wrap with `<nowo-phone-input>`.
+
+[1.4.0]: https://github.com/nowo-tech/PhoneInputBundle/releases/tag/v1.4.0
 
 ## [1.3.3] - 2026-08-24
 

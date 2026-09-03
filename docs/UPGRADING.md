@@ -2,12 +2,18 @@
 
 ## Table of contents
 
-- [Unreleased](#unreleased)
+- [From 1.3.3 to 1.4.0](#from-133-to-140)
 - [From 1.3.2 to 1.3.3](#from-132-to-133)
 
-## Unreleased
 
-The widget host is now `<nowo-phone-input>`. The same `nowo-phone-prefix-picker.js` asset defines the custom element. If you copied `phone_input_widget.html.twig`, switch the outer `<div class="… nowo-phone-input">` to `<nowo-phone-input>`.
+## From 1.3.3 to 1.4.0
+
+The widget outer host is now `<nowo-phone-input>` (light DOM). Country picker behaviour is unchanged. If you copied the form theme, wrap the compound field in `<nowo-phone-input>`.
+
+```bash
+composer update nowo-tech/phone-input-bundle
+php bin/console assets:install
+```
 
 ## From 1.3.2 to 1.3.3
 

@@ -17,6 +17,11 @@
 
 Symfony bundle providing **`PhoneType`**: an extension of Symfony `TelType` with optional country prefix selector (flags, dial codes, search), flexible value formats (E.164 string, separated array, or `PhoneNumber` value object), validation modes, and CSS/Twig assets for Bootstrap/Tailwind/Foundation layouts. Symfony 6|7|8 · PHP 8.2+.
 
+
+## Notes / release sync
+
+- **2026-09-03:** Widget host is `<nowo-phone-input>` (custom element, light DOM); prefix picker still uses `data-nowo-phone-prefix-picker`.
+
 ---
 
 ## User Scenarios & Testing
