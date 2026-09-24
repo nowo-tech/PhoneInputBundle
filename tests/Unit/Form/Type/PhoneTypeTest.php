@@ -13,6 +13,7 @@ use Nowo\PhoneInputBundle\Tests\TestFixtures;
 use Nowo\PhoneInputBundle\Validation\PhoneValidationMode;
 use Nowo\PhoneInputBundle\Validator\Constraints\ValidPhoneNumber;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -452,5 +453,46 @@ final class PhoneTypeTest extends TypeTestCase
             'prefix' => '',
             'national_number' => '',
         ], $emptyData);
+    }
+
+    /**
+     * Simulates FrankenPHP worker with FRANKENPHP_RESET_KERNEL=false: one shared
+     * PhoneType instance serves consecutive form builds without leaking options.
+     */
+    public function testSharedInstanceDoesNotLeakOptionsAcrossConsecutiveBuilds(): void
+    {
+        $provider = TestFixtures::countryProvider();
+        $type = new PhoneType(
+            $provider,
+            TestFixtures::e164Parser($provider),
+            new IconSupportChecker(),
+            defaults: [
+                'container_classes' => ['input-group', 'nowo-phone-input'],
+                'default_country' => 'ES',
+            ],
+        );
+        $factory = Forms::createFormFactoryBuilder()
+            ->addType($type)
+            ->getFormFactory();
+
+        $view1 = $factory->create(PhoneType::class, null, [
+            'container_classes' => ['custom-group'],
+            'default_country' => 'FR',
+            'allowed_countries' => ['FR'],
+        ])->createView();
+
+        $view2 = $factory->create(PhoneType::class)->createView();
+
+        $this->assertSame(['custom-group'], $view1->vars['container_classes']);
+        $this->assertSame('FR', $view1->vars['default_country']);
+        $this->assertSame(['input-group', 'nowo-phone-input'], $view2->vars['container_classes']);
+        $this->assertSame('ES', $view2->vars['default_country']);
+
+        $leaked = $view2->vars['container_classes'];
+        $leaked[] = 'poison';
+
+        $view3 = $factory->create(PhoneType::class)->createView();
+        $this->assertSame(['input-group', 'nowo-phone-input'], $view3->vars['container_classes']);
+        $this->assertSame('ES', $view3->vars['default_country']);
     }
 }

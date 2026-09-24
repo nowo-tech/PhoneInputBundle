@@ -15,11 +15,12 @@
 **Package**: `nowo-tech/phone-input-bundle`  
 **Configuration root**: `nowo_phone_input`
 
-Symfony bundle providing **`PhoneType`**: an extension of Symfony `TelType` with optional country prefix selector (flags, dial codes, search), flexible value formats (E.164 string, separated array, or `PhoneNumber` value object), validation modes, and CSS/Twig assets for Bootstrap/Tailwind/Foundation layouts. Symfony 6|7|8 · PHP 8.2+.
+Symfony bundle providing **`PhoneType`**: an extension of Symfony `TelType` with optional country prefix selector (flags, dial codes, search), flexible value formats (E.164 string, separated array, or `PhoneNumber` value object), validation modes, and CSS/Twig assets for Bootstrap/Tailwind/Foundation layouts. Symfony 6|7|8 · PHP 8.2+. Compatible with FrankenPHP **worker** mode including **`reset_kernel: false`** (long-lived kernel, no reboot between requests); see [`docs/FRANKENPHP-WORKER-AUDIT.md`](../../docs/FRANKENPHP-WORKER-AUDIT.md).
 
 
 ## Notes / release sync
 
+- **2026-09-24:** FrankenPHP worker / `FRANKENPHP_RESET_KERNEL=false` audit and hardening (`PhoneType` / `CountryProvider` readonly defaults, defensive array copies, PHPStan worker-strict).
 - **2026-09-03:** Widget host is `<nowo-phone-input>` (custom element, light DOM); prefix picker still uses `data-nowo-phone-prefix-picker`.
 
 ---
@@ -106,6 +107,7 @@ As an integrator, I configure how flags appear: CSS sprites, emoji, UX Icons SVG
 - **FR-FORM-001**: `PhoneType` with `ValueFormat`, `PrefixDisplay`, and `FlagDisplay` enums MUST expose documented field options overriding bundle defaults.
 - **FR-FORM-002**: `PhoneNumberTransformer` MUST convert between view layer (country_iso + national_number) and model values per `ValueFormat`.
 - **FR-FORM-003**: `IconSupportChecker` MUST detect optional UX Icons package to enable `UX_ICON` rendering.
+- **FR-FORM-004**: Shared form/catalog services MUST remain safe under FrankenPHP worker with `FRANKENPHP_RESET_KERNEL=false` (no request-scoped mutable state; array defaults copied so OptionsResolver cannot alias service arrays).
 - **FR-MDL-001**: `PhoneNumber` value object MUST expose ISO, national number, dial code, and E.164 accessors for OBJECT format.
 
 ### Validation

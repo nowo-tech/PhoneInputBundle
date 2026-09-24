@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.4.1] - 2026-09-24](#141---2026-09-24)
 - [[1.4.0] - 2026-09-03](#140---2026-09-03)
 - [[1.3.2] - 2026-08-19](#132---2026-08-19)
 - [[1.3.1] - 2026-08-18](#131---2026-08-18)
@@ -25,6 +26,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [[1.0.0] - 2026-06-20](#100---2026-06-20)
 
 ## [Unreleased]
+
+## [1.4.1] - 2026-09-24
+
+### Added
+
+- FrankenPHP worker audit for sticky Kernel (`FRANKENPHP_RESET_KERNEL=false`): [FRANKENPHP-WORKER-AUDIT.md](FRANKENPHP-WORKER-AUDIT.md)
+- Unit regression `PhoneTypeTest::testSharedInstanceDoesNotLeakOptionsAcrossConsecutiveBuilds`
+
+### Changed
+
+- **Worker hardening:** `PhoneType::$defaults` and `CountryProvider` config lists are `readonly`; CSS class defaults are defensively copied in `configureOptions()` so OptionsResolver cannot alias shared service arrays
+- PHPStan now uses `nowo-tech/phpstan-frankenphp` `ruleset-worker-strict.neon` (includes worker rules)
+
+### Notes
+
+- No application upgrade steps. Safe under FrankenPHP worker with or without kernel reset.
+
+[1.4.1]: https://github.com/nowo-tech/PhoneInputBundle/releases/tag/v1.4.1
 
 ## [1.4.0] - 2026-09-03
 

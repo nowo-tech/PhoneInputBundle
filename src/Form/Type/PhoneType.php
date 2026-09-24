@@ -31,13 +31,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class PhoneType extends AbstractType
 {
     /**
-     * @param array<string, mixed> $defaults
+     * @param array<string, mixed> $defaults Bundle config defaults (immutable for FrankenPHP worker / reset_kernel=false)
      */
     public function __construct(
         private readonly CountryProvider $countryProvider,
         private readonly E164Parser $e164Parser,
         private readonly IconSupportChecker $iconSupportChecker,
-        private array $defaults = [],
+        private readonly array $defaults = [],
     ) {
     }
 
@@ -92,6 +92,10 @@ final class PhoneType extends AbstractType
     {
         parent::configureOptions($resolver);
 
+        $containerClasses = $this->defaults['container_classes'] ?? ['input-group', 'nowo-phone-input'];
+        $prefixSelectorClasses = $this->defaults['prefix_selector_classes'] ?? ['form-select', 'nowo-phone-input__prefix'];
+        $nationalNumberClasses = $this->defaults['national_number_classes'] ?? ['form-control', 'nowo-phone-input__number'];
+
         $resolver->setDefaults([
             'compound' => true,
             'country_prefix_selector' => $this->defaults['country_prefix_selector'] ?? true,
@@ -101,9 +105,10 @@ final class PhoneType extends AbstractType
             'show_flag' => $this->defaults['show_flag'] ?? true,
             'prefix_search' => $this->defaults['prefix_search'] ?? true,
             'flag_display' => $this->defaults['flag_display'] ?? FlagDisplay::CSS_ICON->value,
-            'container_classes' => $this->defaults['container_classes'] ?? ['input-group', 'nowo-phone-input'],
-            'prefix_selector_classes' => $this->defaults['prefix_selector_classes'] ?? ['form-select', 'nowo-phone-input__prefix'],
-            'national_number_classes' => $this->defaults['national_number_classes'] ?? ['form-control', 'nowo-phone-input__number'],
+            // Copy so OptionsResolver never aliases the shared service's arrays (FrankenPHP worker, reset_kernel=false).
+            'container_classes' => \is_array($containerClasses) ? [...$containerClasses] : ['input-group', 'nowo-phone-input'],
+            'prefix_selector_classes' => \is_array($prefixSelectorClasses) ? [...$prefixSelectorClasses] : ['form-select', 'nowo-phone-input__prefix'],
+            'national_number_classes' => \is_array($nationalNumberClasses) ? [...$nationalNumberClasses] : ['form-control', 'nowo-phone-input__number'],
             'national_number_attr' => [],
             'allowed_countries' => null,
             'excluded_countries' => null,

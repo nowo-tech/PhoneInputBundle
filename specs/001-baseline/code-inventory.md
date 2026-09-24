@@ -15,12 +15,12 @@ This file proves that **every production source artifact** under `src/` is refer
 | `DependencyInjection/NowoPhoneInputExtension.php` | DI extension | FR-CFG-002 |
 | `DependencyInjection/Compiler/TwigPathsPass.php` | Twig namespace path | FR-TWIG-001 |
 | `Country/Country.php` | Country value object | FR-DATA-001 |
-| `Country/CountryProvider.php` | Country catalog loader | FR-DATA-001 |
+| `Country/CountryProvider.php` | Country catalog loader (immutable config + lazy caches) | FR-DATA-001, FR-FORM-004 |
 | `Phone/E164Parser.php` | E.164 parsing | FR-PHONE-001 |
 | `Phone/PhonePattern.php` | National pattern VO | FR-PHONE-002 |
 | `Phone/PhonePatternCatalog.php` | Pattern catalog loader | FR-PHONE-002 |
 | `Phone/PhoneValidator.php` | Validation orchestration | FR-VAL-001 |
-| `Form/Type/PhoneType.php` | Main form type | FR-FORM-001 |
+| `Form/Type/PhoneType.php` | Main form type (worker-safe defaults) | FR-FORM-001, FR-FORM-004 |
 | `Form/DataTransformer/PhoneNumberTransformer.php` | Value format transformer | FR-FORM-002 |
 | `Form/Model/PhoneNumber.php` | Phone value object | FR-MDL-001 |
 | `Form/ValueFormat.php` | Value format enum | FR-FORM-001 |

@@ -2,9 +2,20 @@
 
 ## Table of contents
 
+- [From 1.4.0 to 1.4.1](#from-140-to-141)
 - [From 1.3.3 to 1.4.0](#from-133-to-140)
 - [From 1.3.2 to 1.3.3](#from-132-to-133)
 
+
+## From 1.4.0 to 1.4.1
+
+FrankenPHP worker / `FRANKENPHP_RESET_KERNEL=false` hardening. **No required host changes.**
+
+Confirmed compatible with FrankenPHP **worker** mode when the host runs with **`FRANKENPHP_RESET_KERNEL=false`** (sticky Kernel). See [FRANKENPHP-WORKER-AUDIT.md](FRANKENPHP-WORKER-AUDIT.md).
+
+```bash
+composer update nowo-tech/phone-input-bundle
+```
 
 ## From 1.3.3 to 1.4.0
 
@@ -13,14 +24,6 @@ The widget outer host is now `<nowo-phone-input>` (light DOM). Country picker be
 ```bash
 composer update nowo-tech/phone-input-bundle
 php bin/console assets:install
-```
-
-## From 1.3.2 to 1.3.3
-
-No breaking changes. **No application upgrade steps.**
-
-```bash
-composer update nowo-tech/phone-input-bundle
 ```
 
 ## From 1.3.2 to 1.3.3

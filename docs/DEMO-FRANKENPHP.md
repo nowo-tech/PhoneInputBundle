@@ -19,6 +19,8 @@ This document describes how the bundle's demo applications run under **FrankenPH
 
 **The `demo/` folder is not shipped when the bundle is installed** (e.g. via `composer require nowo-tech/phone-input-bundle`). It is excluded from the Composer package (via `archive.exclude` in the bundle's `composer.json`). The demo applications exist only in the bundle's source repository and are intended for development, testing, and documentation. To run or modify the demos, use a clone of the bundle repository.
 
+This bundle is **FrankenPHP worker mode friendly** (see the main [README](../README.md) banner and the [worker audit](FRANKENPHP-WORKER-AUDIT.md) for `FRANKENPHP_RESET_KERNEL=false`).
+
 The demos use:
 
 - **FrankenPHP** (Caddy + PHP) in a single container.

@@ -29,8 +29,8 @@ class NowoPhoneInputExtension extends Extension implements PrependExtensionInter
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('nowo_phone_input.defaults', $config);
-        $container->setParameter('nowo_phone_input.countries_file', \dirname(__DIR__).'/Resources/data/countries.json');
-        $container->setParameter('nowo_phone_input.patterns_file', \dirname(__DIR__).'/Resources/data/phone_patterns.json');
+        $container->setParameter('nowo_phone_input.countries_file', __DIR__.'/../Resources/data/countries.json');
+        $container->setParameter('nowo_phone_input.patterns_file', __DIR__.'/../Resources/data/phone_patterns.json');
         $container->setParameter('nowo_phone_input.use_libphonenumber', $config['use_libphonenumber']);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

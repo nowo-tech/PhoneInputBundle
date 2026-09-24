@@ -9,26 +9,39 @@ namespace Nowo\PhoneInputBundle\Country;
  */
 final class CountryProvider
 {
-    /** @var array<string, Country>|null */
+    /** @var array<string, Country>|null Lazy cache of bundled countries.json (request-independent) */
     private ?array $rawCountriesByIso = null;
 
-    /** @var list<Country>|null */
+    /** @var list<Country>|null Lazy cache sorted by dial-code length (request-independent) */
     private ?array $countriesSortedByDialCode = null;
 
+    private readonly string $defaultCountryIso;
+
+    /** @var list<string> */
+    private readonly array $preferredCountries;
+
+    /** @var list<string> */
+    private readonly array $allowedCountries;
+
+    /** @var list<string> */
+    private readonly array $excludedCountries;
+
+    /**
+     * @param list<string> $preferredCountries
+     * @param list<string> $allowedCountries
+     * @param list<string> $excludedCountries
+     */
     public function __construct(
         private readonly string $countriesFile,
-        private string $defaultCountryIso = 'ES',
-        /** @var list<string> */
-        private array $preferredCountries = [],
-        /** @var list<string> */
-        private array $allowedCountries = [],
-        /** @var list<string> */
-        private array $excludedCountries = [],
+        string $defaultCountryIso = 'ES',
+        array $preferredCountries = [],
+        array $allowedCountries = [],
+        array $excludedCountries = [],
     ) {
-        $this->defaultCountryIso = strtoupper($this->defaultCountryIso);
-        $this->preferredCountries = $this->normalizeIsoList($this->preferredCountries);
-        $this->allowedCountries = $this->normalizeIsoList($this->allowedCountries);
-        $this->excludedCountries = $this->normalizeIsoList($this->excludedCountries);
+        $this->defaultCountryIso = strtoupper($defaultCountryIso);
+        $this->preferredCountries = $this->normalizeIsoList($preferredCountries);
+        $this->allowedCountries = $this->normalizeIsoList($allowedCountries);
+        $this->excludedCountries = $this->normalizeIsoList($excludedCountries);
     }
 
     public function getDefaultCountry(): Country
