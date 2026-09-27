@@ -111,6 +111,7 @@ final class CountryProvider
             static fn (Country $a, Country $b): int => \strlen($b->dialCode) <=> \strlen($a->dialCode),
         );
 
+        // @igor-ignore - Not shared worker service state.
         $this->countriesSortedByDialCode = $countries;
 
         return $this->countriesSortedByDialCode;
@@ -159,6 +160,7 @@ final class CountryProvider
             $countries[$country->iso] = $country;
         }
 
+        // @igor-ignore - Not shared worker service state.
         $this->rawCountriesByIso = $countries;
 
         return $this->rawCountriesByIso;

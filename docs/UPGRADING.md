@@ -102,6 +102,18 @@ If you mount the bundle source in Docker demos, use `dev-main as 1.0.99` in demo
 
 ## Unreleased
 
+## To 1.4.2
+
+From **1.4.1** — REQ-CS-008 Igor FrankenPHP worker audit (igor-php require-dev, igor.json, make igor).
+
+```bash
+composer update nowo-tech/phone-input-bundle
+php bin/console cache:clear
+```
+
+- No application upgrade steps for require-dev Igor tooling (REQ-CS-008). Consumers do not pull `igor-php/igor-php` transitively.
+
+
 ## To 1.3.2
 
 From **1.3.1** — No application upgrade steps.

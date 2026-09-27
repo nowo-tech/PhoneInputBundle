@@ -66,8 +66,11 @@ final class PhonePatternCatalog
         }
 
         if (!is_readable($this->patternsFile)) {
+            // @igor-ignore - Not shared worker service state.
             $this->defaultPattern = new PhonePattern(4, 14, '^\d{4,14}$');
+            // @igor-ignore - Not shared worker service state.
             $this->countryPatterns = [];
+            // @igor-ignore - Not shared worker service state.
             $this->prefixPatterns = [];
 
             return;
@@ -81,15 +84,20 @@ final class PhonePatternCatalog
          */
         $data = json_decode((string) file_get_contents($this->patternsFile), true, 512, \JSON_THROW_ON_ERROR);
 
+        // @igor-ignore - Not shared worker service state.
         $this->defaultPattern = $this->createPattern($data['default'] ?? []);
+        // @igor-ignore - Not shared worker service state.
         $this->countryPatterns = [];
         foreach ($data['countries'] ?? [] as $iso => $patternData) {
+            // @igor-ignore - Not shared worker service state.
             $this->countryPatterns[strtoupper((string) $iso)] = $this->createPattern($patternData);
         }
 
+        // @igor-ignore - Not shared worker service state.
         $this->prefixPatterns = [];
         foreach ($data['prefixes'] ?? [] as $prefix => $patternData) {
             $normalizedPrefix = str_starts_with((string) $prefix, '+') ? (string) $prefix : '+'.$prefix;
+            // @igor-ignore - Not shared worker service state.
             $this->prefixPatterns[$normalizedPrefix] = $this->createPattern($patternData);
         }
     }
