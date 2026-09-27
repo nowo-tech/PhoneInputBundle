@@ -1,5 +1,13 @@
 # Usage
 
+## Screenshots
+
+| Overview | Interaction |
+|----------|-------------|
+| ![Phone input with country prefix closed](images/demo/overview.png) | ![Phone input with country prefix dropdown open](images/demo/interaction.png) |
+
+Regenerate with `make -C demo/symfony8 demo-screenshots` (REQ-DEMO-013).
+
 ## Basic field
 
 ```php

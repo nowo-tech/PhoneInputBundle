@@ -10,6 +10,20 @@ Symfony bundle providing a phone form type with optional country prefix selector
 
 This bundle is **FrankenPHP worker mode friendly**, including **`reset_kernel: false`** (long-lived kernel). See [docs/FRANKENPHP-WORKER-AUDIT.md](docs/FRANKENPHP-WORKER-AUDIT.md).
 
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="docs/images/demo/overview.png" alt="Phone input with country prefix closed" />
+      <br /><sub>Phone + prefix control</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="docs/images/demo/interaction.png" alt="Phone input with country prefix dropdown open" />
+      <br /><sub>Prefix picker open</sub>
+    </td>
+  </tr>
+</table>
+
+
 ## Features
 
 - Extends Symfony `TelType` with an optional country prefix selector (flags, dial codes, autocomplete search)
@@ -52,6 +66,12 @@ The demo page shows **20 field examples** and a **CSS framework selector** (`?fr
 Demos use **FrankenPHP** without worker mode in development (changes visible on refresh). For production worker setup, see [docs/DEMO-FRANKENPHP.md](docs/DEMO-FRANKENPHP.md).
 
 ## Development
+
+```bash
+make -C demo/symfony8 test-e2e
+make -C demo/symfony8 demo-screenshots   # refreshes docs/images/demo/*.png
+```
+
 
 ```bash
 make up && make install && make test

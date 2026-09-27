@@ -50,6 +50,9 @@ Enhancement suggestions are welcome:
 1. **Fork the repository** on GitHub
 2. **Clone your fork**:
    ```bash
+# Playwright e2e + README widget screenshots (REQ-DEMO-013)
+make -C demo/symfony8 test-e2e
+make -C demo/symfony8 demo-screenshots
    git clone https://github.com/your-username/phone-input-bundle.git
    cd phone-input-bundle
    ```

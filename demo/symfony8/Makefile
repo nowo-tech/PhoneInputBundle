@@ -1,7 +1,7 @@
 # Makefile for Symfony 8.0 Demo (Phone Input Bundle)
 # Run from this directory: make up, make install, etc.
 
-.PHONY: help up down build install shell logs test test-coverage cache-clear update-bundle ensure-up restart
+.PHONY: help up down build install shell logs test test-coverage cache-clear update-bundle ensure-up restart test-e2e demo-screenshots
 
 help:
 	@echo "Symfony 8.0 Demo - Phone Input Bundle"
@@ -17,6 +17,8 @@ help:
 	@echo "  make cache-clear    Clear Symfony cache"
 	@echo "  make update-bundle  Update nowo-tech/phone-input-bundle and clear cache"
 	@echo ""
+	@echo "  make test-e2e       Playwright e2e (REQ-DEMO-013)"
+	@echo "  make demo-screenshots  Refresh docs/images/demo/*.png"
 
 up:
 	@if [ ! -f .env ]; then cp .env.example .env 2>/dev/null || true; fi
@@ -67,6 +69,8 @@ update-bundle: ensure-up
 	$(COMPOSE) exec php composer dump-autoload --optimize
 	$(COMPOSE) exec php php bin/console cache:clear --env=dev --no-warmup || true
 	@echo "Bundle updated. Reload the page in the browser."
+	@echo "  make test-e2e       Playwright e2e (REQ-DEMO-013)"
+	@echo "  make demo-screenshots  Refresh docs/images/demo/*.png"
 
 
 # REQ-MAKE-008: update-deps (REQ-MAKE-008)
@@ -76,3 +80,29 @@ SERVICE_PHP := php
 BUNDLE_ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/../..)
 # Optional: monorepo helper absent on standalone GitHub Actions checkout (REQ-MAKE-009).
 -include $(BUNDLE_ROOT)/../.scripts/Makefile.demo-update-deps.mk
+
+# Paste into demo/symfony8/Makefile (REQ-DEMO-013). Uses official Playwright image.
+PLAYWRIGHT_IMAGE ?= mcr.microsoft.com/playwright:v1.63.0-jammy
+
+test-e2e: ensure-up
+	@mkdir -p e2e/node_modules
+	@PORT=$$(grep -E '^PORT=' .env 2>/dev/null | cut -d= -f2); PORT=$${PORT:-8003}; \
+	docker run --rm --network host \
+		-v "$(CURDIR)/e2e:/e2e" -w /e2e \
+		-e DEMO_BASE_URL=http://127.0.0.1:$$PORT \
+		$(PLAYWRIGHT_IMAGE) \
+		bash -lc 'npm install --no-fund --no-audit && npx playwright test --project=chromium'
+
+demo-screenshots: ensure-up
+	@mkdir -p ../../docs/images/demo e2e/node_modules
+	@PORT=$$(grep -E '^PORT=' .env 2>/dev/null | cut -d= -f2); PORT=$${PORT:-8003}; \
+	docker run --rm --network host \
+		-v "$(CURDIR)/e2e:/e2e" \
+		-v "$(CURDIR)/../../docs/images/demo:/screenshots" \
+		-w /e2e \
+		-e DEMO_BASE_URL=http://127.0.0.1:$$PORT \
+		-e SCREENSHOT_DIR=/screenshots \
+		$(PLAYWRIGHT_IMAGE) \
+		bash -lc 'npm install --no-fund --no-audit && npx playwright test --project=screenshots'
+	@echo "Screenshots written under docs/images/demo/"
+
