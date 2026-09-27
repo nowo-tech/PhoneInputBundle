@@ -12,6 +12,13 @@
         body {
             background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
             min-height: 100vh;
+            margin: 0;
+        }
+        .demo-navbar {
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(6px);
+        }
+        .demo-main {
             padding: 24px;
         }
         .demo-container {
@@ -81,6 +88,12 @@
     </style>
 </head>
 <body class="demo-page {{ demo_page_class|default('demo-page--bootstrap5') }}">
+    <nav class="navbar navbar-dark demo-navbar sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ path('demo_form') }}">Phone Input Bundle Demo</a>
+        </div>
+    </nav>
+    <main class="demo-main">
     <div class="demo-container">
         <div class="demo-header">
             <h1>📞 Phone Input Bundle</h1>
@@ -200,6 +213,7 @@
             </small>
         </div>
     </div>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>

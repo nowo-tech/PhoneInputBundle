@@ -13,12 +13,12 @@ This bundle is **FrankenPHP worker mode friendly**, including **`reset_kernel: f
 <table>
   <tr>
     <td align="center" width="50%">
-      <img src="docs/images/demo/overview.png" alt="Phone input with country prefix closed" />
-      <br /><sub>Phone + prefix control</sub>
+      <img src="docs/images/demo/overview.png" alt="Demo navbar and phone input with country prefix closed" />
+      <br /><sub>Full demo — prefix closed</sub>
     </td>
     <td align="center" width="50%">
-      <img src="docs/images/demo/interaction.png" alt="Phone input with country prefix dropdown open" />
-      <br /><sub>Prefix picker open</sub>
+      <img src="docs/images/demo/interaction.png" alt="Demo navbar and phone input with country prefix dropdown open" />
+      <br /><sub>Full demo — prefix picker open</sub>
     </td>
   </tr>
 </table>

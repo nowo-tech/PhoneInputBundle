@@ -30,7 +30,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **REQ-DEMO-013:** Playwright e2e under `demo/symfony8/e2e/` (`make test-e2e`), `demo-screenshots` target, and README gallery cropped to <nowo-phone-input> (`docs/images/demo/overview.png`, `interaction.png`).
+- **REQ-DEMO-013:** Playwright e2e under `demo/symfony8/e2e/` (`make test-e2e`), `demo-screenshots` target, and README gallery with full demo context (navbar + first use-case + WebProfiler; `docs/images/demo/overview.png`, `interaction.png`).
+
+### Changed
+
+- **Demo screenshots:** capture navbar + form chrome + profiler instead of a tight field crop; demo template adds a sticky navbar.
 
 ## [1.4.2] - 2026-09-27
 
