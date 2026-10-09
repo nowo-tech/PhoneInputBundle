@@ -2,6 +2,7 @@
 
 ## Table of contents
 
+- [To 1.4.3](#to-143)
 - [From 1.4.0 to 1.4.1](#from-140-to-141)
 - [From 1.3.3 to 1.4.0](#from-133-to-140)
 - [From 1.3.2 to 1.3.3](#from-132-to-133)
@@ -101,6 +102,16 @@ See [INSTALLATION.md](INSTALLATION.md) and [USAGE.md](USAGE.md) for details.
 If you mount the bundle source in Docker demos, use `dev-main as 1.0.99` in demo `composer.json` with `minimum-stability: dev` and `prefer-stable: true`.
 
 ## Unreleased
+
+## To 1.4.3
+
+From **1.4.2** — dependency updates and demo Playwright e2e (REQ-DEMO-013).
+
+```bash
+composer update nowo-tech/phone-input-bundle
+```
+
+No breaking changes. No application upgrade steps.
 
 ## To 1.4.2
 

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.4.3] - 2026-10-09](#143---2026-10-09)
 - [[1.4.2] - 2026-09-27](#142---2026-09-27)
 - [[1.4.1] - 2026-09-24](#141---2026-09-24)
 - [[1.4.0] - 2026-09-03](#140---2026-09-03)
@@ -28,6 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.3] - 2026-10-09
+
 ### Added
 
 - **REQ-DEMO-013:** Playwright e2e under `demo/symfony8/e2e/` (`make test-e2e`), `demo-screenshots` target, and README gallery with full demo context (navbar + first use-case + WebProfiler; `docs/images/demo/overview.png`, `interaction.png`).
@@ -35,6 +38,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - **Demo screenshots:** capture navbar + form chrome + profiler instead of a tight field crop; demo template adds a sticky navbar.
+
+### Dependencies
+
+- Dev tooling: `igor-php/igor-php` ^0.10 (Dependabot #28), `phpstan/phpstan` 2.3.1, `phpstan/phpstan-phpunit` 2.1.1, `phpstan/phpstan-symfony` 2.1.0, `rector/rector` 2.7.0, `nowo-tech/phpstan-frankenphp` v1.2.3, `giggsey/libphonenumber-for-php` 9.0.41; Symfony 7.4/8.1 patch releases in the bundle lock.
+- Demo (Symfony 8): `twig/twig` v3.30.0, `twig/extra-bundle` v3.29.0, PHPUnit 10.5.66, `nowo-tech/hot-reload-bundle` v1.5.5.
+
+[1.4.3]: https://github.com/nowo-tech/PhoneInputBundle/releases/tag/v1.4.3
 
 ## [1.4.2] - 2026-09-27
 
