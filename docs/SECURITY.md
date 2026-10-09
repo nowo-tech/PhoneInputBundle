@@ -6,6 +6,7 @@
 - [Reporting a Vulnerability](#reporting-a-vulnerability)
 - [Scope and attack surface](#scope-and-attack-surface)
 - [Threat model and mitigations](#threat-model-and-mitigations)
+- [Content Security Policy (CSP)](#content-security-policy-csp)
 - [Preferred Languages](#preferred-languages)
 - [Contact](#contact)
 - [Release security checklist (12.4.1)](#release-security-checklist-1241)
@@ -76,6 +77,12 @@ There are **no HTTP controllers**, no API endpoints, and no persistence layer in
   - Repository policy: keep `.env` and local credentials untracked.
 - **Optional dependencies**
   - `giggsey/libphonenumber-for-php` and `symfony/ux-icons` are optional; absence is handled with catalog fallbacks / CSS flags.
+
+## Content Security Policy (CSP)
+
+Every inline `<script>` / `<style>` rendered by the bundle templates carries `nonce="…"` taken from the request attribute **`csp_nonce`** when it is present (nothing is emitted otherwise). Your CSP listener should set it before rendering, e.g. `$request->attributes->set('csp_nonce', $nonce)`, and send the same value in `script-src 'nonce-…'` / `style-src 'nonce-…'`. External scripts (`src=…`) and JSON islands need no nonce, and templates use no inline event handlers (`onclick`, `onsubmit`, …). `tests/Unit/Templates/InlineBlocksDeclareNonceTest.php` enforces this.
+
+The widget currently renders no inline `<script>`/`<style>`: `nowo-phone-prefix-picker.js` is an external script (allowed by `script-src 'self'`; under `'strict-dynamic'` override the widget to add the nonce) and only writes `element.style` via the CSSOM, which `style-src-attr` does not restrict.
 
 ## Preferred Languages
 

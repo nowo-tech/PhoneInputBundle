@@ -120,6 +120,7 @@ As an integrator, I configure how flags appear: CSS sprites, emoji, UX Icons SVG
 - **FR-TWIG-001**: `TwigPathsPass` MUST register `Resources/views` under namespace `NowoPhoneInput` for overridable templates.
 - **FR-TWIG-002**: `CountryFlagExtension` and `CountryFlagRenderer` MUST render flags for Twig and form partials across display modes.
 - **FR-TWIG-003**: `phone_input_widget.html.twig` and `_phone_country_flag.html.twig` MUST render prefix selector, national input, and accessibility-friendly markup.
+- **FR-TWIG-004**: CSP — any inline `<script>`/`<style>` in bundle templates MUST emit `nonce` from request attribute `csp_nonce` when set; no inline event handlers (enforced by `InlineBlocksDeclareNonceTest`).
 - **FR-ASSET-001**: `phone_input.css` MUST style the composite widget and framework-friendly layout hooks.
 - **FR-ASSET-002**: `flag-icons.min.css` MUST map ISO codes to bundled SVG flags.
 - **FR-FLAG-001**: SVG assets under `Resources/public/flags/4x3/` MUST provide 4×3 flag icons for catalog countries shipped with the bundle (64 ISO codes).

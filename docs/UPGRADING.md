@@ -2,6 +2,7 @@
 
 ## Table of contents
 
+- [To 1.4.4](#to-144)
 - [To 1.4.3](#to-143)
 - [From 1.4.0 to 1.4.1](#from-140-to-141)
 - [From 1.3.3 to 1.4.0](#from-133-to-140)
@@ -101,7 +102,9 @@ See [INSTALLATION.md](INSTALLATION.md) and [USAGE.md](USAGE.md) for details.
 
 If you mount the bundle source in Docker demos, use `dev-main as 1.0.99` in demo `composer.json` with `minimum-stability: dev` and `prefer-stable: true`.
 
-## Unreleased
+## To 1.4.4
+
+No action required (see [Security — CSP](SECURITY.md#content-security-policy-csp)).
 
 ## To 1.4.3
 
