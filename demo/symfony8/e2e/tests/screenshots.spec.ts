@@ -74,11 +74,8 @@ test.describe('PhoneInput screenshots (full demo context)', () => {
   test('overview — navbar + first field (closed prefix)', async ({ page }) => {
     await prepareDemoPage(page);
     const clip = await clipDemoFrame(page);
-    if (clip.height >= 700) {
-      await page.screenshot({ path: resolve(outDir, 'overview.png'), clip });
-    } else {
-      await page.screenshot({ path: resolve(outDir, 'overview.png'), fullPage: true });
-    }
+    // Always clip to the demo frame (a full-page capture shows all 20 use-cases).
+    await page.screenshot({ path: resolve(outDir, 'overview.png'), clip });
   });
 
   test('interaction — navbar + first field with prefix open', async ({ page }) => {
@@ -95,10 +92,7 @@ test.describe('PhoneInput screenshots (full demo context)', () => {
     await expect(dropdown).toBeVisible({ timeout: 5000 });
     const dropBox = await dropdown.boundingBox();
     const clip = await clipDemoFrame(page, dropBox);
-    if (clip.height >= 700) {
-      await page.screenshot({ path: resolve(outDir, 'interaction.png'), clip });
-    } else {
-      await page.screenshot({ path: resolve(outDir, 'interaction.png'), fullPage: true });
-    }
+    // Always clip to the demo frame (a full-page capture shows all 20 use-cases).
+    await page.screenshot({ path: resolve(outDir, 'interaction.png'), clip });
   });
 });

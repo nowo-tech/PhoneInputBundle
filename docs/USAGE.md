@@ -4,7 +4,7 @@
 
 | Overview | Interaction |
 |----------|-------------|
-| ![Phone input with country prefix closed](images/demo/overview.png) | ![Phone input with country prefix dropdown open](images/demo/interaction.png) |
+| ![Phone input with country prefix closed](images/demo/overview.webp) | ![Phone input with country prefix dropdown open](images/demo/interaction.webp) |
 
 Regenerate with `make -C demo/symfony8 demo-screenshots` (REQ-DEMO-013).
 

@@ -13,11 +13,11 @@ This bundle is **FrankenPHP worker mode friendly**, including **`reset_kernel: f
 <table>
   <tr>
     <td align="center" width="50%">
-      <img src="docs/images/demo/overview.png" alt="Demo navbar and phone input with country prefix closed" />
+      <img src="docs/images/demo/overview.webp" alt="Demo navbar and phone input with country prefix closed" />
       <br /><sub>Full demo — prefix closed</sub>
     </td>
     <td align="center" width="50%">
-      <img src="docs/images/demo/interaction.png" alt="Demo navbar and phone input with country prefix dropdown open" />
+      <img src="docs/images/demo/interaction.webp" alt="Demo navbar and phone input with country prefix dropdown open" />
       <br /><sub>Full demo — prefix picker open</sub>
     </td>
   </tr>
@@ -69,7 +69,7 @@ Demos use **FrankenPHP** without worker mode in development (changes visible on 
 
 ```bash
 make -C demo/symfony8 test-e2e
-make -C demo/symfony8 demo-screenshots   # refreshes docs/images/demo/*.png
+make -C demo/symfony8 demo-screenshots   # refreshes docs/images/demo/*.webp
 ```
 
 
