@@ -33,6 +33,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Prefix selector: a number typed with another country's `+` prefix (accepted since 1.6.0) must belong to a country the selector offers; a prefix of a country removed by `allowed_countries` / `excluded_countries` is now a transformation error (invalid field) instead of being saved.
+
 ## [1.6.0] - 2026-10-13
 
 ### Fixed

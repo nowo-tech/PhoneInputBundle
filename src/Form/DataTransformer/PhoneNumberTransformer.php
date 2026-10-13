@@ -25,7 +25,7 @@ final class PhoneNumberTransformer implements DataTransformerInterface
         private readonly CountryProvider $countryProvider,
         private readonly E164Parser $e164Parser,
         private readonly string $defaultCountryIso,
-        /** @var list<string> ISO codes preferred when a dial code is shared (selector order: preferred, then allowed) */
+        /** @var list<string> selector countries (order: preferred, then allowed): preferred when a dial code is shared; with the selector, a typed + prefix must belong to one of them (empty = no restriction) */
         private readonly array $preferredCountryIsos = [],
     ) {
     }
@@ -85,7 +85,20 @@ final class PhoneNumberTransformer implements DataTransformerInterface
         if (str_starts_with($rawNumber, '+')) {
             $typed = $this->e164Parser->parse($rawNumber, $this->defaultCountryIso, [$country->iso, ...$this->preferredCountryIsos]);
             if (!str_starts_with($typed['national_number'], '+')) {
-                return '' === $typed['national_number'] ? $this->emptyModel() : $this->buildModelFromParts($typed);
+                if ('' === $typed['national_number']) {
+                    return $this->emptyModel();
+                }
+
+                // The typed prefix must not bypass the selector's country list (allowed_countries /
+                // excluded_countries): only countries the selector offers are accepted.
+                if ([] !== $this->preferredCountryIsos
+                    && $typed['iso'] !== $country->iso
+                    && !\in_array($typed['iso'], $this->preferredCountryIsos, true)
+                ) {
+                    throw new TransformationFailedException(\sprintf('Country "%s" is not available in the country prefix selector.', $typed['iso']));
+                }
+
+                return $this->buildModelFromParts($typed);
             }
         }
 

@@ -328,6 +328,28 @@ final class PhoneNumberTransformerTest extends TestCase
         $this->assertSame('+34612345678', $transformer->reverseTransform(['country_iso' => 'CA', 'national_number' => '+34 612 345 678']));
     }
 
+    public function testTypedPrefixOfACountryOutsideTheSelectorIsRejected(): void
+    {
+        $transformer = $this->createSharedDialCodeTransformer(ValueFormat::CONCATENATED, 'ES', ['CA', 'US']);
+
+        $this->expectException(TransformationFailedException::class);
+        $transformer->reverseTransform(['country_iso' => 'CA', 'national_number' => '+34 612 345 678']);
+    }
+
+    public function testTypedPrefixOfASelectorCountryIsAccepted(): void
+    {
+        $transformer = $this->createSharedDialCodeTransformer(ValueFormat::SEPARATED, 'ES', ['CA', 'ES']);
+
+        $this->assertSame(
+            ['iso' => 'ES', 'prefix' => '+34', 'national_number' => '612345678'],
+            $transformer->reverseTransform(['country_iso' => 'CA', 'national_number' => '+34 612 345 678']),
+        );
+        $this->assertSame(
+            ['iso' => 'CA', 'prefix' => '+1', 'national_number' => '4165550123'],
+            $transformer->reverseTransform(['country_iso' => 'CA', 'national_number' => '+1 416 555 0123']),
+        );
+    }
+
     public function testTypedPrefixAloneIsEmpty(): void
     {
         $transformer = $this->createSharedDialCodeTransformer(ValueFormat::CONCATENATED, 'ES', []);

@@ -119,6 +119,8 @@ If you mount the bundle source in Docker demos, use `dev-main as 1.0.99` in demo
 
 ## Unreleased
 
+- With the prefix selector and `allowed_countries` / `excluded_countries`, a number typed with the `+` prefix of a country outside the selector list is now rejected (field invalid) instead of being saved with that country.
+
 ## To 1.6.0
 
 From **1.5.0** — shared dial codes keep the selected country; Symfony >=6.4.
