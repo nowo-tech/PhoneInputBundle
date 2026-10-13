@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Nowo\PhoneInputBundle\Tests\Unit\Form\DataTransformer;
 
+use Nowo\PhoneInputBundle\Country\CountryProvider;
 use Nowo\PhoneInputBundle\Form\DataTransformer\PhoneNumberTransformer;
 use Nowo\PhoneInputBundle\Form\Model\PhoneNumber;
 use Nowo\PhoneInputBundle\Form\ValueFormat;
+use Nowo\PhoneInputBundle\Phone\E164Parser;
 use Nowo\PhoneInputBundle\Tests\TestFixtures;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -308,6 +310,77 @@ final class PhoneNumberTransformerTest extends TestCase
         );
 
         $this->assertSame('+34612345678', $transformer->reverseTransform(['national_number' => ' 0612 345 678 ']));
+    }
+
+    public function testConcatenatedSharedDialCodeKeepsTheSelectedCountry(): void
+    {
+        $transformer = $this->createSharedDialCodeTransformer(ValueFormat::SEPARATED, 'ES', []);
+
+        $model = $transformer->reverseTransform(['country_iso' => 'CA', 'national_number' => '+1 416 555 0123']);
+
+        $this->assertSame(['iso' => 'CA', 'prefix' => '+1', 'national_number' => '4165550123'], $model);
+    }
+
+    public function testTypedPrefixOfAnotherCountryWinsOverTheSelector(): void
+    {
+        $transformer = $this->createSharedDialCodeTransformer(ValueFormat::CONCATENATED, 'ES', []);
+
+        $this->assertSame('+34612345678', $transformer->reverseTransform(['country_iso' => 'CA', 'national_number' => '+34 612 345 678']));
+    }
+
+    public function testTypedPrefixAloneIsEmpty(): void
+    {
+        $transformer = $this->createSharedDialCodeTransformer(ValueFormat::CONCATENATED, 'ES', []);
+
+        $this->assertSame('', $transformer->reverseTransform(['country_iso' => 'CA', 'national_number' => '+1']));
+    }
+
+    public function testConcatenatedTransformPrefersTheDefaultCountryForASharedDialCode(): void
+    {
+        $transformer = $this->createSharedDialCodeTransformer(ValueFormat::CONCATENATED, 'CA', []);
+
+        $this->assertSame(['country_iso' => 'CA', 'national_number' => '4165550123'], $transformer->transform('+14165550123'));
+    }
+
+    public function testConcatenatedTransformPrefersSelectorCountriesForASharedDialCode(): void
+    {
+        $transformer = $this->createSharedDialCodeTransformer(ValueFormat::CONCATENATED, 'ES', ['ES', 'CA']);
+
+        $this->assertSame(['country_iso' => 'CA', 'national_number' => '4165550123'], $transformer->transform('+14165550123'));
+    }
+
+    public function testWithoutSelectorTheDefaultCountryIsKeptForASharedDialCode(): void
+    {
+        $provider = new CountryProvider(__DIR__.'/../../../Fixtures/countries-multi-plus-one.json', 'CA');
+        $transformer = new PhoneNumberTransformer(
+            valueFormat: ValueFormat::SEPARATED,
+            countryPrefixSelector: false,
+            countryProvider: $provider,
+            e164Parser: new E164Parser($provider),
+            defaultCountryIso: 'CA',
+        );
+
+        $this->assertSame(
+            ['iso' => 'CA', 'prefix' => '+1', 'national_number' => '4165550123'],
+            $transformer->reverseTransform(['national_number' => '+14165550123']),
+        );
+    }
+
+    /**
+     * @param list<string> $selectorIsos
+     */
+    private function createSharedDialCodeTransformer(ValueFormat $format, string $default, array $selectorIsos): PhoneNumberTransformer
+    {
+        $provider = new CountryProvider(__DIR__.'/../../../Fixtures/countries-multi-plus-one.json', $default);
+
+        return new PhoneNumberTransformer(
+            valueFormat: $format,
+            countryPrefixSelector: true,
+            countryProvider: $provider,
+            e164Parser: new E164Parser($provider),
+            defaultCountryIso: $default,
+            preferredCountryIsos: $selectorIsos,
+        );
     }
 
     private function createTransformer(ValueFormat $format): PhoneNumberTransformer

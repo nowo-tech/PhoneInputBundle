@@ -25,6 +25,8 @@ final class PhoneNumberTransformer implements DataTransformerInterface
         private readonly CountryProvider $countryProvider,
         private readonly E164Parser $e164Parser,
         private readonly string $defaultCountryIso,
+        /** @var list<string> ISO codes preferred when a dial code is shared (selector order: preferred, then allowed) */
+        private readonly array $preferredCountryIsos = [],
     ) {
     }
 
@@ -70,13 +72,24 @@ final class PhoneNumberTransformer implements DataTransformerInterface
             );
         }
 
-        $nationalNumber = $this->normalizeNationalNumber($rawNumber);
         $countryIso = strtoupper((string) ($value['country_iso'] ?? $this->defaultCountryIso));
 
         $country = $this->countryProvider->getByIso($countryIso);
         if (!$country instanceof Country) {
             throw new TransformationFailedException(\sprintf('Unknown country ISO code "%s".', $countryIso));
         }
+
+        // Number typed with an international prefix: keep the selected ISO when it shares the dial
+        // code (+1 CA stays CA, not the first +1 country); a different prefix (+44 with CA selected)
+        // wins over the selector instead of being glued to the selected country's code.
+        if (str_starts_with($rawNumber, '+')) {
+            $typed = $this->e164Parser->parse($rawNumber, $this->defaultCountryIso, [$country->iso, ...$this->preferredCountryIsos]);
+            if (!str_starts_with($typed['national_number'], '+')) {
+                return '' === $typed['national_number'] ? $this->emptyModel() : $this->buildModelFromParts($typed);
+            }
+        }
+
+        $nationalNumber = $this->normalizeNationalNumber($rawNumber);
 
         if ('' === $nationalNumber && $this->isEmptyAllowed()) {
             return $this->emptyModel();
@@ -127,7 +140,7 @@ final class PhoneNumberTransformer implements DataTransformerInterface
             throw new TransformationFailedException('Unsupported phone model value.');
         }
 
-        return $this->e164Parser->parse($value, $this->defaultCountryIso);
+        return $this->e164Parser->parse($value, $this->defaultCountryIso, [$this->defaultCountryIso, ...$this->preferredCountryIsos]);
     }
 
     /**
@@ -169,7 +182,7 @@ final class PhoneNumberTransformer implements DataTransformerInterface
         }
 
         if (str_starts_with($nationalNumber, '+')) {
-            $parts = $this->e164Parser->parse($nationalNumber, $this->defaultCountryIso);
+            $parts = $this->e164Parser->parse($nationalNumber, $this->defaultCountryIso, [$this->defaultCountryIso, ...$this->preferredCountryIsos]);
 
             return $this->buildModelFromParts($parts);
         }

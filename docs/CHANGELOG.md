@@ -32,6 +32,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Shared dial codes (+1 US/CA/PR/DO, +7 …): `E164Parser` always returned the first catalog country, so a CONCATENATED value such as `+14165550123` came back as the wrong country. The parser now keeps a preferred ISO that uses the matched code (new optional `$preferredIsos` argument, then the default country). The form keeps the country selected in the prefix selector, and on display prefers `default_country`, then the selector's preferred/allowed countries.
+- Prefix selector: a number typed with a different international prefix (e.g. `+34…` while CA is selected) is no longer glued to the selected country's dial code; the typed prefix wins.
+
+### Changed
+
+- Symfony constraints aligned to the CI floor: `^6.4 || ^7.0 || ^8.0` for every Symfony package (some still allowed `^6.0`).
+
 ## [1.5.0] - 2026-10-13
 
 ### Fixed

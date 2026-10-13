@@ -102,6 +102,11 @@ See [INSTALLATION.md](INSTALLATION.md) and [USAGE.md](USAGE.md) for details.
 
 If you mount the bundle source in Docker demos, use `dev-main as 1.0.99` in demo `composer.json` with `minimum-stability: dev` and `prefer-stable: true`.
 
+## Unreleased
+
+- Requires Symfony 6.4+ on the 6.x line (6.0–6.3 are no longer allowed).
+- For numbers whose dial code is shared by several countries, the resolved ISO now follows the selected country / `default_country` / preferred countries instead of the first catalog entry. With the prefix selector, a number typed with another country's `+` prefix is saved with that prefix.
+
 ## To 1.5.0
 
 From **1.4.4** — fixes - typed international prefix kept, UX Icons renderer and form theme wired.

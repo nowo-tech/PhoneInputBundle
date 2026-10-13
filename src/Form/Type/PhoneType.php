@@ -65,6 +65,10 @@ final class PhoneType extends AbstractType
             countryProvider: $this->countryProvider,
             e164Parser: $this->e164Parser,
             defaultCountryIso: $options['default_country'],
+            preferredCountryIsos: array_map(
+                static fn (Country $country): string => $country->iso,
+                $this->resolveCountries($options),
+            ),
         ));
     }
 
