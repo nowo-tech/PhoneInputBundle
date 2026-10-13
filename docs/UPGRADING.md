@@ -2,6 +2,7 @@
 
 ## Table of contents
 
+- [To 1.6.0](#to-160)
 - [To 1.5.0](#to-150)
 - [To 1.4.4](#to-144)
 - [To 1.4.3](#to-143)
@@ -103,6 +104,14 @@ See [INSTALLATION.md](INSTALLATION.md) and [USAGE.md](USAGE.md) for details.
 If you mount the bundle source in Docker demos, use `dev-main as 1.0.99` in demo `composer.json` with `minimum-stability: dev` and `prefer-stable: true`.
 
 ## Unreleased
+
+## To 1.6.0
+
+From **1.5.0** — shared dial codes keep the selected country; Symfony >=6.4.
+
+```bash
+composer update nowo-tech/phone-input-bundle
+```
 
 - Requires Symfony 6.4+ on the 6.x line (6.0–6.3 are no longer allowed).
 - For numbers whose dial code is shared by several countries, the resolved ISO now follows the selected country / `default_country` / preferred countries instead of the first catalog entry. With the prefix selector, a number typed with another country's `+` prefix is saved with that prefix.
