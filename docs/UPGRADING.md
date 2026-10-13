@@ -2,13 +2,27 @@
 
 ## Table of contents
 
+- [From 1.4.0 to 1.4.1](#from-140-to-141)
+- [From 1.3.3 to 1.4.0](#from-133-to-140)
+- [From 1.3.2 to 1.3.3](#from-132-to-133)
+- [1.x](#1x)
+  - [1.1.5](#115)
+  - [1.1.4](#114)
+  - [1.1.0](#110)
+  - [1.0.0](#100)
+- [Unreleased](#unreleased)
 - [To 1.6.0](#to-160)
 - [To 1.5.0](#to-150)
 - [To 1.4.4](#to-144)
 - [To 1.4.3](#to-143)
-- [From 1.4.0 to 1.4.1](#from-140-to-141)
-- [From 1.3.3 to 1.4.0](#from-133-to-140)
-- [From 1.3.2 to 1.3.3](#from-132-to-133)
+- [To 1.4.2](#to-142)
+- [To 1.3.2](#to-132)
+- [To 1.3.1](#to-131)
+- [To 1.3.0](#to-130)
+- [To 1.2.1](#to-121)
+- [To 1.2.0](#to-120)
+  - [Twig Extra Bundle (REQ-TWIG-004)](#twig-extra-bundle-req-twig-004)
+  - [Twig-CS-Fixer (maintainers)](#twig-cs-fixer-maintainers)
 
 ## From 1.4.0 to 1.4.1
 
