@@ -11,6 +11,7 @@
   - [1.1.0](#110)
   - [1.0.0](#100)
 - [Unreleased](#unreleased)
+- [To 1.6.1](#to-161)
 - [To 1.6.0](#to-160)
 - [To 1.5.0](#to-150)
 - [To 1.4.4](#to-144)
@@ -118,6 +119,14 @@ See [INSTALLATION.md](INSTALLATION.md) and [USAGE.md](USAGE.md) for details.
 If you mount the bundle source in Docker demos, use `dev-main as 1.0.99` in demo `composer.json` with `minimum-stability: dev` and `prefer-stable: true`.
 
 ## Unreleased
+
+## To 1.6.1
+
+From **1.6.0** — typed international prefixes outside the selector countries are rejected.
+
+```bash
+composer update nowo-tech/phone-input-bundle
+```
 
 - With the prefix selector and `allowed_countries` / `excluded_countries`, a number typed with the `+` prefix of a country outside the selector list is now rejected (field invalid) instead of being saved with that country.
 
