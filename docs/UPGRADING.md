@@ -2,12 +2,12 @@
 
 ## Table of contents
 
+- [To 1.5.0](#to-150)
 - [To 1.4.4](#to-144)
 - [To 1.4.3](#to-143)
 - [From 1.4.0 to 1.4.1](#from-140-to-141)
 - [From 1.3.3 to 1.4.0](#from-133-to-140)
 - [From 1.3.2 to 1.3.3](#from-132-to-133)
-
 
 ## From 1.4.0 to 1.4.1
 
@@ -102,6 +102,18 @@ See [INSTALLATION.md](INSTALLATION.md) and [USAGE.md](USAGE.md) for details.
 
 If you mount the bundle source in Docker demos, use `dev-main as 1.0.99` in demo `composer.json` with `minimum-stability: dev` and `prefer-stable: true`.
 
+## To 1.5.0
+
+From **1.4.4** — fixes - typed international prefix kept, UX Icons renderer and form theme wired.
+
+```bash
+composer update nowo-tech/phone-input-bundle
+```
+
+- Without the prefix selector, numbers typed with an international prefix (e.g. `+44…` with default `ES`) are no longer rewritten to the default country.
+- `use_phone_form_theme: true` (default) now registers the widget theme in `twig.form_themes`; set it to `false` to manage the theme yourself.
+- `flag_display: UX_ICON` now really renders through UX Icons when that bundle is installed.
+
 ## To 1.4.4
 
 No action required (see [Security — CSP](SECURITY.md#content-security-policy-csp)).
@@ -126,7 +138,6 @@ php bin/console cache:clear
 ```
 
 - No application upgrade steps for require-dev Igor tooling (REQ-CS-008). Consumers do not pull `igor-php/igor-php` transitively.
-
 
 ## To 1.3.2
 
