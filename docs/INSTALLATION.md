@@ -3,7 +3,7 @@
 ## Requirements
 
 - **PHP** >= 8.2, < 8.6
-- **Symfony** ^6.0 || ^7.0 || ^8.0
+- **Symfony** ^6.4 || ^7.0 || ^8.0
 - **symfony/form**, **symfony/framework-bundle**, **symfony/twig-bundle**, **symfony/validator**
 - **symfony/asset** — required to use the named package `nowo_phone_input` (`asset('css/…', 'nowo_phone_input')`)
 
