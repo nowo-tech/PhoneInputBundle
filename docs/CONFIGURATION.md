@@ -26,6 +26,10 @@ nowo_phone_input:
 
 See [USAGE.md](USAGE.md) for per-field overrides.
 
+`use_phone_form_theme: true` (default) prepends `@NowoPhoneInputBundle/Form/phone_input_widget.html.twig` to `twig.form_themes` (skipped when the app already lists it). Set it to `false` to register the theme yourself.
+
+`flag_display: UX_ICON` uses `symfony/ux-icons` when that bundle is installed and enabled; otherwise flags fall back to CSS sprites.
+
 ## Assets and CSP
 
 Named package `nowo_phone_input` (`base_path` `/bundles/nowophoneinput`):

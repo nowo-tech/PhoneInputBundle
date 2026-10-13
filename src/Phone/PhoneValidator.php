@@ -57,7 +57,7 @@ final class PhoneValidator
         if (\is_array($value)) {
             $iso = strtoupper((string) ($value['iso'] ?? $defaultCountryIso));
             $prefix = (string) ($value['prefix'] ?? '');
-            $national = $this->normalizeNationalNumber((string) ($value['national_number'] ?? ''));
+            $national = $this->normalizeNationalNumber((string) ($value['national_number'] ?? ''), $defaultCountryIso);
 
             if ('' === $prefix) {
                 $parts = $this->e164Parser->parse($national, $iso);
@@ -83,13 +83,13 @@ final class PhoneValidator
         return $this->e164Parser->emptyParts($defaultCountryIso);
     }
 
-    private function normalizeNationalNumber(string $value): string
+    private function normalizeNationalNumber(string $value, string $defaultCountryIso): string
     {
         $value = trim($value);
         $value = preg_replace('/[^\d+]/', '', $value) ?? '';
 
         if (str_starts_with($value, '+')) {
-            $parts = $this->e164Parser->parse($value, 'ES');
+            $parts = $this->e164Parser->parse($value, $defaultCountryIso);
 
             return $parts['national_number'];
         }

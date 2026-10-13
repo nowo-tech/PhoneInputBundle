@@ -31,6 +31,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Without the country prefix selector, an international number typed with a non-default prefix (e.g. `+447911123456` with default country `ES`) is now saved as typed instead of being rewritten with the default prefix (`+347911123456`).
+- `flag_display: UX_ICON` now actually receives the Symfony UX Icons renderer when `symfony/ux-icons` is installed (the service was never wired, so CSS flags were always used).
+- `use_phone_form_theme: true` (default) now registers the widget form theme in `twig.form_themes` as documented; set it to `false` to manage the theme yourself.
+- Server-side validation of separated values with a `+` prefix in the national number uses the constraint default country instead of a hardcoded `ES`.
+
 ## [1.4.4] - 2026-10-09
 
 ### Changed

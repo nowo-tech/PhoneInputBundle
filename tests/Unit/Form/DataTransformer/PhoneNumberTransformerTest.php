@@ -269,6 +269,47 @@ final class PhoneNumberTransformerTest extends TestCase
         $this->assertSame('+34612345678', $transformer->reverseTransform(['national_number' => '612345678']));
     }
 
+    /**
+     * Regression: without the prefix selector, +447911123456 with default country ES was saved as +347911123456.
+     */
+    public function testWithoutSelectorKeepsNonDefaultInternationalPrefix(): void
+    {
+        $provider = TestFixtures::countryProvider();
+        $factory = static fn (ValueFormat $format): PhoneNumberTransformer => new PhoneNumberTransformer(
+            valueFormat: $format,
+            countryPrefixSelector: false,
+            countryProvider: $provider,
+            e164Parser: TestFixtures::e164Parser($provider),
+            defaultCountryIso: 'ES',
+        );
+
+        $this->assertSame('+447911123456', $factory(ValueFormat::CONCATENATED)->reverseTransform(['national_number' => '+44 7911 123456']));
+        $this->assertSame(
+            ['iso' => 'GB', 'prefix' => '+44', 'national_number' => '7911123456'],
+            $factory(ValueFormat::SEPARATED)->reverseTransform(['national_number' => '+447911123456']),
+        );
+
+        $object = $factory(ValueFormat::OBJECT)->reverseTransform(['national_number' => '+447911123456']);
+        $this->assertInstanceOf(PhoneNumber::class, $object);
+        $this->assertSame('GB', $object->iso);
+        $this->assertSame('+44', $object->prefix);
+        $this->assertSame('7911123456', $object->nationalNumber);
+    }
+
+    public function testWithoutSelectorStripsLeadingZerosFromNationalNumber(): void
+    {
+        $provider = TestFixtures::countryProvider();
+        $transformer = new PhoneNumberTransformer(
+            valueFormat: ValueFormat::CONCATENATED,
+            countryPrefixSelector: false,
+            countryProvider: $provider,
+            e164Parser: TestFixtures::e164Parser($provider),
+            defaultCountryIso: 'ES',
+        );
+
+        $this->assertSame('+34612345678', $transformer->reverseTransform(['national_number' => ' 0612 345 678 ']));
+    }
+
     private function createTransformer(ValueFormat $format): PhoneNumberTransformer
     {
         $provider = TestFixtures::countryProvider();

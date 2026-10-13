@@ -60,12 +60,18 @@ final class PhoneNumberTransformer implements DataTransformerInterface
             throw new TransformationFailedException('Expected an array of phone field values.');
         }
 
-        $nationalNumber = $this->normalizeNationalNumber((string) ($value['national_number'] ?? ''));
-        $countryIso = strtoupper((string) ($value['country_iso'] ?? $this->defaultCountryIso));
+        $rawNumber = $this->cleanNumber((string) ($value['national_number'] ?? ''));
 
         if (!$this->countryPrefixSelector) {
-            return $this->buildModelWithoutSelector($nationalNumber);
+            // Keep the international prefix typed by the user (e.g. +44…): stripping it first would
+            // re-apply the default country and save a different number (+34…).
+            return $this->buildModelWithoutSelector(
+                str_starts_with($rawNumber, '+') ? $rawNumber : ltrim($rawNumber, '0'),
+            );
         }
+
+        $nationalNumber = $this->normalizeNationalNumber($rawNumber);
+        $countryIso = strtoupper((string) ($value['country_iso'] ?? $this->defaultCountryIso));
 
         $country = $this->countryProvider->getByIso($countryIso);
         if (!$country instanceof Country) {
@@ -137,11 +143,13 @@ final class PhoneNumberTransformer implements DataTransformerInterface
         return $parts['national_number'];
     }
 
+    private function cleanNumber(string $value): string
+    {
+        return preg_replace('/[^\d+]/', '', trim($value)) ?? '';
+    }
+
     private function normalizeNationalNumber(string $value): string
     {
-        $value = trim($value);
-        $value = preg_replace('/[^\d+]/', '', $value) ?? '';
-
         if (str_starts_with($value, '+')) {
             $parts = $this->e164Parser->parse($value, $this->defaultCountryIso);
 

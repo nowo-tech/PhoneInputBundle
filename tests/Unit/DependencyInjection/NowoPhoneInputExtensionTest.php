@@ -13,7 +13,7 @@ use Nowo\PhoneInputBundle\Phone\PhoneValidator;
 use Nowo\PhoneInputBundle\Twig\CountryFlagRenderer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -69,21 +69,46 @@ final class NowoPhoneInputExtensionTest extends TestCase
         $this->assertSame('FR', $countryProvider->getArgument('$defaultCountryIso'));
     }
 
-    public function testLoadWiresUxIconRendererWhenAvailable(): void
+    public function testLoadWiresUxIconRendererAsOptionalReference(): void
     {
+        // The UX Icons service lives in another bundle and is invisible inside load(): always wire an optional reference.
         $container = new ContainerBuilder();
-        $container->setDefinition(
-            'Symfony\UX\Icons\IconRendererInterface',
-            new Definition(\stdClass::class),
-        );
-
         $this->extension->load([], $container);
 
         $renderer = $container->getDefinition(CountryFlagRenderer::class);
         $this->assertEquals(
-            new Reference('Symfony\UX\Icons\IconRendererInterface'),
+            new Reference('Symfony\UX\Icons\IconRendererInterface', ContainerInterface::NULL_ON_INVALID_REFERENCE),
             $renderer->getArgument('$iconRenderer'),
         );
+    }
+
+    public function testPrependRegistersFormThemeByDefault(): void
+    {
+        $container = $this->containerWithTwig();
+
+        $this->extension->prepend($container);
+
+        $this->assertSame([['form_themes' => [NowoPhoneInputExtension::FORM_THEME]]], $container->getExtensionConfig('twig'));
+    }
+
+    public function testPrependSkipsFormThemeWhenDisabled(): void
+    {
+        $container = $this->containerWithTwig();
+        $container->loadFromExtension('nowo_phone_input', ['use_phone_form_theme' => false]);
+
+        $this->extension->prepend($container);
+
+        $this->assertSame([], $container->getExtensionConfig('twig'));
+    }
+
+    public function testPrependSkipsFormThemeAlreadyRegisteredByApp(): void
+    {
+        $container = $this->containerWithTwig();
+        $container->loadFromExtension('twig', ['form_themes' => [NowoPhoneInputExtension::FORM_THEME]]);
+
+        $this->extension->prepend($container);
+
+        $this->assertSame([['form_themes' => [NowoPhoneInputExtension::FORM_THEME]]], $container->getExtensionConfig('twig'));
     }
 
     public function testPrependRegistersAssetPackage(): void
@@ -173,5 +198,23 @@ final class NowoPhoneInputExtensionTest extends TestCase
 
         $validator = $container->getDefinition(PhoneValidator::class);
         $this->assertNull($validator->getArgument('$nationalPhoneNumberChecker'));
+    }
+
+    private function containerWithTwig(): ContainerBuilder
+    {
+        $container = new ContainerBuilder();
+        $container->registerExtension($this->extension);
+        $container->registerExtension(new class extends Extension {
+            public function getAlias(): string
+            {
+                return 'twig';
+            }
+
+            public function load(array $configs, ContainerBuilder $container): void
+            {
+            }
+        });
+
+        return $container;
     }
 }

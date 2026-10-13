@@ -36,7 +36,7 @@ twig:
         - '@NowoPhoneInputBundle/Form/phone_input_widget.html.twig'
 ```
 
-Or enable `use_phone_form_theme: true` in bundle configuration (default).
+Or rely on `use_phone_form_theme: true` in bundle configuration (default), which prepends this theme to `twig.form_themes` automatically.
 
 ## Styles
 

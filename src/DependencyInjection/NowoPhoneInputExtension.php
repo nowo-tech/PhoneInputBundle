@@ -13,6 +13,7 @@ use Nowo\PhoneInputBundle\Twig\CountryFlagRenderer;
 use Symfony\Component\Asset\Package;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -23,6 +24,10 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class NowoPhoneInputExtension extends Extension implements PrependExtensionInterface
 {
+    public const FORM_THEME = '@NowoPhoneInputBundle/Form/phone_input_widget.html.twig';
+
+    private const UX_ICON_RENDERER_ID = 'Symfony\UX\Icons\IconRendererInterface';
+
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
@@ -42,13 +47,12 @@ class NowoPhoneInputExtension extends Extension implements PrependExtensionInter
         $countryProviderDefinition->replaceArgument('$allowedCountries', $config['allowed_countries']);
         $countryProviderDefinition->replaceArgument('$excludedCountries', $config['excluded_countries']);
 
-        $countryFlagRendererDefinition = $container->getDefinition(CountryFlagRenderer::class);
-        if ($container->has('Symfony\UX\Icons\IconRendererInterface')) {
-            $countryFlagRendererDefinition->setArgument(
-                '$iconRenderer',
-                new Reference('Symfony\UX\Icons\IconRendererInterface'),
-            );
-        }
+        // load() runs on an isolated container (MergeExtensionConfigurationPass), so has() cannot see
+        // services from other bundles here: use an optional reference resolved at compile time instead.
+        $container->getDefinition(CountryFlagRenderer::class)->setArgument(
+            '$iconRenderer',
+            new Reference(self::UX_ICON_RENDERER_ID, ContainerInterface::NULL_ON_INVALID_REFERENCE),
+        );
 
         $phoneValidatorDefinition = $container->getDefinition(PhoneValidator::class);
         if ($this->supportsLibPhoneNumber()) {
@@ -72,6 +76,37 @@ class NowoPhoneInputExtension extends Extension implements PrependExtensionInter
     }
 
     public function prepend(ContainerBuilder $container): void
+    {
+        $this->prependFormTheme($container);
+        $this->prependAssetPackage($container);
+    }
+
+    /**
+     * Registers the widget form theme in twig.form_themes when use_phone_form_theme is true (default).
+     */
+    private function prependFormTheme(ContainerBuilder $container): void
+    {
+        if (!$container->hasExtension('twig')) {
+            return;
+        }
+
+        $config = $this->processConfiguration(new Configuration(), $container->getExtensionConfig(Configuration::ALIAS));
+        if (true !== $config['use_phone_form_theme']) {
+            return;
+        }
+
+        foreach ($container->getExtensionConfig('twig') as $twigConfig) {
+            if (\in_array(self::FORM_THEME, (array) ($twigConfig['form_themes'] ?? []), true)) {
+                return; // Already registered by the application.
+            }
+        }
+
+        $container->prependExtensionConfig('twig', [
+            'form_themes' => [self::FORM_THEME],
+        ]);
+    }
+
+    private function prependAssetPackage(ContainerBuilder $container): void
     {
         if (!$container->hasExtension('framework')) {
             return;
