@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Table of contents
 
 - [[Unreleased]](#unreleased)
+- [[1.6.2] - 2026-10-18](#162---2026-10-18)
 - [[1.6.1] - 2026-10-13](#161---2026-10-13)
 - [[1.6.0] - 2026-10-13](#160---2026-10-13)
 - [[1.5.0] - 2026-10-13](#150---2026-10-13)
@@ -33,6 +34,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [[1.0.0] - 2026-06-20](#100---2026-06-20)
 
 ## [Unreleased]
+
+## [1.6.2] - 2026-10-18
+
+Widget texts translated in the bundle's own domain (7 locales), validator messages shipped. See [UPGRADING](UPGRADING.md#to-162).
 
 ### Fixed
 
@@ -92,6 +97,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Dev tooling: `igor-php/igor-php` ^0.10 (Dependabot #28), `phpstan/phpstan` 2.3.1, `phpstan/phpstan-phpunit` 2.1.1, `phpstan/phpstan-symfony` 2.1.0, `rector/rector` 2.7.0, `nowo-tech/phpstan-frankenphp` v1.2.3, `giggsey/libphonenumber-for-php` 9.0.41; Symfony 7.4/8.1 patch releases in the bundle lock.
 - Demo (Symfony 8): `twig/twig` v3.30.0, `twig/extra-bundle` v3.29.0, PHPUnit 10.5.66, `nowo-tech/hot-reload-bundle` v1.5.5.
 
+[1.6.2]: https://github.com/nowo-tech/PhoneInputBundle/releases/tag/v1.6.2
 [1.6.1]: https://github.com/nowo-tech/PhoneInputBundle/releases/tag/v1.6.1
 [1.6.0]: https://github.com/nowo-tech/PhoneInputBundle/releases/tag/v1.6.0
 [1.5.0]: https://github.com/nowo-tech/PhoneInputBundle/releases/tag/v1.5.0

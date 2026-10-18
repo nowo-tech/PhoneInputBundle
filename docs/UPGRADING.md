@@ -11,6 +11,7 @@
   - [1.1.0](#110)
   - [1.0.0](#100)
 - [Unreleased](#unreleased)
+- [To 1.6.2](#to-162)
 - [To 1.6.1](#to-161)
 - [To 1.6.0](#to-160)
 - [To 1.5.0](#to-150)
@@ -119,6 +120,14 @@ See [INSTALLATION.md](INSTALLATION.md) and [USAGE.md](USAGE.md) for details.
 If you mount the bundle source in Docker demos, use `dev-main as 1.0.99` in demo `composer.json` with `minimum-stability: dev` and `prefer-stable: true`.
 
 ## Unreleased
+
+## To 1.6.2
+
+From **1.6.1**:
+
+```bash
+composer update nowo-tech/phone-input-bundle
+```
 
 - **Widget texts in the bundle domain:** the prefix selector label, search placeholder and empty state are translated
   in `NowoPhoneInputBundle` (keys `phone_input.prefix_label`, `phone_input.search_placeholder`,
