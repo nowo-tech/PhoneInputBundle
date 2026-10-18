@@ -120,6 +120,12 @@ If you mount the bundle source in Docker demos, use `dev-main as 1.0.99` in demo
 
 ## Unreleased
 
+- **Widget texts in the bundle domain:** the prefix selector label, search placeholder and empty state are translated
+  in `NowoPhoneInputBundle` (keys `phone_input.prefix_label`, `phone_input.search_placeholder`,
+  `phone_input.no_countries`; en, es, fr, de, it, pt, nl), no longer as English literals in the field domain. If you
+  translated those literals in your own domain, move them to `translations/NowoPhoneInputBundle.<locale>.yaml` under
+  the new keys. Overrides of `phone_input_widget.html.twig` keep working.
+
 ## To 1.6.1
 
 From **1.6.0** — typed international prefixes outside the selector countries are rejected.

@@ -1,0 +1,3 @@
+# Default violation messages of ValidPhoneNumber / PhoneType (`invalid_message`), translated by the validator (domain validators).
+'The phone number is invalid for the selected country.': 'Le numéro de téléphone n''est pas valide pour le pays sélectionné.'
+'The phone number is invalid.': 'Le numéro de téléphone n''est pas valide.'

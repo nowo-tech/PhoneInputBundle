@@ -61,6 +61,12 @@ templates/bundles/NowoPhoneInputBundle/Form/_phone_country_flag.html.twig
 
 Symfony resolves `@NowoPhoneInputBundle/Form/...` to your copies automatically.
 
+## Translations
+
+The widget texts are messages of the `NowoPhoneInputBundle` domain (en, es, fr, de, it, pt, nl):
+`phone_input.prefix_label`, `phone_input.search_placeholder`, `phone_input.no_countries`. Override them in
+`translations/NowoPhoneInputBundle.<locale>.yaml`. The default violation messages are in the `validators` domain.
+
 ## CSP-safe prefix picker
 
 The widget is `<nowo-phone-input>` (light DOM: country picker + national number). It loads an external vanilla IIFE (no Stimulus required):

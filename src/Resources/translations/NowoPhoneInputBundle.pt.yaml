@@ -1,0 +1,5 @@
+# Widget texts of the phone input (domain NowoPhoneInputBundle; hosts override them in translations/NowoPhoneInputBundle.<locale>.yaml).
+phone_input:
+  prefix_label: 'Indicativo do país'
+  search_placeholder: 'Pesquisar país ou indicativo…'
+  no_countries: 'Nenhum país encontrado'

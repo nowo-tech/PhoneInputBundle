@@ -34,6 +34,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Untranslated widget texts / profiler missing messages:** the prefix selector label ("Country prefix"), the search
+  placeholder ("Search country or prefix…") and the empty state ("No countries found") were English literals looked
+  up in the field's translation domain (missing in every host catalogue). They are now messages of the bundle domain
+  `NowoPhoneInputBundle` (`phone_input.prefix_label`, `phone_input.search_placeholder`, `phone_input.no_countries`)
+  with translations in en, es, fr, de, it, pt and nl. The default violation messages ("The phone number is invalid
+  for the selected country.", "The phone number is invalid.") ship in the `validators` domain for the same locales.
+  Test rendering the widget with a `DataCollectorTranslator` asserting no missing message; `symfony/translation` added
+  to require-dev.
+
 ## [1.6.1] - 2026-10-13
 
 ### Fixed
