@@ -8,6 +8,13 @@
 4. Commit all changes, create an annotated tag (e.g. `v1.3.0`), and push branch and tag. The release workflow creates the GitHub Release from the tag and changelog.
 5. Publish on Packagist (usually automatic when the tag is pushed and the package is registered).
 
+## Table of contents
+
+- [Example for v1.3.0](#example-for-v130)
+- [Example for v1.2.1](#example-for-v121)
+- [Example for v1.1.5](#example-for-v115)
+- [Security checklist](#security-checklist)
+
 ## Example for v1.3.0
 
 ```bash

@@ -4,6 +4,9 @@
 
 - [Supported Versions](#supported-versions)
 - [Reporting a Vulnerability](#reporting-a-vulnerability)
+  - [How to Report](#how-to-report)
+  - [Response Timeline](#response-timeline)
+  - [Disclosure Policy](#disclosure-policy)
 - [Scope and attack surface](#scope-and-attack-surface)
 - [Threat model and mitigations](#threat-model-and-mitigations)
 - [Content Security Policy (CSP)](#content-security-policy-csp)

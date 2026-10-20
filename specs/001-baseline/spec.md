@@ -114,6 +114,7 @@ As an integrator, I configure how flags appear: CSS sprites, emoji, UX Icons SVG
 
 - **FR-VAL-001**: `PhoneValidator` and `PhoneValidationMode` MUST implement COUNTRY, PREFIX, and NONE strategies using patterns and optional libphonenumber.
 - **FR-VAL-002**: `ValidPhoneNumber` constraint and validator MUST integrate with Symfony Validator and respect type-level `invalid_message`.
+- **FR-VAL-003**: National-number validation is pluggable through `NationalPhoneNumberChecker`; `LibPhoneNumberChecker` is the libphonenumber-backed implementation (the `PhoneNumberUtil` instance is injected, never fetched with `getInstance()` in request code).
 
 ### Twig & assets
 
@@ -123,6 +124,8 @@ As an integrator, I configure how flags appear: CSS sprites, emoji, UX Icons SVG
 - **FR-TWIG-004**: CSP — any inline `<script>`/`<style>` in bundle templates MUST emit `nonce` from request attribute `csp_nonce` when set; no inline event handlers (enforced by `InlineBlocksDeclareNonceTest`).
 - **FR-ASSET-001**: `phone_input.css` MUST style the composite widget and framework-friendly layout hooks.
 - **FR-ASSET-002**: `flag-icons.min.css` MUST map ISO codes to bundled SVG flags.
+- **FR-ASSET-003**: `nowo-phone-prefix-picker.js` MUST enhance the country prefix picker (`[data-controller="phone-prefix-picker"]`, `[data-nowo-phone-prefix-picker]`) without Stimulus and without inline script (CSP-safe).
+- **FR-I18N-001**: Translation catalogues ship in seven locales (`de`, `en`, `es`, `fr`, `it`, `nl`, `pt`) for the UI domain `NowoPhoneInputBundle` and the `validators` domain (constraint messages).
 - **FR-FLAG-001**: SVG assets under `Resources/public/flags/4x3/` MUST provide 4×3 flag icons for catalog countries shipped with the bundle (64 ISO codes).
 
 ---
@@ -137,7 +140,7 @@ As an integrator, I configure how flags appear: CSS sprites, emoji, UX Icons SVG
 
 ## Success Criteria
 
-- **SC-001**: 100% of production files in `src/` mapped in [`code-inventory.md`](code-inventory.md) (**93/93**).
+- **SC-001**: 100% of production files in `src/` mapped in [`code-inventory.md`](code-inventory.md) (**110/110**).
 - **SC-002**: Configuration keys in `docs/CONFIGURATION.md` match `Configuration.php`.
 - **SC-003**: PHPUnit (≥95% coverage) and PHPStan pass in CI.
 - **SC-004**: All three value formats round-trip correctly in integration tests.
@@ -169,6 +172,6 @@ As an integrator, I configure how flags appear: CSS sprites, emoji, UX Icons SVG
 | Full QA | `make release-check` or `composer qa` |
 | PHP tests + coverage | `composer test-coverage` (≥95%) |
 | Static analysis | `vendor/bin/phpstan analyse` |
-| Code inventory | `find src -type f \| wc -l` must match 93 |
+| Code inventory | `find src -type f \| wc -l` must match 110 |
 
 When changing behavior, update this spec, [`code-inventory.md`](code-inventory.md), tests, and integrator docs.

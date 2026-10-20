@@ -35,6 +35,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Documentation: wave-1 REQ compliance — README documentation list order and canonical FrankenPHP claim line, CONTRIBUTING Cursor Agent settings and post-release-commit trailer check, canonical bug-report template, de-duplicated pull request template, demo `.env.example` comments, doc TOCs, Spec Kit inventory refresh (110/110).
+
 ## [1.6.2] - 2026-10-18
 
 Widget texts translated in the bundle's own domain (7 locales), validator messages shipped. See [UPGRADING](UPGRADING.md#to-162).

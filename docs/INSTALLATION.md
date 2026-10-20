@@ -1,5 +1,15 @@
 # Installation
 
+## Table of contents
+
+- [Requirements](#requirements)
+- [Install with Composer](#install-with-composer)
+- [Register the bundle](#register-the-bundle)
+- [Form theme](#form-theme)
+- [Styles](#styles)
+- [Optional UX Icons](#optional-ux-icons)
+- [Twig Extra Bundle (REQ-TWIG-004)](#twig-extra-bundle-req-twig-004)
+
 ## Requirements
 
 - **PHP** >= 8.2, < 8.6

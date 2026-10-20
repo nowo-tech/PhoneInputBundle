@@ -2,7 +2,7 @@
 
 **Baseline spec**: [`spec.md`](spec.md)  
 **Package**: `nowo-tech/phone-input-bundle`  
-**Last audited**: 2026-07-07
+**Last audited**: 2026-10-20 (prefix picker JS, national checkers, translation catalogues)
 
 This file proves that **every production source artifact** under `src/` is referenced by the baseline specification. Test-only files under `tests/` and demo trees are out of Packagist scope unless promoted in the spec.
 
@@ -32,6 +32,8 @@ This file proves that **every production source artifact** under `src/` is refer
 | `IconSupport/IconSupportChecker.php` | UX Icons detection | FR-FORM-003 |
 | `Twig/CountryFlagExtension.php` | Flag Twig extension | FR-TWIG-002 |
 | `Twig/CountryFlagRenderer.php` | Flag render strategies | FR-TWIG-002 |
+| `Phone/LibPhoneNumberChecker.php` | libphonenumber national checker | FR-VAL-003 |
+| `Phone/NationalPhoneNumberChecker.php` | National checker contract | FR-VAL-003 |
 
 ## JSON data (`src/Resources/data/`)
 
@@ -129,16 +131,43 @@ This file proves that **every production source artifact** under `src/` is refer
 | `Resources/views/Form/phone_input_widget.html.twig` | Form widget | FR-TWIG-003 |
 | `Resources/views/Form/_phone_country_flag.html.twig` | Flag partial | FR-TWIG-003 |
 
+## JavaScript assets (`src/Resources/public/js/`)
+
+| Source file | Spec section | Requirement IDs |
+| --- | --- | --- |
+| `Resources/public/js/nowo-phone-prefix-picker.js` | CSP-safe prefix picker | FR-ASSET-003 |
+
+## Translations (`src/Resources/translations/`)
+
+| Source file | Spec section | Requirement IDs |
+| --- | --- | --- |
+| `Resources/translations/NowoPhoneInputBundle.de.yaml` | UI strings (de) | FR-I18N-001 |
+| `Resources/translations/NowoPhoneInputBundle.en.yaml` | UI strings (en) | FR-I18N-001 |
+| `Resources/translations/NowoPhoneInputBundle.es.yaml` | UI strings (es) | FR-I18N-001 |
+| `Resources/translations/NowoPhoneInputBundle.fr.yaml` | UI strings (fr) | FR-I18N-001 |
+| `Resources/translations/NowoPhoneInputBundle.it.yaml` | UI strings (it) | FR-I18N-001 |
+| `Resources/translations/NowoPhoneInputBundle.nl.yaml` | UI strings (nl) | FR-I18N-001 |
+| `Resources/translations/NowoPhoneInputBundle.pt.yaml` | UI strings (pt) | FR-I18N-001 |
+| `Resources/translations/validators.de.yaml` | Constraint messages (de) | FR-I18N-001, FR-VAL-002 |
+| `Resources/translations/validators.en.yaml` | Constraint messages (en) | FR-I18N-001, FR-VAL-002 |
+| `Resources/translations/validators.es.yaml` | Constraint messages (es) | FR-I18N-001, FR-VAL-002 |
+| `Resources/translations/validators.fr.yaml` | Constraint messages (fr) | FR-I18N-001, FR-VAL-002 |
+| `Resources/translations/validators.it.yaml` | Constraint messages (it) | FR-I18N-001, FR-VAL-002 |
+| `Resources/translations/validators.nl.yaml` | Constraint messages (nl) | FR-I18N-001, FR-VAL-002 |
+| `Resources/translations/validators.pt.yaml` | Constraint messages (pt) | FR-I18N-001, FR-VAL-002 |
+
 ## Coverage summary
 
 | Category | Files | Mapped |
 | --- | ---: | ---: |
-| PHP classes | 22 | 22 |
-| JSON data | 2 | 2 |
-| CSS assets | 2 | 2 |
-| Flag SVG icons | 64 | 64 |
-| YAML config | 1 | 1 |
-| Twig views | 2 | 2 |
-| **Total production sources** | **93** | **93** |
+| PHP classes (`src/**/*.php`) | 24 | 24 |
+| JSON data (`src/Resources/data/`) | 2 | 2 |
+| CSS assets (`src/Resources/public/css/`) | 2 | 2 |
+| Flag SVG icons (`src/Resources/public/flags/4x3/`) | 64 | 64 |
+| Symfony config (`src/Resources/config/`) | 1 | 1 |
+| Twig views (`src/Resources/views/`) | 2 | 2 |
+| JavaScript assets (`src/Resources/public/js/`) | 1 | 1 |
+| Translations (`src/Resources/translations/`) | 14 | 14 |
+| **Total production sources** | **110** | **110** |
 
 Bundled flags cover the ISO codes shipped with the bundle; additional countries may be added in future releases with matching catalog entries in `countries.json`.

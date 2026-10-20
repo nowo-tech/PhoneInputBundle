@@ -9,6 +9,18 @@
 | Method | Manual review of every PHP file under `src/` (form type, data transformer, validator, Twig extension/renderer, country and pattern catalogs, DI extension, compiler pass, `Resources/config/services.yaml`) + PHPStan classic + worker-strict |
 | **Verdict** | ✅ **100% compatible** under Scenario B (`reset_kernel: false`) |
 
+## Table of contents
+
+- [Execution model assumed](#execution-model-assumed)
+- [Summary](#summary)
+- [Services reviewed](#services-reviewed)
+- [Findings](#findings)
+  - [W-01 — `UX_ICON` flag rendering may trigger HTTP fetches through Symfony UX Icons (Low)](#w-01--ux_icon-flag-rendering-may-trigger-http-fetches-through-symfony-ux-icons-low)
+  - [W-02 — Lazily-loaded catalog caches are intentional and safe (Info)](#w-02--lazily-loaded-catalog-caches-are-intentional-and-safe-info)
+  - [Closed / hardening notes (2026-09-24)](#closed--hardening-notes-2026-09-24)
+- [Usage recommendations in worker mode](#usage-recommendations-in-worker-mode)
+- [Re-audit triggers](#re-audit-triggers)
+
 ## Execution model assumed
 
 FrankenPHP worker mode boots the Symfony kernel once per worker and serves many requests with the same container. This audit assumes the **strict** host contract used by Nowo “Friendly Worker” / kernel-isolation E2E:

@@ -1,5 +1,16 @@
 # Usage
 
+## Table of contents
+
+- [Screenshots](#screenshots)
+- [Basic field](#basic-field)
+- [Value formats](#value-formats)
+- [Prefix selector options](#prefix-selector-options)
+- [Overriding bundle templates](#overriding-bundle-templates)
+- [Translations](#translations)
+- [CSP-safe prefix picker](#csp-safe-prefix-picker)
+- [CSS frameworks](#css-frameworks)
+
 ## Screenshots
 
 | Overview | Interaction |
