@@ -37,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Dependencies refreshed (Composer and pnpm/npm lock files of the bundle and its demos, campaign 2026-10-19).
 - Documentation: wave-1 REQ compliance — README documentation list order and canonical FrankenPHP claim line, CONTRIBUTING Cursor Agent settings and post-release-commit trailer check, canonical bug-report template, de-duplicated pull request template, demo `.env.example` comments, doc TOCs, Spec Kit inventory refresh (110/110).
 
 ## [1.6.2] - 2026-10-18
