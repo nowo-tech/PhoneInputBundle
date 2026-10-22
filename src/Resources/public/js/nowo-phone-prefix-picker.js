@@ -69,7 +69,7 @@
       return scope.querySelectorAll('.nowo-phone-input__prefix-option');
     }
 
-    // REQ-UX-001: build the flag with DOM APIs (className / textContent), never innerHTML with data attributes.
+    // REQ-UX-001: build the flag with DOM APIs (className / textContent), never an HTML string from data attributes.
     function createFlagNode(iso, emoji) {
       if (flagDisplay === 'NONE') {
         return null;

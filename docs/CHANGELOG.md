@@ -42,6 +42,7 @@ Wave-2 REQ compliance: DOM-safe prefix picker flags, translation and raw-form ga
 
 ### Changed
 
+- `make test-coverage` no longer hides PHPUnit failures behind `| tee` (pipefail); the JS comment no longer trips the no-`innerHTML` assertion (CI of the first 1.6.3 candidate).
 - Prefix picker JS builds the toggle flag with DOM APIs (`className` / `textContent`) instead of `innerHTML` with data attributes (REQ-UX-001).
 - `make validate-translations` (YAML lint + key parity for `NowoPhoneInputBundle` and `validators`) and `make check-no-raw-html-form` in `release-check`, which now starts with `ensure-up` (REQ-MAKE-002/004).
 - CI: the code-style job also runs PHPStan, Igor and translation parity on pushes; new `demo-smoke.yml` workflow (REQ-CS-006, REQ-TEST-011).

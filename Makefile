@@ -84,7 +84,7 @@ test: ensure-up
 	$(COMPOSE) exec $(SERVICE_PHP) composer test
 
 test-coverage: ensure-up
-	$(COMPOSE) exec $(SERVICE_PHP) composer test-coverage | tee coverage-php.txt
+	@bash -o pipefail -c "$(COMPOSE) exec -T $(SERVICE_PHP) composer test-coverage | tee coverage-php.txt"
 	./.scripts/php-coverage-percent.sh coverage-php.txt
 
 coverage-check: test-coverage
