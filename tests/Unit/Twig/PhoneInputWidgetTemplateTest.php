@@ -39,6 +39,8 @@ final class PhoneInputWidgetTemplateTest extends TestCase
         $this->assertStringContainsString('customElements.define(TAG, NowoPhoneInputElement)', $content);
         $this->assertStringContainsString('phone-prefix-picker', $content);
         $this->assertStringContainsString('nowo-phone-input__prefix-dropdown--portaled', $content);
+        // REQ-UX-001: no HTML sinks fed with data attributes.
+        $this->assertStringNotContainsString('innerHTML', $content);
     }
 
     public function testUxIconRendererFallsBackWhenRenderThrows(): void

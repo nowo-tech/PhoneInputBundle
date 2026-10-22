@@ -37,6 +37,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Prefix picker JS builds the toggle flag with DOM APIs (`className` / `textContent`) instead of `innerHTML` with data attributes (REQ-UX-001).
+- `make validate-translations` (YAML lint + key parity for `NowoPhoneInputBundle` and `validators`) and `make check-no-raw-html-form` in `release-check`, which now starts with `ensure-up` (REQ-MAKE-002/004).
+- CI: the code-style job also runs PHPStan, Igor and translation parity on pushes; new `demo-smoke.yml` workflow (REQ-CS-006, REQ-TEST-011).
+- Demo: CSS-framework switcher is a Symfony Form (`FrameworkSwitcherType`); the redundant raw hidden `framework` input is gone; the entrypoint waits for `vendor/` so worker mode boots on a clean checkout (REQ-DEMO-001, REQ-TWIG-005, REQ-TEST-011).
+- `PhoneType` is tagged by autoconfiguration (manual `form.type` tag removed) (REQ-SF-003); Rector uses the PHP 8.2 sets with at most 2 workers (REQ-CS-003).
+- Docs: PSR evaluation reasons match the package (REQ-CS-007); release checklist gains the AI-audit and client-rendering items (REQ-SEC-002); README coverage updated to the measured value (REQ-TEST-007).
+- `.scripts/check-no-cursor-coauthor.sh` accepts git worktrees (REQ-GIT-001).
+
 - Dependencies refreshed (Composer and pnpm/npm lock files of the bundle and its demos, campaign 2026-10-19).
 - Documentation: wave-1 REQ compliance — README documentation list order and canonical FrankenPHP claim line, CONTRIBUTING Cursor Agent settings and post-release-commit trailer check, canonical bug-report template, de-duplicated pull request template, demo `.env.example` comments, doc TOCs, Spec Kit inventory refresh (110/110).
 

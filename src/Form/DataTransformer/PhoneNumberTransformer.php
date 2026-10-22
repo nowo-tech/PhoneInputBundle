@@ -17,16 +17,16 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
  *
  * @implements DataTransformerInterface<string|array<string, string>|PhoneNumber|null, array<string, string|null>>
  */
-final class PhoneNumberTransformer implements DataTransformerInterface
+final readonly class PhoneNumberTransformer implements DataTransformerInterface
 {
     public function __construct(
-        private readonly ValueFormat $valueFormat,
-        private readonly bool $countryPrefixSelector,
-        private readonly CountryProvider $countryProvider,
-        private readonly E164Parser $e164Parser,
-        private readonly string $defaultCountryIso,
+        private ValueFormat $valueFormat,
+        private bool $countryPrefixSelector,
+        private CountryProvider $countryProvider,
+        private E164Parser $e164Parser,
+        private string $defaultCountryIso,
         /** @var list<string> selector countries (order: preferred, then allowed): preferred when a dial code is shared; with the selector, a typed + prefix must belong to one of them (empty = no restriction) */
-        private readonly array $preferredCountryIsos = [],
+        private array $preferredCountryIsos = [],
     ) {
     }
 

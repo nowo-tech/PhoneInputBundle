@@ -40,7 +40,7 @@ services:
     arguments:
       $iconRenderer: null
 
+  # REQ-SF-003: tagged form.type by autoconfiguration (FormTypeInterface).
   Nowo\PhoneInputBundle\Form\Type\PhoneType:
     arguments:
       $defaults: '%nowo_phone_input.defaults%'
-    tags: ['form.type']

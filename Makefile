@@ -7,7 +7,8 @@ COMPOSE_BIN := $(shell docker compose version >/dev/null 2>&1 && echo "docker co
 COMPOSE     := $(COMPOSE_BIN) -f $(COMPOSE_FILE)
 SERVICE_PHP := php
 
-.PHONY: help up down down-dev build shell install test test-coverage coverage-check coverage-php-percent cs-check cs-fix rector rector-dry phpstan igor qa release-check release-check-demos demo-smoke composer-sync clean update validate assets setup-hooks update-deps update-deps-demos update-deps-all check-no-cursor-coauthor check-open-prs strip-cursor-coauthor-from-history check-twig-extra
+.PHONY: help up down down-dev build shell install test test-coverage coverage-check coverage-php-percent cs-check cs-fix rector rector-dry phpstan igor qa release-check release-check-demos demo-smoke composer-sync clean update validate assets setup-hooks update-deps update-deps-demos update-deps-all check-no-cursor-coauthor check-open-prs strip-cursor-coauthor-from-history check-twig-extra \
+	check-no-raw-html-form validate-translations
 
 help:
 	@echo "Phone Input Bundle - Development Commands"
@@ -31,7 +32,9 @@ help:
 	@echo "  phpstan       Run PHPStan static analysis"
 	@echo "  igor          Run Igor worker-state audit (REQ-CS-008)"
 	@echo "  qa            Run all QA checks (cs-check + test)"
-	@echo "  release-check Pre-release: open PRs, cs, phpstan, coverage-check, demos"
+	@echo "  release-check Pre-release (REQ-MAKE-002): hygiene, open PRs, Twig gates, cs, rector, phpstan, igor, translations, coverage-check, demos"
+	@echo "  validate-translations YAML lint + key parity across locales (REQ-MAKE-004)"
+	@echo "  check-no-raw-html-form Fail on raw form markup in Twig (REQ-TWIG-005)"
 	@echo "  demo-smoke    Demo healthchecks (release-verify)"
 	@echo "  check-open-prs Fail if unresolved open PRs (REQ-REL-003)"
 	@echo "  composer-sync Validate composer.json and align composer.lock (no install)"
@@ -121,7 +124,16 @@ check-twig-extra:
 # Run Igor worker-state audit (REQ-CS-008)
 igor: ensure-up
 	$(COMPOSE) exec -T php composer igor
-release-check: check-no-cursor-coauthor check-open-prs check-twig-extra ensure-up composer-sync cs-fix cs-check rector-dry phpstan igor coverage-check release-check-demos
+check-no-raw-html-form:
+	@bash .scripts/check-no-raw-html-form.sh
+
+# REQ-MAKE-004: YAML lint + key parity of the NowoPhoneInputBundle and validators catalogues.
+validate-translations: ensure-up
+	@$(COMPOSE) exec -T $(SERVICE_PHP) php vendor/bin/yaml-lint src/Resources/translations
+	@$(COMPOSE) exec -T $(SERVICE_PHP) php .scripts/validate-translations.php
+
+# REQ-MAKE-002 order.
+release-check: ensure-up check-no-cursor-coauthor check-open-prs check-twig-extra check-no-raw-html-form composer-sync cs-fix cs-check rector-dry phpstan igor validate-translations coverage-check release-check-demos
 
 release-check-demos:
 	@if [ -f demo/Makefile ]; then $(MAKE) -C demo release-check; else true; fi

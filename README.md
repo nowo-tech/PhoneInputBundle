@@ -108,7 +108,7 @@ make release-check   # cs-fix, phpstan, coverage, demo healthchecks
 ## Tests and coverage
 
 - Tests: PHPUnit (unit + integration)
-- PHP: **95.75%**
+- PHP: **99.74%** (753/755 lines)
 - TS/JS: N/A
 - Python: N/A
 

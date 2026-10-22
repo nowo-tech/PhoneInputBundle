@@ -130,9 +130,8 @@ jobs:
           git push
 
   code-style-check:
-    name: Code Style Check
+    name: Code style, PHPStan, Igor, translations
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
 
     steps:
       - name: Checkout code
@@ -149,6 +148,15 @@ jobs:
 
       - name: Check code style
         run: composer cs-check
+
+      - name: PHPStan (REQ-CS-005 / REQ-CS-006)
+        run: composer phpstan
+
+      - name: Igor worker-state audit (REQ-CS-008)
+        run: composer igor
+
+      - name: Translation key parity (REQ-MAKE-004)
+        run: php .scripts/validate-translations.php
 
   coverage:
     name: Code Coverage

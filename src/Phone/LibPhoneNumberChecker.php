@@ -9,10 +9,10 @@ use libphonenumber\PhoneNumberUtil;
 /**
  * libphonenumber-backed national number checker (injected; no getInstance in request code).
  */
-final class LibPhoneNumberChecker implements NationalPhoneNumberChecker
+final readonly class LibPhoneNumberChecker implements NationalPhoneNumberChecker
 {
     public function __construct(
-        private readonly PhoneNumberUtil $phoneNumberUtil,
+        private PhoneNumberUtil $phoneNumberUtil,
     ) {
     }
 

@@ -103,12 +103,8 @@
         </div>
 
         <div class="demo-framework-switcher">
-            <label for="demo-framework-select">CSS framework</label>
-            <select id="demo-framework-select" class="form-select form-select-sm" aria-label="CSS framework">
-                {% for frameworkId, frameworkLabel in frameworkChoices %}
-                    <option value="{{ frameworkId }}"{% if frameworkId == activeFramework %} selected{% endif %}>{{ frameworkLabel }}</option>
-                {% endfor %}
-            </select>
+            {{ form_label(frameworkSwitcher.framework, null, {label_attr: {for: 'demo-framework-select'}}) }}
+            {{ form_widget(frameworkSwitcher.framework) }}
             <p class="demo-framework-switcher__hint mb-0">
                 Applies <code>container_classes</code>, <code>prefix_selector_classes</code> and
                 <code>national_number_classes</code> to every field:
@@ -136,7 +132,6 @@
         {% endif %}
 
         {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
-        <input type="hidden" name="framework" value="{{ activeFramework }}">
 
         {% set coreSections = {
             'phone_concatenated_with_prefix': '1. Concatenated + prefix selector',

@@ -23,13 +23,13 @@ Others are **N/A** (or already covered by Symfony) so the decision stays auditab
 
 | PSR | Decision | Notes |
 | --- | -------- | ----- |
-| PSR-3 Logger | **N/A** | Logging calls exist but there is no public/injectable logger SPI yet; do not add `psr/log` without type-hints. |
+| PSR-3 Logger | **N/A** | The bundle does not log: it is a form type + validators + Twig widget with no side effects worth recording. |
 | PSR-6 / PSR-16 Cache | **N/A** | No package-owned cache layer. |
-| PSR-7 / PSR-17 HTTP messages | **N/A** | Symfony HttpFoundation (or no HTTP messages API) is the correct surface; a PSR-7 bridge would not help consumers. |
-| PSR-18 HTTP client | **N/A** | Outbound HTTP uses Symfony `HttpClientInterface` (or a package transport) as the supported SPI instead of PSR-18. |
+| PSR-7 / PSR-17 HTTP messages | **N/A** | No HTTP messages API: the package works on Symfony Form data, not requests. |
+| PSR-18 HTTP client | **N/A** | No outbound HTTP; `IconSupportChecker` only detects whether `symfony/http-client` is installed (needed by `symfony/ux-icons` for flags). |
 | PSR-11 Container | **N/A** | No container locator in the public API; constructor injection only. |
 | PSR-14 Event dispatcher | **N/A** | No domain event extension points that need a dispatcher SPI. |
-| PSR-15 HTTP middleware | **N/A** | Uses Symfony kernel listeners/subscribers (or has no HTTP middleware pipeline). |
+| PSR-15 HTTP middleware | **N/A** | No HTTP pipeline. |
 | PSR-20 Clock | **N/A** | No time-sensitive domain logic requiring a clock SPI. |
 
 ## Summary

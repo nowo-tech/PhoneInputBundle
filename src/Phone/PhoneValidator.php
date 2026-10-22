@@ -10,13 +10,13 @@ use Nowo\PhoneInputBundle\Validation\PhoneValidationMode;
 /**
  * Validates phone values using country/prefix rules and optional libphonenumber.
  */
-final class PhoneValidator
+final readonly class PhoneValidator
 {
     public function __construct(
-        private readonly E164Parser $e164Parser,
-        private readonly PhonePatternCatalog $patternCatalog,
-        private readonly bool $useLibPhoneNumber = true,
-        private readonly ?NationalPhoneNumberChecker $nationalPhoneNumberChecker = null,
+        private E164Parser $e164Parser,
+        private PhonePatternCatalog $patternCatalog,
+        private bool $useLibPhoneNumber = true,
+        private ?NationalPhoneNumberChecker $nationalPhoneNumberChecker = null,
     ) {
     }
 

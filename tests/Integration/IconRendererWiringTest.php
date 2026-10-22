@@ -65,10 +65,7 @@ final class IconRendererWiringTest extends TestCase
 
 final class FakeIconRenderer
 {
-    /**
-     * @param array<string, string> $attributes
-     */
-    public function renderIcon(string $name, array $attributes = []): string
+    public function renderIcon(string $name): string
     {
         return '<svg data-name="'.$name.'"></svg>';
     }

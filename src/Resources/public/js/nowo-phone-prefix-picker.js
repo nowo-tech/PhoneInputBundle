@@ -69,14 +69,20 @@
       return scope.querySelectorAll('.nowo-phone-input__prefix-option');
     }
 
-    function renderFlagHtml(iso, emoji) {
+    // REQ-UX-001: build the flag with DOM APIs (className / textContent), never innerHTML with data attributes.
+    function createFlagNode(iso, emoji) {
       if (flagDisplay === 'NONE') {
-        return '';
+        return null;
       }
+      var span = document.createElement('span');
+      span.setAttribute('aria-hidden', 'true');
       if (flagDisplay === 'CSS_ICON' || flagDisplay === 'UX_ICON') {
-        return '<span class="nowo-phone-input__flag fi fi-' + iso.toLowerCase() + '" aria-hidden="true"></span>';
+        span.className = 'nowo-phone-input__flag fi fi-' + String(iso || '').toLowerCase().replace(/[^a-z]/g, '');
+        return span;
       }
-      return '<span class="nowo-phone-input__flag nowo-phone-input__flag--emoji" aria-hidden="true">' + emoji + '</span>';
+      span.className = 'nowo-phone-input__flag nowo-phone-input__flag--emoji';
+      span.textContent = emoji || '';
+      return span;
     }
 
     function normalizeQuery(query) {
@@ -278,7 +284,11 @@
       var toggleFlag = root.querySelector('.nowo-phone-input__prefix-toggle-flag');
       var toggleCode = root.querySelector('.nowo-phone-input__prefix-toggle-code');
       if (toggleFlag && flagDisplay !== 'NONE') {
-        toggleFlag.innerHTML = renderFlagHtml(iso, emoji);
+        var flagNode = createFlagNode(iso, emoji);
+        toggleFlag.replaceChildren();
+        if (flagNode) {
+          toggleFlag.appendChild(flagNode);
+        }
       }
       if (toggleCode && prefixDisplay !== 'FLAG_ONLY') {
         toggleCode.textContent = prefix;

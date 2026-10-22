@@ -108,9 +108,11 @@ Before tagging a release, confirm:
 | **Recipe / Flex** | Default recipe or installer templates do not ship production secrets. |
 | **Input / output** | Phone normalization/validation preserved; flag HTML escaped in `CountryFlagRenderer`. |
 | **Dependencies** | `composer audit` run; issues triaged. |
-| **Logging** | Logs do not print secrets, tokens, or session identifiers unnecessarily. |
+| **Logging** | The bundle does not log; host logs must not print submitted phone numbers unnecessarily. |
 | **Cryptography** | If used: keys from secure config; never hardcoded. |
 | **Permissions / exposure** | No bundle routes; host app roles apply to forms that embed `PhoneType`. |
 | **Limits / DoS** | Host app should rate-limit abusive form submissions where applicable. |
+| **AI security audit (REQ-SEC-004)** | Re-run the AI security review when the attack surface changes (new widget JS, new rendering of country data); record the grade in the monorepo `BUNDLES_SECURITY_ANALYSIS.md`. |
+| **Client-side rendering** | The prefix picker builds flags with DOM APIs (`textContent` / `className`), never `innerHTML` with data attributes (REQ-UX-001). |
 
 Record confirmation in the release PR or tag notes.

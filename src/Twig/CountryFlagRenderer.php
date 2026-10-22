@@ -10,11 +10,11 @@ use Nowo\PhoneInputBundle\IconSupport\IconSupportChecker;
 /**
  * Renders country flags for the phone prefix selector without requiring Twig UX icon functions.
  */
-final class CountryFlagRenderer
+final readonly class CountryFlagRenderer
 {
     public function __construct(
-        private readonly IconSupportChecker $iconSupportChecker,
-        private readonly ?object $iconRenderer = null,
+        private IconSupportChecker $iconSupportChecker,
+        private ?object $iconRenderer = null,
     ) {
     }
 

@@ -7,7 +7,7 @@ namespace Nowo\PhoneInputBundle\IconSupport;
 /**
  * Detects whether Symfony UX Icons and HTTP Client are available for flag rendering.
  */
-final class IconSupportChecker
+final readonly class IconSupportChecker
 {
     private const UX_ICONS_RUNTIME_CLASSES = [
         'Symfony\UX\Icons\Twig\UXIconRuntime',
@@ -17,10 +17,10 @@ final class IconSupportChecker
     private const HTTP_CLIENT_INTERFACE = 'Symfony\Contracts\HttpClient\HttpClientInterface';
 
     public function __construct(
-        private readonly ?bool $uxIconsAvailable = null,
-        private readonly ?bool $httpClientAvailable = null,
+        private ?bool $uxIconsAvailable = null,
+        private ?bool $httpClientAvailable = null,
         /** @var \Closure(string): bool|null */
-        private readonly ?\Closure $classExistsChecker = null,
+        private ?\Closure $classExistsChecker = null,
     ) {
     }
 

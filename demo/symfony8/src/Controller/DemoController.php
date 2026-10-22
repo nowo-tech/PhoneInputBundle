@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\DemoFramework;
 use App\Form\DemoFormData;
 use App\Form\DemoFormType;
+use App\Form\FrameworkSwitcherType;
 use Nowo\PhoneInputBundle\Form\Model\PhoneNumber;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,6 +51,9 @@ class DemoController extends AbstractController
             'submitted'         => $submitted,
             'data'              => $data,
             'formattedResults'  => $formattedResults,
+            'frameworkSwitcher' => $this->createForm(FrameworkSwitcherType::class, ['framework' => $activeFramework], [
+                'action' => $this->generateUrl('demo_form'),
+            ])->createView(),
             'activeFramework'   => $activeFramework,
             'frameworkChoices'  => DemoFramework::choices(),
             'frameworkClasses'  => DemoFramework::phoneTypeClasses($activeFramework),

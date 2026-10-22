@@ -9,10 +9,10 @@ use Nowo\PhoneInputBundle\Country\CountryProvider;
 /**
  * Parses and normalizes E.164 phone numbers using the country catalog.
  */
-final class E164Parser
+final readonly class E164Parser
 {
     public function __construct(
-        private readonly CountryProvider $countryProvider,
+        private CountryProvider $countryProvider,
     ) {
     }
 
