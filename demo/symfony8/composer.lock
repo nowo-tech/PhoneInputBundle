@@ -89,7 +89,7 @@
             "dist": {
                 "type": "path",
                 "url": "/var/phone-input-bundle",
-                "reference": "bcb5bd6a33798c8df1ccc70c92d3e3d455fda1a1"
+                "reference": "7639a84f8d97a840de017ccc9f47fe5858f00549"
             },
             "require": {
                 "php": ">=8.2 <8.6",
