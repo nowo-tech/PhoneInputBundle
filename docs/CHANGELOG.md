@@ -36,6 +36,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Demo: `demo/form.html.twig` renders the form through one child loop (`{% for child in form %}` + `not child.rendered` + `form_row(child)`); section headings and numbered card titles come from name-keyed maps, the submit button renders after the loop and `form_end` no longer passes `render_rest: false` (REQ-TWIG-003).
+
 ## [1.6.3] - 2026-10-22
 
 Wave-2 REQ compliance: DOM-safe prefix picker flags, translation and raw-form gates, CI static analysis and demo smoke. See [UPGRADING](UPGRADING.md#to-163).

@@ -133,74 +133,62 @@
 
         {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
 
-        {% set coreSections = {
+        {#
+          Child loop (REQ-TWIG-003): fields follow DemoFormType. `sectionStarts` emits a section heading before the
+          first field of each group, `fieldTitles` wraps a field in its numbered card; any other field still renders
+          through the loop. Buttons (the SubmitType child) render after the loop.
+        #}
+        {% set sectionStarts = {
+            'phone_concatenated_with_prefix': 'Core formats',
+            'phone_with_prefix_search': 'Prefix options',
+            'phone_prefix_display_full': 'Prefix display modes',
+            'phone_flag_display_emoji': 'Flag display modes',
+        } %}
+
+        {% set fieldTitles = {
             'phone_concatenated_with_prefix': '1. Concatenated + prefix selector',
             'phone_concatenated_without_prefix': '2. Concatenated + no prefix selector',
             'phone_separated_with_prefix': '3. Separated array + prefix selector',
             'phone_separated_without_prefix': '4. Separated array + no prefix selector',
             'phone_object_with_prefix': '5. PhoneNumber object + prefix selector',
             'phone_object_without_prefix': '6. PhoneNumber object + no prefix selector',
-        } %}
-
-        <p class="section-heading mb-0">Core formats</p>
-        {% for fieldName, sectionTitle in coreSections %}
-            <div class="field-card">
-                <h2>{{ sectionTitle }}</h2>
-                {{ form_row(form[fieldName]) }}
-            </div>
-        {% endfor %}
-
-        {% set featureSections = {
             'phone_with_prefix_search': '7. Prefix selector with search',
             'phone_selector_only': '8. Prefix selector only (no search)',
             'phone_allowed_iberian': '9. Allowed countries (ES, PT only)',
             'phone_excluded_fr': '10. Excluded countries (without FR)',
             'phone_without_flag': '11. show_flag: false',
-        } %}
-
-        {% set prefixDisplaySections = {
             'phone_prefix_display_full': '12. PrefixDisplay::FULL',
             'phone_prefix_display_prefix_only': '13. PrefixDisplay::PREFIX_ONLY',
             'phone_prefix_display_flag_and_prefix': '14. PrefixDisplay::FLAG_AND_PREFIX',
             'phone_prefix_display_iso_and_prefix': '15. PrefixDisplay::ISO_AND_PREFIX',
             'phone_prefix_display_flag_only': '16. PrefixDisplay::FLAG_ONLY',
-        } %}
-
-        {% set flagDisplaySections = {
             'phone_flag_display_emoji': '17. FlagDisplay::EMOJI',
             'phone_flag_display_css_icon': '18. FlagDisplay::CSS_ICON',
             'phone_flag_display_ux_icon': '19. FlagDisplay::UX_ICON',
             'phone_flag_display_none': '20. FlagDisplay::NONE',
         } %}
 
-        <p class="section-heading mb-0">Prefix options</p>
-        {% for fieldName, sectionTitle in featureSections %}
-            <div class="field-card">
-                <h2>{{ sectionTitle }}</h2>
-                {{ form_row(form[fieldName]) }}
-            </div>
-        {% endfor %}
-
-        <p class="section-heading mb-0">Prefix display modes</p>
-        {% for fieldName, sectionTitle in prefixDisplaySections %}
-            <div class="field-card">
-                <h2>{{ sectionTitle }}</h2>
-                {{ form_row(form[fieldName]) }}
-            </div>
-        {% endfor %}
-
-        <p class="section-heading mb-0">Flag display modes</p>
-        {% for fieldName, sectionTitle in flagDisplaySections %}
-            <div class="field-card">
-                <h2>{{ sectionTitle }}</h2>
-                {{ form_row(form[fieldName]) }}
-            </div>
+        {% for child in form %}
+            {% if not child.rendered and 'button' not in child.vars.block_prefixes %}
+                {% set fieldName = child.vars.name %}
+                {% if sectionStarts[fieldName] is defined %}
+                    <p class="section-heading mb-0">{{ sectionStarts[fieldName] }}</p>
+                {% endif %}
+                {% if fieldTitles[fieldName] is defined %}
+                    <div class="field-card">
+                        <h2>{{ fieldTitles[fieldName] }}</h2>
+                        {{ form_row(child) }}
+                    </div>
+                {% else %}
+                    {{ form_row(child) }}
+                {% endif %}
+            {% endif %}
         {% endfor %}
 
         <div class="d-grid mt-3">
             {{ form_widget(form.submit) }}
         </div>
-        {{ form_end(form, {'render_rest': false}) }}
+        {{ form_end(form) }}
 
         <div class="mt-4 text-center">
             <small class="text-muted">
