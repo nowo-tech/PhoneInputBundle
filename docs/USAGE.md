@@ -63,14 +63,24 @@ $builder->add('phone', PhoneType::class, [
 
 ## Overriding bundle templates
 
-Copy templates to your application:
+The bundle registers its views under the Twig namespace `NowoPhoneInputBundle` and appends its own path **after** the application paths, so files under **`templates/bundles/NowoPhoneInputBundle/`** always win (REQ-TWIG-001).
 
-```
-templates/bundles/NowoPhoneInputBundle/Form/phone_input_widget.html.twig
-templates/bundles/NowoPhoneInputBundle/Form/_phone_country_flag.html.twig
-```
+| `<subpath>` (under `src/Resources/views/`) | Purpose |
+| ------------------------------------------ | ------- |
+| `Form/phone_input_widget.html.twig` | Form theme block of `PhoneType` (`<nowo-phone-input>` host, prefix picker, national number). |
+| `Form/_phone_country_flag.html.twig` | Flag partial used by the widget and the prefix list (CSS icon / emoji / none). |
 
-Symfony resolves `@NowoPhoneInputBundle/Form/...` to your copies automatically.
+Procedure:
+
+1. Copy the vendor file to `templates/bundles/NowoPhoneInputBundle/<subpath>` in your application (same relative path and filename), e.g. `templates/bundles/NowoPhoneInputBundle/Form/_phone_country_flag.html.twig`.
+2. Clear the cache in dev if needed: `php bin/console cache:clear`.
+3. Treat the copy as a fork: Symfony resolves `@NowoPhoneInputBundle/Form/...` to your file from now on.
+
+**Override vs upgrade (freeze rule).** An application file at the override path always wins and will not pick up vendor changes for that path until removed or merged. A full-file override is an escape hatch: that `<subpath>` stays frozen on every `composer update` while the rest of the bundle keeps upgrading.
+
+Prefer the upgrade-safe path: the field options (`container_classes`, `prefix_selector_classes`, `national_number_classes`, `flag_display`, `show_flag`, …), the [translations](#translations) and CSS on the bundle classes cover most needs without a Twig fork. If you must override, copy only the small `_phone_country_flag.html.twig` partial rather than the whole widget.
+
+**Recovering upstream after a freeze:** delete (or rename aside) the application override, clear the cache (`php bin/console cache:clear`), and re-apply only the customisation you still need. Diff your copy against the new vendor file under `vendor/nowo-tech/phone-input-bundle/src/Resources/views/` before re-copying.
 
 ## Translations
 
