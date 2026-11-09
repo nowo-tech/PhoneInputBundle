@@ -5,6 +5,7 @@
 - [Screenshots](#screenshots)
 - [Basic field](#basic-field)
 - [Value formats](#value-formats)
+- [Using it from a DDD / hexagonal application](#using-it-from-a-ddd--hexagonal-application)
 - [Prefix selector options](#prefix-selector-options)
 - [Overriding bundle templates](#overriding-bundle-templates)
 - [Translations](#translations)
@@ -41,6 +42,40 @@ $builder->add('phone', PhoneType::class, ['value_format' => ValueFormat::SEPARAT
 // PhoneNumber value object
 $builder->add('phone', PhoneType::class, ['value_format' => ValueFormat::OBJECT]);
 ```
+
+## Using it from a DDD / hexagonal application
+
+`PhoneType` is a **presentation** component: a form field with a country prefix picker. The bundle has no entities, no
+Doctrine mapping and no events. Keep your domain independent of it:
+
+- Use `value_format: CONCATENATED` (E.164 string, the default) or `SEPARATED`
+  (`['iso' => 'ES', 'prefix' => '+34', 'national_number' => '612345678']`) and build your own domain value object
+  from it in the command handler or a model transformer. `ValueFormat::OBJECT` returns the bundle's
+  `Form\Model\PhoneNumber`, which is a form-layer helper, not a domain type.
+- Put `#[ValidPhoneNumber]` on the form DTO/command, or declare it in external validator mapping, rather than on a
+  domain entity.
+- If your domain has its own phone-number check, implement it in an adapter with the bundle's `PhoneValidator`:
+
+```php
+use Nowo\PhoneInputBundle\Phone\PhoneValidator;
+use Nowo\PhoneInputBundle\Validation\PhoneValidationMode;
+
+final class NowoPhoneNumberPolicy implements PhoneNumberPolicy   // your port
+{
+    public function __construct(private PhoneValidator $validator) {}
+
+    public function isValid(string $e164): bool
+    {
+        return $this->validator->isValid($e164, PhoneValidationMode::COUNTRY, 'ES');
+    }
+}
+```
+
+- A custom national-number backend implements `Nowo\PhoneInputBundle\Phone\NationalPhoneNumberChecker`.
+
+Known limitations: a custom `NationalPhoneNumberChecker` is only used when `giggsey/libphonenumber-for-php` is
+installed (the bundle injects `null` otherwise, and there is no configuration key for it yet); `PhoneValidator`,
+`E164Parser` and `CountryProvider` are final classes without interfaces.
 
 ## Prefix selector options
 
