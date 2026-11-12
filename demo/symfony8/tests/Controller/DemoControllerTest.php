@@ -21,7 +21,6 @@ final class DemoControllerTest extends WebTestCase
         $this->assertSelectorTextContains('body', 'Prefix options');
         $this->assertSelectorTextContains('body', 'Prefix display modes');
         $this->assertSelectorTextContains('body', 'Flag display modes');
-        $this->assertSelectorExists('#demo-framework-select');
     }
 
     public function testFormContainsAllFormatCombinationFields(): void
@@ -49,23 +48,9 @@ final class DemoControllerTest extends WebTestCase
         $this->assertSelectorExists('select[name="demo_form[phone_flag_display_css_icon][country_iso]"]');
         $this->assertSelectorExists('select[name="demo_form[phone_flag_display_ux_icon][country_iso]"]');
         $this->assertSelectorExists('select[name="demo_form[phone_flag_display_none][country_iso]"]');
-        $this->assertSelectorExists('body.demo-page--bootstrap5');
         $this->assertSelectorExists('.nowo-phone-input__prefix-picker--no-flag');
         $this->assertSelectorExists('.nowo-phone-input__prefix-picker--no-search');
         $this->assertSelectorExists('.nowo-phone-input__prefix-search-input');
-    }
-
-    public function testFrameworkSelectorSwitchesPageClass(): void
-    {
-        $client = static::createClient();
-        $client->request('GET', '/?framework=tailwind2');
-
-        $this->assertResponseIsSuccessful();
-        $this->assertSelectorExists('body.demo-page--tailwind2');
-        $this->assertSame(
-            'tailwind2',
-            $client->getCrawler()->filter('#demo-framework-select option[selected]')->attr('value'),
-        );
     }
 
     public function testFormIsPrefilledWithDefaultValues(): void
@@ -106,7 +91,6 @@ final class DemoControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/');
 
         $form = $crawler->selectButton('Submit all formats')->form([
-            'framework' => 'bootstrap5',
             'demo_form[phone_concatenated_with_prefix][country_iso]'        => 'ES',
             'demo_form[phone_concatenated_with_prefix][national_number]'    => '612345678',
             'demo_form[phone_concatenated_without_prefix][national_number]' => '612345679',
@@ -149,11 +133,10 @@ final class DemoControllerTest extends WebTestCase
         $client->submit($form);
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('.alert-success', 'Form submitted');
+        $this->assertSelectorTextContains('.nowo-ui-flash--success', 'Form submitted');
         $this->assertSelectorTextContains('.result-card', '+34612345678');
         $this->assertSelectorTextContains('body', 'e164=+447911123456');
         $this->assertSelectorTextContains('body', '"iso":"FR"');
         $this->assertSelectorTextContains('body', '+351912345678');
-        $this->assertSelectorExists('body.demo-page--bootstrap5');
     }
 }

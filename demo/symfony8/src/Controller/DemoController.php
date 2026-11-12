@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\DemoFramework;
 use App\Form\DemoFormData;
 use App\Form\DemoFormType;
-use App\Form\FrameworkSwitcherType;
 use Nowo\PhoneInputBundle\Form\Model\PhoneNumber;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Demo controller showcasing all PhoneType format combinations.
@@ -23,14 +20,7 @@ class DemoController extends AbstractController
     #[Route('/', name: 'demo_form')]
     public function form(Request $request): Response
     {
-        $activeFramework = DemoFramework::resolve(
-            $request->query->get('framework') ?? $request->request->get('framework'),
-        );
-
-        $form = $this->createForm(DemoFormType::class, DemoFormData::defaults(), [
-            'demo_framework' => $activeFramework,
-            'action' => $this->generateUrl('demo_form', ['framework' => $activeFramework], UrlGeneratorInterface::ABSOLUTE_PATH),
-        ]);
+        $form = $this->createForm(DemoFormType::class, DemoFormData::defaults());
 
         $form->handleRequest($request);
 
@@ -47,17 +37,10 @@ class DemoController extends AbstractController
         }
 
         return $this->render('demo/form.html.twig', [
-            'form'              => $form->createView(),
-            'submitted'         => $submitted,
-            'data'              => $data,
-            'formattedResults'  => $formattedResults,
-            'frameworkSwitcher' => $this->createForm(FrameworkSwitcherType::class, ['framework' => $activeFramework], [
-                'action' => $this->generateUrl('demo_form'),
-            ])->createView(),
-            'activeFramework'   => $activeFramework,
-            'frameworkChoices'  => DemoFramework::choices(),
-            'frameworkClasses'  => DemoFramework::phoneTypeClasses($activeFramework),
-            'demo_page_class'   => DemoFramework::pageClass($activeFramework),
+            'form'             => $form,
+            'submitted'        => $submitted,
+            'data'             => $data,
+            'formattedResults' => $formattedResults,
         ]);
     }
 

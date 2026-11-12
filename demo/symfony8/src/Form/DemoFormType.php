@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use App\DemoFramework;
+use Nowo\FormKitBundle\Attribute\FormKitConfig;
+use Nowo\FormKitBundle\Form\FormOptionsTrait;
 use Nowo\PhoneInputBundle\Form\FlagDisplay;
 use Nowo\PhoneInputBundle\Form\PrefixDisplay;
-use Nowo\PhoneInputBundle\Form\Type\PhoneType;
 use Nowo\PhoneInputBundle\Form\ValueFormat;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -16,9 +16,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Demo form exposing every PhoneType value_format × country_prefix_selector combination.
+ *
+ * REQ-DEMO-015: a FormKit form (profile `demo`); the bundle's PhoneType is added through FormKit's addPhone().
+ *
+ * @extends AbstractType<array<string, mixed>>
  */
+#[FormKitConfig('demo')]
 final class DemoFormType extends AbstractType
 {
+    use FormOptionsTrait;
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $combinations = [
@@ -198,15 +205,14 @@ final class DemoFormType extends AbstractType
             ],
         ];
 
-        $frameworkClasses = DemoFramework::phoneTypeClasses($options['demo_framework']);
-
         foreach ($combinations as $field => $config) {
-            $fieldOptions = array_merge($frameworkClasses, [
+            $fieldOptions = array_merge([
                 'label'                   => $config['label'],
                 'value_format'            => $config['value_format'],
                 'country_prefix_selector' => $config['country_prefix_selector'],
                 'required'                => false,
                 'help'                    => $config['help'],
+                'placeholder'             => false,
             ]);
 
             foreach ([
@@ -223,22 +229,17 @@ final class DemoFormType extends AbstractType
                 }
             }
 
-            $builder->add($field, PhoneType::class, $fieldOptions);
+            $this->addPhone($builder, $field, $fieldOptions);
         }
 
-        $builder->add('submit', SubmitType::class, [
+        $this->addWithDefaults($builder, 'submit', SubmitType::class, [
             'label' => 'Submit all formats',
-            'attr'  => ['class' => 'btn btn-primary btn-lg'],
+            'attr'  => ['class' => 'nowo-ui-btn nowo-ui-btn--primary'],
         ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'translation_domain' => false,
-            'demo_framework' => DemoFramework::BOOTSTRAP5,
-        ]);
-
-        $resolver->setAllowedValues('demo_framework', DemoFramework::values());
+        $resolver->setDefaults(['translation_domain' => false]);
     }
 }

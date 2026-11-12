@@ -7,3 +7,7 @@ nowo_phone_input:
     flag_display: CSS_ICON
     use_phone_form_theme: true
     trim: true
+    # UiKit's input class on the widget's own <select> and <input> (the bundle defaults are Bootstrap classes)
+    container_classes: ['nowo-phone-input']
+    prefix_selector_classes: ['nowo-ui-input', 'nowo-phone-input__prefix']
+    national_number_classes: ['nowo-ui-input', 'nowo-phone-input__number']
