@@ -1,143 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phone Input Bundle - Demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/flag-icons.min.css', 'nowo_phone_input') }}">
-    <link rel="stylesheet" href="{{ asset('css/phone_input.css', 'nowo_phone_input') }}">
-    <link rel="stylesheet" href="/css/framework-presets.css">
-    <style>
-        body {
-            background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
-            min-height: 100vh;
-            margin: 0;
-        }
-        .demo-navbar {
-            background: rgba(15, 23, 42, 0.92);
-            backdrop-filter: blur(6px);
-        }
-        .demo-main {
-            padding: 24px;
-        }
-        .demo-container {
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
-            padding: 32px;
-            max-width: 960px;
-            margin: 0 auto;
-        }
-        .demo-header {
-            text-align: center;
-            margin-bottom: 28px;
-        }
-        .demo-header h1 {
-            color: #0f172a;
-            margin-bottom: 8px;
-        }
-        .section-heading {
-            font-size: 0.875rem;
-            font-weight: 600;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            color: #64748b;
-            margin: 24px 0 12px;
-        }
-        .field-card {
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 16px;
-            background: #f8fafc;
-        }
-        .field-card h2 {
-            font-size: 1rem;
-            margin-bottom: 8px;
-            color: #334155;
-        }
-        .field-card .mb-3,
-        .field-card .form-group,
-        .field-card .nowo-phone-input {
-            width: 100%;
-        }
-        .field-card .form-text,
-        .field-card .form-help {
-            margin-top: 0.5rem;
-            word-break: break-word;
-        }
-        .result-card {
-            border-left: 4px solid #22c55e;
-            background: #f0fdf4;
-            padding: 12px 16px;
-            margin-bottom: 12px;
-            border-radius: 4px;
-        }
-        .result-type {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #64748b;
-        }
-        code.result-value {
-            display: block;
-            margin-top: 4px;
-            word-break: break-all;
-        }
-    </style>
-</head>
-<body class="demo-page {{ demo_page_class|default('demo-page--bootstrap5') }}">
-    <nav class="navbar navbar-dark demo-navbar sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="{{ path('demo_form') }}">Phone Input Bundle Demo</a>
-        </div>
-    </nav>
-    <main class="demo-main">
-    <div class="demo-container">
-        <div class="demo-header">
-            <h1>📞 Phone Input Bundle</h1>
-            <p class="text-muted mb-0">
-                Demo: <code>ValueFormat</code>, <code>PrefixDisplay</code>, <code>FlagDisplay</code>, CSS frameworks and prefix options
-            </p>
-        </div>
+{% extends 'base.html.twig' %}
 
-        <div class="demo-framework-switcher">
-            {{ form_label(frameworkSwitcher.framework, null, {label_attr: {for: 'demo-framework-select'}}) }}
-            {{ form_widget(frameworkSwitcher.framework) }}
-            <p class="demo-framework-switcher__hint mb-0">
-                Applies <code>container_classes</code>, <code>prefix_selector_classes</code> and
-                <code>national_number_classes</code> to every field:
-                {% for className in frameworkClasses.container_classes %}<code>{{ className }}</code>{% if not loop.last %}, {% endif %}{% endfor %}
-                ·
-                {% for className in frameworkClasses.prefix_selector_classes %}<code>{{ className }}</code>{% if not loop.last %}, {% endif %}{% endfor %}
-                ·
-                {% for className in frameworkClasses.national_number_classes %}<code>{{ className }}</code>{% if not loop.last %}, {% endif %}{% endfor %}
-            </p>
-        </div>
+{% block nowo_ui_page_header %}
+    {{ include(nowo_ui_partial('page_header'), {
+        title: 'Phone Input Bundle',
+        intro: 'Demo: ValueFormat, PrefixDisplay, FlagDisplay and prefix options',
+    }) }}
+{% endblock %}
 
-        {% if submitted and formattedResults %}
-            <div class="alert alert-success" role="alert">
-                <h4 class="alert-heading">Form submitted</h4>
-                <p class="mb-0">Submitted values per field:</p>
+{% block body %}
+    {% if submitted and formattedResults %}
+        <div class="nowo-ui-flash nowo-ui-flash--success" role="alert">
+            <strong>Form submitted.</strong> Submitted values per field:
+        </div>
+        <section class="nowo-ui-card" data-testid="demo-results">
+            <div class="nowo-ui-card__body">
+                <table class="nowo-ui-data-table">
+                    <tbody>
+                        {% for field, result in formattedResults %}
+                            <tr class="result-card">
+                                <td>
+                                    <strong>{{ field|replace({'_': ' '})|title }}</strong>
+                                    <div class="nowo-ui-muted">{{ result.type }}</div>
+                                </td>
+                                <td><code class="nowo-ui-code">{{ result.display }}</code></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            {% for field, result in formattedResults %}
-                <div class="result-card">
-                    <strong>{{ field|replace({'_': ' '})|title }}</strong>
-                    <div class="result-type">{{ result.type }}</div>
-                    <code class="result-value">{{ result.display }}</code>
-                </div>
-            {% endfor %}
-            <hr class="my-4">
-        {% endif %}
+        </section>
+    {% endif %}
 
-        {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
+    {{ form_start(form, { attr: { novalidate: 'novalidate' } }) }}
 
-        {#
-          Child loop (REQ-TWIG-003): fields follow DemoFormType. `sectionStarts` emits a section heading before the
-          first field of each group, `fieldTitles` wraps a field in its numbered card; any other field still renders
-          through the loop. Buttons (the SubmitType child) render after the loop.
-        #}
+        {# Child loop (REQ-TWIG-003): fields follow DemoFormType. `sectionStarts` emits a section heading before the
+           first field of each group, `fieldTitles` wraps a field in its numbered card; any other field still renders
+           through the loop. Buttons (the SubmitType child) render after the loop. #}
         {% set sectionStarts = {
             'phone_concatenated_with_prefix': 'Core formats',
             'phone_with_prefix_search': 'Prefix options',
@@ -172,46 +70,23 @@
             {% if not child.rendered and 'button' not in child.vars.block_prefixes %}
                 {% set fieldName = child.vars.name %}
                 {% if sectionStarts[fieldName] is defined %}
-                    <p class="section-heading mb-0">{{ sectionStarts[fieldName] }}</p>
+                    <h2 class="nowo-ui-card__title">{{ sectionStarts[fieldName] }}</h2>
                 {% endif %}
                 {% if fieldTitles[fieldName] is defined %}
-                    <div class="field-card">
-                        <h2>{{ fieldTitles[fieldName] }}</h2>
-                        {{ form_row(child) }}
-                    </div>
+                    <section class="nowo-ui-card" data-testid="demo-field">
+                        <div class="nowo-ui-card__body">
+                            <h3 class="nowo-ui-card__title">{{ fieldTitles[fieldName] }}</h3>
+                            {{ form_row(child) }}
+                        </div>
+                    </section>
                 {% else %}
                     {{ form_row(child) }}
                 {% endif %}
             {% endif %}
         {% endfor %}
 
-        <div class="d-grid mt-3">
-            {{ form_widget(form.submit) }}
-        </div>
-        {{ form_end(form) }}
+        {{ form_row(form.submit) }}
+    {{ form_end(form) }}
 
-        <div class="mt-4 text-center">
-            <small class="text-muted">
-                Powered by <a href="https://github.com/nowo-tech/PhoneInputBundle" target="_blank">Phone Input Bundle</a>
-            </small>
-        </div>
-    </div>
-    </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        (function () {
-            const select = document.getElementById('demo-framework-select');
-            if (!select) {
-                return;
-            }
-
-            select.addEventListener('change', function () {
-                const url = new URL(window.location.href);
-                url.searchParams.set('framework', select.value);
-                window.location.href = url.toString();
-            });
-        })();
-    </script>
-</body>
-</html>
+    <p class="nowo-ui-muted">Powered by <a class="nowo-ui-link" href="https://github.com/nowo-tech/PhoneInputBundle" target="_blank" rel="noopener">Phone Input Bundle</a></p>
+{% endblock %}

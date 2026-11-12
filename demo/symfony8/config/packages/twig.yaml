@@ -1,3 +1,5 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
+    form_themes:
+        - '@NowoUiKit/form/nowo_ui_layout.html.twig'
     # The phone widget theme is registered by the bundle (nowo_phone_input.use_phone_form_theme: true, since 1.5.0).

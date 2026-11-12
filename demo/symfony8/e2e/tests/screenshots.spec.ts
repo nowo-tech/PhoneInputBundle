@@ -25,22 +25,21 @@ async function boxOf(
   return loc.boundingBox();
 }
 
-/** Navbar → header/framework/first field (+ optional dropdown) → profiler. */
+/** Navbar → header/first field (+ optional dropdown) → profiler. */
 async function clipDemoFrame(
   page: import('@playwright/test').Page,
   extra?: Box | null,
 ): Promise<Box> {
-  const nav = await boxOf(page, 'nav.navbar');
-  const header = await boxOf(page, '.demo-header');
-  const switcher = await boxOf(page, '.demo-framework-switcher');
-  const section = await boxOf(page, '.section-heading');
-  const field = await boxOf(page, '.field-card');
+  const nav = await boxOf(page, 'header.nowo-ui-header');
+  const header = await boxOf(page, '.nowo-ui-page-header');
+  const section = await boxOf(page, 'main h2.nowo-ui-card__title');
+  const field = await boxOf(page, '[data-testid="demo-field"]');
   const profiler =
     (await boxOf(page, '.sf-toolbar')) ?? (await boxOf(page, '.sf-minitoolbar'));
   if (!nav || !field) {
-    throw new Error('Missing nav.navbar or .field-card for PhoneInput screenshot clip');
+    throw new Error('Missing header.nowo-ui-header or demo field for PhoneInput screenshot clip');
   }
-  const boxes = [nav, header, switcher, section, field, extra, profiler].filter(Boolean) as Box[];
+  const boxes = [nav, header, section, field, extra, profiler].filter(Boolean) as Box[];
   const x = Math.min(...boxes.map((b) => b.x));
   const y = Math.min(...boxes.map((b) => b.y));
   const right = Math.max(...boxes.map((b) => b.x + b.width));
@@ -57,8 +56,8 @@ async function clipDemoFrame(
 async function prepareDemoPage(page: import('@playwright/test').Page) {
   await page.setViewportSize({ width: 1280, height: 1600 });
   await page.goto('/');
-  await expect(page.locator('nav.navbar .navbar-brand')).toBeVisible();
-  await expect(page.locator('.field-card nowo-phone-input').first()).toBeVisible();
+  await expect(page.locator('header.nowo-ui-header .nowo-ui-brand')).toBeVisible();
+  await expect(page.locator('[data-testid="demo-field"] nowo-phone-input').first()).toBeVisible();
   await page
     .locator('.sf-toolbar .sf-toolbar-block, .sf-toolbar-status, .sf-minitoolbar')
     .first()
@@ -80,7 +79,7 @@ test.describe('PhoneInput screenshots (full demo context)', () => {
 
   test('interaction — navbar + first field with prefix open', async ({ page }) => {
     await prepareDemoPage(page);
-    const field = page.locator('.field-card').first();
+    const field = page.locator('[data-testid="demo-field"]').first();
     const host = field.locator('nowo-phone-input').first();
     const picker = host.locator('[data-nowo-phone-prefix-picker]').first();
     await page.waitForFunction(() => {
