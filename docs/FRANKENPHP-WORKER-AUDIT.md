@@ -3,8 +3,8 @@
 | Field | Value |
 |-------|-------|
 | Package | `nowo-tech/phone-input-bundle` (`symfony-bundle`) |
-| Audited revision | `v1.4.1` / 2026-09-24 |
-| Audit date | 2026-09-24 |
+| Audited revision | `v1.6.3` (kept-alive test and rule-7 note re-checked 2026-11-12; earlier manual review kept below) |
+| Audit date | 2026-11-12 (first audit 2026-09) |
 | Target runtime | FrankenPHP **worker** with **`FRANKENPHP_RESET_KERNEL=false`** (sticky Kernel / “Friendly Worker”) |
 | Method | Manual review of every PHP file under `src/` (form type, data transformer, validator, Twig extension/renderer, country and pattern catalogs, DI extension, compiler pass, `Resources/config/services.yaml`) + PHPStan classic + worker-strict |
 | **Verdict** | ✅ **100% compatible** under Scenario B (`reset_kernel: false`) |
@@ -15,6 +15,7 @@
 - [Summary](#summary)
 - [Services reviewed](#services-reviewed)
 - [Findings](#findings)
+- [Kept-alive test (REQ-RUNTIME-002)](#kept-alive-test-req-runtime-002)
   - [W-01 — `UX_ICON` flag rendering may trigger HTTP fetches through Symfony UX Icons (Low)](#w-01--ux_icon-flag-rendering-may-trigger-http-fetches-through-symfony-ux-icons-low)
   - [W-02 — Lazily-loaded catalog caches are intentional and safe (Info)](#w-02--lazily-loaded-catalog-caches-are-intentional-and-safe-info)
   - [Closed / hardening notes (2026-09-24)](#closed--hardening-notes-2026-09-24)
@@ -97,6 +98,14 @@ Worker demo: `demo/symfony8/docker/frankenphp/Caddyfile` declares a `worker` blo
 | H-02 | `PhoneType::$defaults` / `CountryProvider` config lists were mutable properties | Marked `readonly` |
 | H-03 | PHPStan worker hygiene | Use `ruleset-worker-strict.neon` |
 | H-04 | Regression for sticky Kernel | `PhoneTypeTest::testSharedInstanceDoesNotLeakOptionsAcrossConsecutiveBuilds` |
+
+## Kept-alive test (REQ-RUNTIME-002)
+
+Test: `Nowo\PhoneInputBundle\Tests\Integration\Worker\WorkerKeptAliveTest` (`tests/Integration/Worker/WorkerKeptAliveTest.php`). It uses one form factory with the shared `PhoneType`, country provider and E.164 parser, host form built, submitted and viewed; `services_resetter` / `kernel.reset` is **never** called. It runs 1,200 iterations alternating two inputs (ES concatenated, FR separated, different class sets), asserts every result contains only its own data (no value of the other input appears), and that memory growth after a 100-iteration warm-up stays below 4 MiB.
+
+Result: no state is carried between requests, so the bundle is **safe with kernel reset false**.
+
+Rule 7: the bundle never clears or resets the host's default EntityManager (it uses no persistence), and nothing in `PhoneType` depends on it.
 
 ## Usage recommendations in worker mode
 
