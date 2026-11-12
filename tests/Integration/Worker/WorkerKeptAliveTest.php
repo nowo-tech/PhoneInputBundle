@@ -47,8 +47,8 @@ final class WorkerKeptAliveTest extends TestCase
         $baseline = 0;
         for ($i = 0; $i < self::ITERATIONS; ++$i) {
             if (self::WARM_UP === $i) {
-                \gc_collect_cycles();
-                $baseline = \memory_get_usage();
+                gc_collect_cycles();
+                $baseline = memory_get_usage();
             }
 
             $who = 0 === $i % 2 ? 'alpha' : 'beta';
@@ -65,8 +65,8 @@ final class WorkerKeptAliveTest extends TestCase
             self::assertSame($data['options']['container_classes'], $vars['container_classes'], \sprintf('iteration %d', $i));
         }
 
-        \gc_collect_cycles();
-        $growth = \memory_get_usage() - $baseline;
+        gc_collect_cycles();
+        $growth = memory_get_usage() - $baseline;
         self::assertLessThan(self::MARGIN, $growth, \sprintf('memory grew by %d bytes over %d iterations', $growth, self::ITERATIONS - self::WARM_UP));
     }
 }
