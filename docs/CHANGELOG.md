@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Tests: kept-alive worker test `WorkerKeptAliveTest` (one kernel or one kept set of services, never reset, 1,200 alternating iterations, memory bound) and `docs/FRANKENPHP-WORKER-AUDIT.md` refreshed for v1.6.3; no runtime change.
 - Docs (REQ-TWIG-001): USAGE states the override freeze rule (an application file at the override path always wins and does not pick up vendor changes until removed or merged), the upgrade-safe alternatives and how to recover the vendor template, with the table of overridable templates.
 - Demo: `demo/form.html.twig` renders the form through one child loop (`{% for child in form %}` + `not child.rendered` + `form_row(child)`); section headings and numbered card titles come from name-keyed maps, the submit button renders after the loop and `form_end` no longer passes `render_rest: false` (REQ-TWIG-003).
 
