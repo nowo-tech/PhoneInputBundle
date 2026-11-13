@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Nowo\PhoneInputBundle\Validator\Constraints;
 
-use Nowo\PhoneInputBundle\Form\Model\PhoneNumber;
-use Nowo\PhoneInputBundle\Phone\PhoneValidator;
+use Nowo\PhoneInputBundle\Phone\PhoneNumber;
+use Nowo\PhoneInputBundle\Phone\PhoneValidatorInterface;
 use Nowo\PhoneInputBundle\Validation\PhoneValidationMode;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 final class ValidPhoneNumberValidator extends ConstraintValidator
 {
     public function __construct(
-        private readonly PhoneValidator $phoneValidator,
+        private readonly PhoneValidatorInterface $phoneValidator,
     ) {
     }
 

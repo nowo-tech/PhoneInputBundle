@@ -5,25 +5,26 @@ declare(strict_types=1);
 namespace Nowo\PhoneInputBundle\Form\DataTransformer;
 
 use Nowo\PhoneInputBundle\Country\Country;
-use Nowo\PhoneInputBundle\Country\CountryProvider;
+use Nowo\PhoneInputBundle\Country\CountryProviderInterface;
 use Nowo\PhoneInputBundle\Form\Model\PhoneNumber;
 use Nowo\PhoneInputBundle\Form\ValueFormat;
-use Nowo\PhoneInputBundle\Phone\E164Parser;
+use Nowo\PhoneInputBundle\Phone\E164ParserInterface;
+use Nowo\PhoneInputBundle\Phone\PhoneNumber as PhoneNumberValue;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
 /**
  * Normalizes phone data between model values and compound form view data.
  *
- * @implements DataTransformerInterface<string|array<string, string>|PhoneNumber|null, array<string, string|null>>
+ * @implements DataTransformerInterface<string|array<string, string>|PhoneNumberValue|null, array<string, string|null>>
  */
 final readonly class PhoneNumberTransformer implements DataTransformerInterface
 {
     public function __construct(
         private ValueFormat $valueFormat,
         private bool $countryPrefixSelector,
-        private CountryProvider $countryProvider,
-        private E164Parser $e164Parser,
+        private CountryProviderInterface $countryProvider,
+        private E164ParserInterface $e164Parser,
         private string $defaultCountryIso,
         /** @var list<string> selector countries (order: preferred, then allowed): preferred when a dial code is shared; with the selector, a typed + prefix must belong to one of them (empty = no restriction) */
         private array $preferredCountryIsos = [],
@@ -31,7 +32,7 @@ final readonly class PhoneNumberTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param string|array<string, string>|PhoneNumber|null $value
+     * @param string|array<string, string>|PhoneNumberValue|null $value
      *
      * @return array<string, string|null>
      */
@@ -54,7 +55,7 @@ final readonly class PhoneNumberTransformer implements DataTransformerInterface
     /**
      * @param array<string, string|null>|string|null $value
      *
-     * @return string|array<string, string>|PhoneNumber|null
+     * @return string|array<string, string>|PhoneNumberValue|null
      */
     public function reverseTransform(mixed $value): mixed
     {
@@ -118,7 +119,7 @@ final readonly class PhoneNumberTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param string|array<string, string>|PhoneNumber|null $value
+     * @param string|array<string, string>|PhoneNumberValue|null $value
      *
      * @return array{iso: string, prefix: string, national_number: string}
      */
@@ -128,7 +129,7 @@ final readonly class PhoneNumberTransformer implements DataTransformerInterface
             return $this->e164Parser->emptyParts($this->defaultCountryIso);
         }
 
-        if ($value instanceof PhoneNumber) {
+        if ($value instanceof PhoneNumberValue) {
             return $value->toSeparatedArray();
         }
 
@@ -157,7 +158,7 @@ final readonly class PhoneNumberTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param string|array<string, string>|PhoneNumber|null               $originalValue
+     * @param string|array<string, string>|PhoneNumberValue|null          $originalValue
      * @param array{iso: string, prefix: string, national_number: string} $parts
      */
     private function formatNationalForView(mixed $originalValue, array $parts): string
@@ -186,7 +187,7 @@ final readonly class PhoneNumberTransformer implements DataTransformerInterface
     }
 
     /**
-     * @return string|array<string, string>|PhoneNumber|null
+     * @return string|array<string, string>|PhoneNumberValue|null
      */
     private function buildModelWithoutSelector(string $nationalNumber): mixed
     {

@@ -7,7 +7,7 @@ namespace Nowo\PhoneInputBundle\Country;
 /**
  * Loads and filters the bundled country catalog for phone prefix selection.
  */
-final class CountryProvider
+final class CountryProvider implements CountryProviderInterface
 {
     /** @var array<string, Country>|null Lazy cache of bundled countries.json (request-independent) */
     private ?array $rawCountriesByIso = null;

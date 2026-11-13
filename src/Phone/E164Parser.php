@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Nowo\PhoneInputBundle\Phone;
 
-use Nowo\PhoneInputBundle\Country\CountryProvider;
+use Nowo\PhoneInputBundle\Country\CountryProviderInterface;
 
 /**
  * Parses and normalizes E.164 phone numbers using the country catalog.
  */
-final readonly class E164Parser
+final readonly class E164Parser implements E164ParserInterface
 {
     public function __construct(
-        private CountryProvider $countryProvider,
+        private CountryProviderInterface $countryProvider,
     ) {
     }
 
