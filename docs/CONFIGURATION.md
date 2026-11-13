@@ -22,6 +22,7 @@ nowo_phone_input:
     invalid_message: 'The phone number is invalid.'
     phone_validation: COUNTRY
     use_libphonenumber: true
+    national_number_checker: null   # since 1.7.0: service id of your own NationalPhoneNumberChecker
 ```
 
 See [USAGE.md](USAGE.md) for per-field overrides.

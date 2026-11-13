@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Nowo\PhoneInputBundle\Phone;
 
-use Nowo\PhoneInputBundle\Country\CountryProvider;
+use Nowo\PhoneInputBundle\Country\CountryProviderInterface;
 
 /**
  * Loads bundled national-number patterns per ISO country code.
@@ -21,7 +21,7 @@ final class PhonePatternCatalog
 
     public function __construct(
         private readonly string $patternsFile,
-        private readonly CountryProvider $countryProvider,
+        private readonly CountryProviderInterface $countryProvider,
     ) {
     }
 

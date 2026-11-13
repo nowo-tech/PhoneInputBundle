@@ -12,6 +12,10 @@ services:
       $allowedCountries: []
       $excludedCountries: []
 
+  # REQ-ARCH-001 rule 1: type against the interfaces; alias them to your own services to replace the defaults.
+  Nowo\PhoneInputBundle\Country\CountryProviderInterface:
+    alias: Nowo\PhoneInputBundle\Country\CountryProvider
+
   Nowo\PhoneInputBundle\IconSupport\:
     resource: '../../IconSupport/*'
 
@@ -20,6 +24,7 @@ services:
     exclude:
       - '../../Phone/LibPhoneNumberChecker.php'
       - '../../Phone/NationalPhoneNumberChecker.php'
+      - '../../Phone/PhoneNumber.php'
 
   Nowo\PhoneInputBundle\Phone\PhonePatternCatalog:
     arguments:
@@ -29,6 +34,12 @@ services:
     arguments:
       $useLibPhoneNumber: '%nowo_phone_input.use_libphonenumber%'
       $nationalPhoneNumberChecker: null
+
+  Nowo\PhoneInputBundle\Phone\PhoneValidatorInterface:
+    alias: Nowo\PhoneInputBundle\Phone\PhoneValidator
+
+  Nowo\PhoneInputBundle\Phone\E164ParserInterface:
+    alias: Nowo\PhoneInputBundle\Phone\E164Parser
 
   Nowo\PhoneInputBundle\Validator\:
     resource: '../../Validator/*'

@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Nowo\PhoneInputBundle\Phone;
 
-use Nowo\PhoneInputBundle\Form\Model\PhoneNumber;
 use Nowo\PhoneInputBundle\Validation\PhoneValidationMode;
 
 /**
  * Validates phone values using country/prefix rules and optional libphonenumber.
  */
-final readonly class PhoneValidator
+final readonly class PhoneValidator implements PhoneValidatorInterface
 {
     public function __construct(
-        private E164Parser $e164Parser,
+        private E164ParserInterface $e164Parser,
         private PhonePatternCatalog $patternCatalog,
         private bool $useLibPhoneNumber = true,
         private ?NationalPhoneNumberChecker $nationalPhoneNumberChecker = null,

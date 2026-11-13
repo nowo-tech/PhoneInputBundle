@@ -55,7 +55,17 @@ class NowoPhoneInputExtension extends Extension implements PrependExtensionInter
         );
 
         $phoneValidatorDefinition = $container->getDefinition(PhoneValidator::class);
-        if ($this->supportsLibPhoneNumber()) {
+        $customChecker = $config['national_number_checker'] ?? null;
+        if (\is_string($customChecker) && '' !== $customChecker) {
+            // national_number_checker (since 1.7.0): the host's NationalPhoneNumberChecker, used whether or not
+            // libphonenumber is installed (REQ-ARCH-001 rule 5).
+            $container->setAlias(NationalPhoneNumberChecker::class, $customChecker);
+            $phoneValidatorDefinition->setArgument('$useLibPhoneNumber', true);
+            $phoneValidatorDefinition->setArgument(
+                '$nationalPhoneNumberChecker',
+                new Reference(NationalPhoneNumberChecker::class),
+            );
+        } elseif ($this->supportsLibPhoneNumber()) {
             if (!$container->hasDefinition(PhoneNumberUtil::class)) {
                 $container->register(PhoneNumberUtil::class)
                     ->setFactory([PhoneNumberUtil::class, 'getInstance'])

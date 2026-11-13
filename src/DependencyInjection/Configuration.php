@@ -116,6 +116,14 @@ class Configuration implements ConfigurationInterface
                     ->defaultTrue()
                     ->info('Use giggsey/libphonenumber-for-php when installed for validation')
                 ->end()
+                ->scalarNode('national_number_checker')
+                    ->defaultNull()
+                    ->info('Service id of your own Nowo\\PhoneInputBundle\\Phone\\NationalPhoneNumberChecker. When set it is used for validation instead of libphonenumber and the bundled patterns, whatever use_libphonenumber says (since 1.7.0)')
+                    ->validate()
+                        ->ifTrue(static fn ($v): bool => null !== $v && (!\is_string($v) || '' === trim($v)))
+                        ->thenInvalid('national_number_checker must be a non-empty service id or null')
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

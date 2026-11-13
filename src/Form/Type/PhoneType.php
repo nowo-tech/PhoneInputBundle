@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Nowo\PhoneInputBundle\Form\Type;
 
 use Nowo\PhoneInputBundle\Country\Country;
-use Nowo\PhoneInputBundle\Country\CountryProvider;
+use Nowo\PhoneInputBundle\Country\CountryProviderInterface;
 use Nowo\PhoneInputBundle\Form\DataTransformer\PhoneNumberTransformer;
 use Nowo\PhoneInputBundle\Form\FlagDisplay;
 use Nowo\PhoneInputBundle\Form\PrefixDisplay;
 use Nowo\PhoneInputBundle\Form\ValueFormat;
 use Nowo\PhoneInputBundle\IconSupport\IconSupportChecker;
-use Nowo\PhoneInputBundle\Phone\E164Parser;
+use Nowo\PhoneInputBundle\Phone\E164ParserInterface;
 use Nowo\PhoneInputBundle\Validation\PhoneValidationMode;
 use Nowo\PhoneInputBundle\Validator\Constraints\ValidPhoneNumber;
 use Symfony\Component\Form\AbstractType;
@@ -34,8 +34,8 @@ final class PhoneType extends AbstractType
      * @param array<string, mixed> $defaults Bundle config defaults (immutable for FrankenPHP worker / reset_kernel=false)
      */
     public function __construct(
-        private readonly CountryProvider $countryProvider,
-        private readonly E164Parser $e164Parser,
+        private readonly CountryProviderInterface $countryProvider,
+        private readonly E164ParserInterface $e164Parser,
         private readonly IconSupportChecker $iconSupportChecker,
         private readonly array $defaults = [],
     ) {

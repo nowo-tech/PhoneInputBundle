@@ -39,7 +39,7 @@ $builder->add('phone', PhoneType::class, ['value_format' => ValueFormat::CONCATE
 // Array: ['iso' => 'ES', 'prefix' => '+34', 'national_number' => '612345678']
 $builder->add('phone', PhoneType::class, ['value_format' => ValueFormat::SEPARATED]);
 
-// PhoneNumber value object
+// PhoneNumber value object: an instance of Nowo\PhoneInputBundle\Phone\PhoneNumber (type your code against it)
 $builder->add('phone', PhoneType::class, ['value_format' => ValueFormat::OBJECT]);
 ```
 
@@ -50,19 +50,20 @@ Doctrine mapping and no events. Keep your domain independent of it:
 
 - Use `value_format: CONCATENATED` (E.164 string, the default) or `SEPARATED`
   (`['iso' => 'ES', 'prefix' => '+34', 'national_number' => '612345678']`) and build your own domain value object
-  from it in the command handler or a model transformer. `ValueFormat::OBJECT` returns the bundle's
-  `Form\Model\PhoneNumber`, which is a form-layer helper, not a domain type.
+  from it in the command handler or a model transformer. With `ValueFormat::OBJECT` type the value as
+  `Nowo\PhoneInputBundle\Phone\PhoneNumber` (plain PHP, since 1.7.0); the object returned is still the deprecated
+  `Form\Model\PhoneNumber` subclass until 2.0.
 - Put `#[ValidPhoneNumber]` on the form DTO/command, or declare it in external validator mapping, rather than on a
   domain entity.
-- If your domain has its own phone-number check, implement it in an adapter with the bundle's `PhoneValidator`:
+- If your domain has its own phone-number check, implement it in an adapter with the bundle's `PhoneValidatorInterface`:
 
 ```php
-use Nowo\PhoneInputBundle\Phone\PhoneValidator;
+use Nowo\PhoneInputBundle\Phone\PhoneValidatorInterface;
 use Nowo\PhoneInputBundle\Validation\PhoneValidationMode;
 
 final class NowoPhoneNumberPolicy implements PhoneNumberPolicy   // your port
 {
-    public function __construct(private PhoneValidator $validator) {}
+    public function __construct(private PhoneValidatorInterface $validator) {}
 
     public function isValid(string $e164): bool
     {
@@ -71,11 +72,11 @@ final class NowoPhoneNumberPolicy implements PhoneNumberPolicy   // your port
 }
 ```
 
-- A custom national-number backend implements `Nowo\PhoneInputBundle\Phone\NationalPhoneNumberChecker`.
-
-Known limitations: a custom `NationalPhoneNumberChecker` is only used when `giggsey/libphonenumber-for-php` is
-installed (the bundle injects `null` otherwise, and there is no configuration key for it yet); `PhoneValidator`,
-`E164Parser` and `CountryProvider` are final classes without interfaces.
+- A custom national-number backend implements `Nowo\PhoneInputBundle\Phone\NationalPhoneNumberChecker`; set
+  `nowo_phone_input.national_number_checker` to its service id (since 1.7.0), with or without libphonenumber.
+- `PhoneValidatorInterface`, `E164ParserInterface` and `CountryProviderInterface` (since 1.7.0) are aliased to the
+  defaults; alias them to your own services to replace them. Ports, extension points and the Symfony / DDD wiring:
+  [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ## Prefix selector options
 

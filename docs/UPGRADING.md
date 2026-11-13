@@ -11,6 +11,7 @@
   - [1.1.0](#110)
   - [1.0.0](#100)
 - [Unreleased](#unreleased)
+  - [To 1.7.0](#to-170)
 - [To 1.6.3](#to-163)
 - [To 1.6.2](#to-162)
 - [To 1.6.1](#to-161)
@@ -121,6 +122,21 @@ See [INSTALLATION.md](INSTALLATION.md) and [USAGE.md](USAGE.md) for details.
 If you mount the bundle source in Docker demos, use `dev-main as 1.0.99` in demo `composer.json` with `minimum-stability: dev` and `prefer-stable: true`.
 
 ## Unreleased
+
+### To 1.7.0
+
+From **1.6.3**: no change needed; everything is additive and the defaults are unchanged.
+
+- Prefer the new interfaces in your type hints: `Nowo\PhoneInputBundle\Phone\PhoneValidatorInterface`,
+  `Nowo\PhoneInputBundle\Phone\E164ParserInterface`, `Nowo\PhoneInputBundle\Country\CountryProviderInterface`.
+  The class ids (`PhoneValidator`, `E164Parser`, `CountryProvider`) still resolve.
+- `Nowo\PhoneInputBundle\Form\Model\PhoneNumber` is deprecated and will be removed in **2.0**. Type your code against
+  `Nowo\PhoneInputBundle\Phone\PhoneNumber` (same constructor, properties and methods; the form-layer class extends
+  it, so `ValueFormat::OBJECT` values are instances of both). In 2.0 `ValueFormat::OBJECT` returns
+  `Phone\PhoneNumber`.
+- New key `national_number_checker` (default `null`): set it to the service id of your own
+  `NationalPhoneNumberChecker` to use it with or without libphonenumber. Before 1.7.0 a custom checker was only
+  picked up by aliasing the interface when libphonenumber was installed; that still works.
 
 ## To 1.6.3
 

@@ -36,6 +36,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `Phone\PhoneValidatorInterface`, `Phone\E164ParserInterface` and `Country\CountryProviderInterface`, aliased to `PhoneValidator`, `E164Parser` and `CountryProvider`; the bundle's own services are typed against them, so a host replaces a default by aliasing the interface (REQ-ARCH-001 rule 1). The class ids keep working.
+- `Phone\PhoneNumber`: the phone number value object outside the form layer (REQ-ARCH-001 rule 3). `Form\Model\PhoneNumber` now extends it with no member of its own and is deprecated (removed in 2.0); `ValueFormat::OBJECT` still returns it, so `instanceof` either class keeps working. The transformer, `PhoneValidator` and `#[ValidPhoneNumber]` accept either.
+- `national_number_checker` configuration key: the service id of your own `NationalPhoneNumberChecker`, used whether or not libphonenumber is installed (REQ-ARCH-001 rule 5). Default `null`: unchanged behaviour.
+- `docs/ARCHITECTURE.md`: public surface, ports and extension points, standard Symfony and DDD host wiring.
+
 ### Changed
 
 - Demo uses the UiKit base style and FormKit forms (REQ-DEMO-014/015)
