@@ -311,12 +311,16 @@ release-check: update-bundle-all test-coverage-all release-verify
 # Pre-release: for each demo up → sleep → healthcheck HTTP 200 → down (§5.4.1, invoked by root release-check)
 release-verify:
 	@for demo in $(DEMOS); do \
-		port=$$(grep '^PORT=' $$demo/.env 2>/dev/null | cut -d= -f2 | tr -d '\r'); \
-		[ -z "$$port" ] && port=8001; \
-		echo "🔍 Release verify: $$demo (port $$port)..."; \
+		echo "🔍 Release verify: $$demo..."; \
 		$(MAKE) up-$$demo; \
-		echo "⏳ Waiting for $$demo to be ready..."; sleep 15; \
-		code=$$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:$$port 2>/dev/null || echo "000"); \
+		port=$$(grep '^PORT=' $$demo/.env 2>/dev/null | cut -d= -f2 | tr -d '\r'); \
+		[ -z "$$port" ] && port=$$(grep '^PORT=' $$demo/.env.example 2>/dev/null | cut -d= -f2 | tr -d '\r'); \
+		[ -z "$$port" ] && port=8001; \
+		echo "⏳ Waiting for $$demo on port $$port (HTTP 200, up to 120 s)..."; \
+		code=000; for i in $$(seq 1 60); do \
+			code=$$(curl -sL -o /dev/null -w "%{http_code}" http://127.0.0.1:$$port 2>/dev/null) || code=000; \
+			[ "$$code" = "200" ] && break; sleep 2; \
+		done; \
 		$(MAKE) down-$$demo 2>/dev/null || true; \
 		if [ "$$code" != "200" ]; then echo "❌ $$demo healthcheck failed (HTTP $$code)"; exit 1; fi; \
 		echo "✅ $$demo OK (HTTP $$code)"; \

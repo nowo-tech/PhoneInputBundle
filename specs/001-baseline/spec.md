@@ -20,6 +20,7 @@ Symfony bundle providing **`PhoneType`**: an extension of Symfony `TelType` with
 
 ## Notes / release sync
 
+- **2026-11-16 (1.7.0):** host ports `Phone\PhoneValidatorInterface`, `Phone\E164ParserInterface`, `Country\CountryProviderInterface` (aliased to the defaults), framework-free `Phone\PhoneNumber` value object (the form-layer `Form\Model\PhoneNumber` is a deprecated subclass, removed in 2.0), `national_number_checker` configuration key (REQ-ARCH-001).
 - **2026-09-24:** FrankenPHP worker / `FRANKENPHP_RESET_KERNEL=false` audit and hardening (`PhoneType` / `CountryProvider` readonly defaults, defensive array copies, PHPStan worker-strict).
 - **2026-09-03:** Widget host is `<nowo-phone-input>` (custom element, light DOM); prefix picker still uses `data-nowo-phone-prefix-picker`.
 
@@ -92,7 +93,7 @@ As an integrator, I configure how flags appear: CSS sprites, emoji, UX Icons SVG
 ### Bundle & DI
 
 - **FR-BUNDLE-001**: `NowoPhoneInputBundle` MUST expose alias `nowo_phone_input` via `NowoPhoneInputExtension`.
-- **FR-CFG-001**: `Configuration` MUST define `country_prefix_selector`, `default_country`, `preferred_countries`, `allowed_countries`, `excluded_countries`, `value_format`, `prefix_display`, `show_flag`, `prefix_search`, `flag_display`, CSS class arrays, `use_phone_form_theme`, `trim`, `invalid_message`, `phone_validation`, and `use_libphonenumber`.
+- **FR-CFG-001**: `Configuration` MUST define `country_prefix_selector`, `default_country`, `preferred_countries`, `allowed_countries`, `excluded_countries`, `value_format`, `prefix_display`, `show_flag`, `prefix_search`, `flag_display`, CSS class arrays, `use_phone_form_theme`, `trim`, `invalid_message`, `phone_validation`, `use_libphonenumber`, and `national_number_checker` (service id of a host `NationalPhoneNumberChecker`, used with or without libphonenumber; 1.7.0).
 - **FR-CFG-002**: Extension MUST load `services.yaml`, inject defaults into `PhoneType`, and set Twig form theme when `use_phone_form_theme=true`.
 - **FR-DI-001**: `services.yaml` MUST wire `PhoneType`, transformers, validators, catalog services, and Twig extensions with autowire defaults.
 
@@ -100,6 +101,7 @@ As an integrator, I configure how flags appear: CSS sprites, emoji, UX Icons SVG
 
 - **FR-DATA-001**: `Country`, `CountryProvider`, and `Resources/data/countries.json` MUST supply ISO code, dial code, and display name for bundled countries.
 - **FR-PHONE-001**: `E164Parser` MUST parse and compose E.164 strings consistently with selected country metadata.
+- **FR-PORT-001**: `CountryProviderInterface`, `E164ParserInterface`, and `PhoneValidatorInterface` MUST be the public ports for the catalog, the E.164 parser, and the phone check, aliased to `CountryProvider`, `E164Parser`, and `PhoneValidator`; the bundle's own services MUST depend on the interfaces so a host alias replaces a default everywhere (1.7.0).
 - **FR-PHONE-002**: `PhonePattern`, `PhonePatternCatalog`, and `phone_patterns.json` MUST provide national-number patterns used when libphonenumber is unavailable.
 
 ### Form layer
@@ -108,7 +110,7 @@ As an integrator, I configure how flags appear: CSS sprites, emoji, UX Icons SVG
 - **FR-FORM-002**: `PhoneNumberTransformer` MUST convert between view layer (country_iso + national_number) and model values per `ValueFormat`.
 - **FR-FORM-003**: `IconSupportChecker` MUST detect optional UX Icons package to enable `UX_ICON` rendering.
 - **FR-FORM-004**: Shared form/catalog services MUST remain safe under FrankenPHP worker with `FRANKENPHP_RESET_KERNEL=false` (no request-scoped mutable state; array defaults copied so OptionsResolver cannot alias service arrays).
-- **FR-MDL-001**: `PhoneNumber` value object MUST expose ISO, national number, dial code, and E.164 accessors for OBJECT format.
+- **FR-MDL-001**: `Phone\PhoneNumber` (readonly, framework-free, 1.7.0) MUST expose ISO, national number, dial code, and E.164 accessors for OBJECT format; `Form\Model\PhoneNumber` stays as a deprecated subclass with no member of its own (removed in 2.0) and is what `ValueFormat::OBJECT` returns until then.
 
 ### Validation
 
@@ -140,7 +142,7 @@ As an integrator, I configure how flags appear: CSS sprites, emoji, UX Icons SVG
 
 ## Success Criteria
 
-- **SC-001**: 100% of production files in `src/` mapped in [`code-inventory.md`](code-inventory.md) (**110/110**).
+- **SC-001**: 100% of production files in `src/` mapped in [`code-inventory.md`](code-inventory.md) (**114/114**).
 - **SC-002**: Configuration keys in `docs/CONFIGURATION.md` match `Configuration.php`.
 - **SC-003**: PHPUnit (≥95% coverage) and PHPStan pass in CI.
 - **SC-004**: All three value formats round-trip correctly in integration tests.
@@ -172,6 +174,6 @@ As an integrator, I configure how flags appear: CSS sprites, emoji, UX Icons SVG
 | Full QA | `make release-check` or `composer qa` |
 | PHP tests + coverage | `composer test-coverage` (≥95%) |
 | Static analysis | `vendor/bin/phpstan analyse` |
-| Code inventory | `find src -type f \| wc -l` must match 110 |
+| Code inventory | `find src -type f \| wc -l` must match 114 |
 
 When changing behavior, update this spec, [`code-inventory.md`](code-inventory.md), tests, and integrator docs.

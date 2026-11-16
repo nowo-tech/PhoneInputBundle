@@ -37,6 +37,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Demo smoke (REQ-TEST-011): `demo/Makefile` `release-verify` reads the demo port after `up` (falling back to `.env.example`) and polls for HTTP 200 for up to 120 s instead of a fixed 15 s sleep. It used to read `PORT` before `.env` existed and checked port 8001 while the demo listens on 8003, so the `Demo smoke` workflow was red.
+- Flex recipe moved from `.symfony/recipes/` to the canonical `.symfony/recipe/` path, named in `docs/INSTALLATION.md` (REQ-RECIPE-001).
+- Spec Kit baseline (REQ-SPECKIT-001/003): `code-inventory.md` maps the 1.7.0 ports and `Phone\PhoneNumber` (114/114 files); `spec.md` gains FR-PORT-001 and the `national_number_checker` key.
+- README coverage counts refreshed (99.74%, 769/771 lines). No runtime change.
+
 ## [1.7.0] - 2026-11-13
 
 ### Added

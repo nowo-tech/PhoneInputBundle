@@ -2,7 +2,7 @@
 
 **Baseline spec**: [`spec.md`](spec.md)  
 **Package**: `nowo-tech/phone-input-bundle`  
-**Last audited**: 2026-10-20 (prefix picker JS, national checkers, translation catalogues)
+**Last audited**: 2026-11-16 (1.7.0 ports and `Phone\PhoneNumber`; audit: `find src -type f | wc -l` → 114)
 
 This file proves that **every production source artifact** under `src/` is referenced by the baseline specification. Test-only files under `tests/` and demo trees are out of Packagist scope unless promoted in the spec.
 
@@ -15,14 +15,18 @@ This file proves that **every production source artifact** under `src/` is refer
 | `DependencyInjection/NowoPhoneInputExtension.php` | DI extension | FR-CFG-002 |
 | `DependencyInjection/Compiler/TwigPathsPass.php` | Twig namespace path | FR-TWIG-001 |
 | `Country/Country.php` | Country value object | FR-DATA-001 |
+| `Country/CountryProviderInterface.php` | Country catalog port (1.7.0) | FR-PORT-001, FR-DATA-001 |
 | `Country/CountryProvider.php` | Country catalog loader (immutable config + lazy caches) | FR-DATA-001, FR-FORM-004 |
+| `Phone/E164ParserInterface.php` | E.164 parser port (1.7.0) | FR-PORT-001, FR-PHONE-001 |
 | `Phone/E164Parser.php` | E.164 parsing | FR-PHONE-001 |
 | `Phone/PhonePattern.php` | National pattern VO | FR-PHONE-002 |
 | `Phone/PhonePatternCatalog.php` | Pattern catalog loader | FR-PHONE-002 |
+| `Phone/PhoneValidatorInterface.php` | Phone check port (1.7.0) | FR-PORT-001, FR-VAL-001 |
 | `Phone/PhoneValidator.php` | Validation orchestration | FR-VAL-001 |
 | `Form/Type/PhoneType.php` | Main form type (worker-safe defaults) | FR-FORM-001, FR-FORM-004 |
 | `Form/DataTransformer/PhoneNumberTransformer.php` | Value format transformer | FR-FORM-002 |
-| `Form/Model/PhoneNumber.php` | Phone value object | FR-MDL-001 |
+| `Phone/PhoneNumber.php` | Framework-free phone value object (1.7.0) | FR-MDL-001 |
+| `Form/Model/PhoneNumber.php` | Deprecated form-layer subclass of `Phone\PhoneNumber` (removed in 2.0) | FR-MDL-001 |
 | `Form/ValueFormat.php` | Value format enum | FR-FORM-001 |
 | `Form/PrefixDisplay.php` | Prefix display enum | FR-FORM-001 |
 | `Form/FlagDisplay.php` | Flag display enum | FR-FORM-001 |
@@ -160,7 +164,7 @@ This file proves that **every production source artifact** under `src/` is refer
 
 | Category | Files | Mapped |
 | --- | ---: | ---: |
-| PHP classes (`src/**/*.php`) | 24 | 24 |
+| PHP classes (`src/**/*.php`) | 28 | 28 |
 | JSON data (`src/Resources/data/`) | 2 | 2 |
 | CSS assets (`src/Resources/public/css/`) | 2 | 2 |
 | Flag SVG icons (`src/Resources/public/flags/4x3/`) | 64 | 64 |
@@ -168,6 +172,6 @@ This file proves that **every production source artifact** under `src/` is refer
 | Twig views (`src/Resources/views/`) | 2 | 2 |
 | JavaScript assets (`src/Resources/public/js/`) | 1 | 1 |
 | Translations (`src/Resources/translations/`) | 14 | 14 |
-| **Total production sources** | **110** | **110** |
+| **Total production sources** | **114** | **114** |
 
 Bundled flags cover the ISO codes shipped with the bundle; additional countries may be added in future releases with matching catalog entries in `countries.json`.
