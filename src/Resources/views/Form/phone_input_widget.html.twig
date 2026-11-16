@@ -160,7 +160,9 @@
     />
   </nowo-phone-input>
 
-  {#- External script is CSP-safe (nonce on script-src). Load once per request when possible. -#}
+  {#- External script, loaded once per request when possible. Under a nonce-based CSP it carries the request
+      attribute `csp_nonce` (the convention of the nowo-tech bundles); without a nonce provider it is a plain
+      same-origin <script src> (covered by script-src 'self'). -#}
   {%- if prefix_selector and form.country_iso is defined -%}
     {%- set _load_picker_js = true -%}
     {%- if app is defined and app.request is defined -%}
@@ -171,7 +173,8 @@
       {%- endif -%}
     {%- endif -%}
     {%- if _load_picker_js -%}
-      <script src="{{ asset('js/nowo-phone-prefix-picker.js', 'nowo_phone_input') }}" defer></script>
+      {%- set _csp_nonce = app is defined and app and app.request ? app.request.attributes.get('csp_nonce')|default('') : '' -%}
+      <script src="{{ asset('js/nowo-phone-prefix-picker.js', 'nowo_phone_input') }}" defer{% if _csp_nonce is not empty %} nonce="{{ _csp_nonce }}"{% endif %}></script>
     {%- endif -%}
   {%- endif -%}
 {%- endblock nowo_phone_input_widget -%}
