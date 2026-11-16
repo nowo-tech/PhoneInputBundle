@@ -37,6 +37,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- CSP: the prefix picker `<script src>` (`nowo-phone-prefix-picker.js`) now carries `nonce="…"` from the request attribute `csp_nonce` when it is set, as the template comment and docs already stated, so the selector also loads under a nonce-only or `'strict-dynamic'` CSP. Without a nonce the tag is unchanged (RF1-I1).
+
 ### Changed
 
 - Demo smoke (REQ-TEST-011): `demo/Makefile` `release-verify` reads the demo port after `up` (falling back to `.env.example`) and polls for HTTP 200 for up to 120 s instead of a fixed 15 s sleep. It used to read `PORT` before `.env` existed and checked port 8001 while the demo listens on 8003, so the `Demo smoke` workflow was red.
