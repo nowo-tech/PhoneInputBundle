@@ -34,7 +34,7 @@ composer require nowo-tech/phone-input-bundle
 Nowo\PhoneInputBundle\NowoPhoneInputBundle::class => ['all' => true],
 ```
 
-With Symfony Flex, the bundle and `config/packages/nowo_phone_input.yaml` are installed via the recipe when available.
+With Symfony Flex, the bundle and `config/packages/nowo_phone_input.yaml` are installed via the recipe when available. The recipe lives under `.symfony/recipe/nowo-tech/phone-input-bundle/1.0.0/` in this repository (copy `manifest.json` and `config/` from there if Flex does not apply it).
 
 ## Form theme
 
