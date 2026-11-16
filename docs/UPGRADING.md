@@ -11,6 +11,7 @@
   - [1.1.0](#110)
   - [1.0.0](#100)
 - [Unreleased](#unreleased)
+- [To 1.7.1](#to-171)
 - [To 1.7.0](#to-170)
   - [To 1.7.0](#to-170-1)
 - [To 1.6.3](#to-163)
@@ -123,6 +124,14 @@ See [INSTALLATION.md](INSTALLATION.md) and [USAGE.md](USAGE.md) for details.
 If you mount the bundle source in Docker demos, use `dev-main as 1.0.99` in demo `composer.json` with `minimum-stability: dev` and `prefer-stable: true`.
 
 ## Unreleased
+
+## To 1.7.1
+
+From **1.7.0**:
+
+```bash
+composer update nowo-tech/phone-input-bundle
+```
 
 ## To 1.7.0
 
