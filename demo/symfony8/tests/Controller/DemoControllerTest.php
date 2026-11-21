@@ -134,7 +134,7 @@ final class DemoControllerTest extends WebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('.nowo-ui-flash--success', 'Form submitted');
-        $this->assertSelectorTextContains('.result-card', '+34612345678');
+        $this->assertSelectorTextContains('[data-testid="demo-results"] tbody tr', '+34612345678');
         $this->assertSelectorTextContains('body', 'e164=+447911123456');
         $this->assertSelectorTextContains('body', '"iso":"FR"');
         $this->assertSelectorTextContains('body', '+351912345678');

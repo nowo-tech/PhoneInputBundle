@@ -8,7 +8,7 @@
     "require": {
         "nowo-tech/form-kit-bundle": "^2.22",
         "nowo-tech/phone-input-bundle": "dev-main as 1.0.99",
-        "nowo-tech/ui-kit-bundle": "^2.49",
+        "nowo-tech/ui-kit-bundle": "^2.60",
         "php": ">=8.2,<8.6",
         "symfony/asset": "^8.0",
         "symfony/asset-mapper": "^8.0",

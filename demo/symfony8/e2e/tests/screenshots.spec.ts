@@ -3,8 +3,7 @@ import { mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 /**
- * REQ-DEMO-013 — full demo frame: navbar + demo card (header + first use-case)
- * + Symfony WebProfiler toolbar.
+ * REQ-DEMO-013 — the demo platform shell with the first use-case (no Symfony WebProfiler toolbar).
  *
  * Playwright clips to the viewport, so we enlarge the viewport before capture.
  */
@@ -25,44 +24,29 @@ async function boxOf(
   return loc.boundingBox();
 }
 
-/** Navbar → header/first field (+ optional dropdown) → profiler. */
+/** Demo platform top bar → page header → first field (+ optional dropdown); the Symfony toolbar is hidden. */
 async function clipDemoFrame(
   page: import('@playwright/test').Page,
   extra?: Box | null,
 ): Promise<Box> {
-  const nav = await boxOf(page, 'header.nowo-ui-header');
-  const header = await boxOf(page, '.nowo-ui-page-header');
-  const section = await boxOf(page, 'main h2.nowo-ui-card__title');
   const field = await boxOf(page, '[data-testid="demo-field"]');
-  const profiler =
-    (await boxOf(page, '.sf-toolbar')) ?? (await boxOf(page, '.sf-minitoolbar'));
-  if (!nav || !field) {
-    throw new Error('Missing header.nowo-ui-header or demo field for PhoneInput screenshot clip');
+  if (!field) {
+    throw new Error('Missing demo field for PhoneInput screenshot clip');
   }
-  const boxes = [nav, header, section, field, extra, profiler].filter(Boolean) as Box[];
-  const x = Math.min(...boxes.map((b) => b.x));
-  const y = Math.min(...boxes.map((b) => b.y));
-  const right = Math.max(...boxes.map((b) => b.x + b.width));
+  const boxes = [field, extra].filter(Boolean) as Box[];
   const bottom = Math.max(...boxes.map((b) => b.y + b.height));
-  const pad = 8;
-  return {
-    x: Math.max(0, x - pad),
-    y: Math.max(0, y - pad),
-    width: right - x + pad * 2,
-    height: bottom - y + pad * 2,
-  };
+  const width = page.viewportSize()?.width ?? 1280;
+  const pad = 16;
+
+  return { x: 0, y: 0, width, height: bottom + pad };
 }
 
 async function prepareDemoPage(page: import('@playwright/test').Page) {
   await page.setViewportSize({ width: 1280, height: 1600 });
   await page.goto('/');
-  await expect(page.locator('header.nowo-ui-header .nowo-ui-brand')).toBeVisible();
+  await page.addStyleTag({ content: '.sf-toolbar,.sf-minitoolbar,[id^="sfwdt"]{display:none!important}' });
+  await expect(page.getByTestId('demo-platform')).toBeVisible();
   await expect(page.locator('[data-testid="demo-field"] nowo-phone-input').first()).toBeVisible();
-  await page
-    .locator('.sf-toolbar .sf-toolbar-block, .sf-toolbar-status, .sf-minitoolbar')
-    .first()
-    .waitFor({ state: 'visible', timeout: 10000 })
-    .catch(() => {});
 }
 
 test.beforeAll(() => {
