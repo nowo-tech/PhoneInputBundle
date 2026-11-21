@@ -1,9 +1,3 @@
 /*
- * Welcome to your app's main JavaScript file!
- *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
+ * Demo entry (AssetMapper). REQ-DEMO-014: the demo has no stylesheet of its own; UiKit's demo platform shell styles it.
  */
-import './styles/app.css';
-
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');

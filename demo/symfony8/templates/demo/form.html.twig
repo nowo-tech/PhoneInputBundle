@@ -7,86 +7,98 @@
     }) }}
 {% endblock %}
 
+{% block nowo_ui_flashes %}
+    {{ include('@NowoUiKit/demo_platform/_flashes.html.twig', {flash_messages: submitted and formattedResults ? {success: ['Form submitted. Submitted values per field:']} : null}) }}
+{% endblock %}
+
 {% block body %}
     {% if submitted and formattedResults %}
-        <div class="nowo-ui-flash nowo-ui-flash--success" role="alert">
-            <strong>Form submitted.</strong> Submitted values per field:
-        </div>
-        <section class="nowo-ui-card" data-testid="demo-results">
-            <div class="nowo-ui-card__body">
+        {% embed '@NowoUiKit/demo_platform/_section.html.twig' with {title: 'Submitted values', kind: 'table', testid: 'demo-results'} %}
+            {% block section_body %}
                 <table class="nowo-ui-data-table">
+                    <thead>
+                        <tr><th scope="col">Field</th><th scope="col">Value</th></tr>
+                    </thead>
                     <tbody>
                         {% for field, result in formattedResults %}
-                            <tr class="result-card">
+                            <tr>
                                 <td>
                                     <strong>{{ field|replace({'_': ' '})|title }}</strong>
                                     <div class="nowo-ui-muted">{{ result.type }}</div>
                                 </td>
-                                <td><code class="nowo-ui-code">{{ result.display }}</code></td>
+                                <td class="nowo-ui-cell--wrap"><code class="nowo-ui-code">{{ result.display }}</code></td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-            </div>
-        </section>
+            {% endblock %}
+        {% endembed %}
     {% endif %}
 
-    {{ form_start(form, { attr: { novalidate: 'novalidate' } }) }}
+    {% embed '@NowoUiKit/demo_platform/_section.html.twig' with {title: 'All value formats and display options', kind: 'form'} %}
+        {% block section_body %}
+            {{ form_start(form, { attr: { id: 'demo-form', class: 'nowo-ui-form', novalidate: 'novalidate' } }) }}
 
-        {# Child loop (REQ-TWIG-003): fields follow DemoFormType. `sectionStarts` emits a section heading before the
-           first field of each group, `fieldTitles` wraps a field in its numbered card; any other field still renders
-           through the loop. Buttons (the SubmitType child) render after the loop. #}
-        {% set sectionStarts = {
-            'phone_concatenated_with_prefix': 'Core formats',
-            'phone_with_prefix_search': 'Prefix options',
-            'phone_prefix_display_full': 'Prefix display modes',
-            'phone_flag_display_emoji': 'Flag display modes',
-        } %}
+                {# Child loop (REQ-TWIG-003): fields follow DemoFormType. `sectionStarts` opens a fieldset before the
+                   first field of each group, `fieldTitles` titles a field; any other field still renders through the
+                   loop. The SubmitType child is the card footer's button. #}
+                {% set sectionStarts = {
+                    'phone_concatenated_with_prefix': 'Core formats',
+                    'phone_with_prefix_search': 'Prefix options',
+                    'phone_prefix_display_full': 'Prefix display modes',
+                    'phone_flag_display_emoji': 'Flag display modes',
+                } %}
 
-        {% set fieldTitles = {
-            'phone_concatenated_with_prefix': '1. Concatenated + prefix selector',
-            'phone_concatenated_without_prefix': '2. Concatenated + no prefix selector',
-            'phone_separated_with_prefix': '3. Separated array + prefix selector',
-            'phone_separated_without_prefix': '4. Separated array + no prefix selector',
-            'phone_object_with_prefix': '5. PhoneNumber object + prefix selector',
-            'phone_object_without_prefix': '6. PhoneNumber object + no prefix selector',
-            'phone_with_prefix_search': '7. Prefix selector with search',
-            'phone_selector_only': '8. Prefix selector only (no search)',
-            'phone_allowed_iberian': '9. Allowed countries (ES, PT only)',
-            'phone_excluded_fr': '10. Excluded countries (without FR)',
-            'phone_without_flag': '11. show_flag: false',
-            'phone_prefix_display_full': '12. PrefixDisplay::FULL',
-            'phone_prefix_display_prefix_only': '13. PrefixDisplay::PREFIX_ONLY',
-            'phone_prefix_display_flag_and_prefix': '14. PrefixDisplay::FLAG_AND_PREFIX',
-            'phone_prefix_display_iso_and_prefix': '15. PrefixDisplay::ISO_AND_PREFIX',
-            'phone_prefix_display_flag_only': '16. PrefixDisplay::FLAG_ONLY',
-            'phone_flag_display_emoji': '17. FlagDisplay::EMOJI',
-            'phone_flag_display_css_icon': '18. FlagDisplay::CSS_ICON',
-            'phone_flag_display_ux_icon': '19. FlagDisplay::UX_ICON',
-            'phone_flag_display_none': '20. FlagDisplay::NONE',
-        } %}
+                {% set fieldTitles = {
+                    'phone_concatenated_with_prefix': '1. Concatenated + prefix selector',
+                    'phone_concatenated_without_prefix': '2. Concatenated + no prefix selector',
+                    'phone_separated_with_prefix': '3. Separated array + prefix selector',
+                    'phone_separated_without_prefix': '4. Separated array + no prefix selector',
+                    'phone_object_with_prefix': '5. PhoneNumber object + prefix selector',
+                    'phone_object_without_prefix': '6. PhoneNumber object + no prefix selector',
+                    'phone_with_prefix_search': '7. Prefix selector with search',
+                    'phone_selector_only': '8. Prefix selector only (no search)',
+                    'phone_allowed_iberian': '9. Allowed countries (ES, PT only)',
+                    'phone_excluded_fr': '10. Excluded countries (without FR)',
+                    'phone_without_flag': '11. show_flag: false',
+                    'phone_prefix_display_full': '12. PrefixDisplay::FULL',
+                    'phone_prefix_display_prefix_only': '13. PrefixDisplay::PREFIX_ONLY',
+                    'phone_prefix_display_flag_and_prefix': '14. PrefixDisplay::FLAG_AND_PREFIX',
+                    'phone_prefix_display_iso_and_prefix': '15. PrefixDisplay::ISO_AND_PREFIX',
+                    'phone_prefix_display_flag_only': '16. PrefixDisplay::FLAG_ONLY',
+                    'phone_flag_display_emoji': '17. FlagDisplay::EMOJI',
+                    'phone_flag_display_css_icon': '18. FlagDisplay::CSS_ICON',
+                    'phone_flag_display_ux_icon': '19. FlagDisplay::UX_ICON',
+                    'phone_flag_display_none': '20. FlagDisplay::NONE',
+                } %}
 
-        {% for child in form %}
-            {% if not child.rendered and 'button' not in child.vars.block_prefixes %}
-                {% set fieldName = child.vars.name %}
-                {% if sectionStarts[fieldName] is defined %}
-                    <h2 class="nowo-ui-card__title">{{ sectionStarts[fieldName] }}</h2>
-                {% endif %}
-                {% if fieldTitles[fieldName] is defined %}
-                    <section class="nowo-ui-card" data-testid="demo-field">
-                        <div class="nowo-ui-card__body">
-                            <h3 class="nowo-ui-card__title">{{ fieldTitles[fieldName] }}</h3>
+                {% set _open = false %}
+                {% for child in form %}
+                    {% if not child.rendered and 'button' not in child.vars.block_prefixes %}
+                        {% set fieldName = child.vars.name %}
+                        {% if sectionStarts[fieldName] is defined %}
+                            {% if _open %}</fieldset>{% endif %}
+                            <fieldset class="nowo-ui-fieldset">
+                                <legend class="nowo-ui-fieldset__legend">{{ sectionStarts[fieldName] }}</legend>
+                            {% set _open = true %}
+                        {% endif %}
+                        {% if fieldTitles[fieldName] is defined %}
+                            <div data-testid="demo-field">
+                                <h3>{{ fieldTitles[fieldName] }}</h3>
+                                {{ form_row(child) }}
+                            </div>
+                        {% else %}
                             {{ form_row(child) }}
-                        </div>
-                    </section>
-                {% else %}
-                    {{ form_row(child) }}
-                {% endif %}
-            {% endif %}
-        {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                {% if _open %}</fieldset>{% endif %}
 
-        {{ form_row(form.submit) }}
-    {{ form_end(form) }}
-
-    <p class="nowo-ui-muted">Powered by <a class="nowo-ui-link" href="https://github.com/nowo-tech/PhoneInputBundle" target="_blank" rel="noopener">Phone Input Bundle</a></p>
+                {% do form.submit.setRendered %}
+            {{ form_end(form) }}
+        {% endblock %}
+        {% block section_footer %}
+            <button type="submit" form="demo-form" class="nowo-ui-btn nowo-ui-btn--primary">{{ form.submit.vars.label }}</button>
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

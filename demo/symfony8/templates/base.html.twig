@@ -1,20 +1,20 @@
-{#- REQ-DEMO-014: the demo shell is UiKit's admin layout with UiKit's default theme (nowo-ui.css from the bundle's own
-    asset package, no CSS framework, no CDN). The two stylesheets are the PhoneInputBundle's own widget assets. -#}
-{% extends '@NowoUiKit/layout/admin.html.twig' %}
-
+{#- REQ-DEMO-014: the demo runs inside UiKit's shared demo platform shell. This file only declares the demo. The two
+    stylesheets are the PhoneInputBundle's own widget assets. -#}
+{% extends '@NowoUiKit/demo_platform/layout.html.twig' %}
+{% set nowo_ui_demo_platform = {
+    bundle: 'Phone Input',
+    home_route: 'demo_form',
+    repository: 'https://github.com/nowo-tech/PhoneInputBundle',
+    translation_domain: false,
+    nav: [
+        {label: 'All formats', route: 'demo_form', section: 'Demo'},
+    ],
+} %}
 {% block nowo_ui_document_title %}{% block title %}Phone Input Bundle - Demo{% endblock %}{% endblock %}
 
 {% block nowo_ui_styles %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/flag-icons.min.css', 'nowo_phone_input') }}">
-    <link rel="stylesheet" href="{{ asset('css/phone_input.css', 'nowo_phone_input') }}">
+    <link rel="stylesheet" href="{{ asset('/bundles/nowophoneinput/css/flag-icons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/bundles/nowophoneinput/css/phone_input.css') }}">
     {% block stylesheets %}{% endblock %}
 {% endblock %}
-
-{% block nowo_ui_navigation %}
-    <header class="nowo-ui-header" data-testid="demo-masthead">
-        <a class="nowo-ui-brand" href="{{ path('demo_form') }}">Phone Input Bundle Demo</a>
-    </header>
-{% endblock %}
-
-{% block nowo_ui_content %}{% block body %}{% endblock %}{% endblock %}
