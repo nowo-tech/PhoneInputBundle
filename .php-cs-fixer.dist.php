@@ -8,7 +8,8 @@ use PhpCsFixer\Finder;
 return (new Config())
     ->setRiskyAllowed(true)
     ->setRules([
-        '@PSR12' => true,
+        '@PER-CS' => true,
+        '@PER-CS:risky' => true,
         '@Symfony' => true,
         '@Symfony:risky' => true,
         'declare_strict_types' => true,
@@ -26,6 +27,7 @@ return (new Config())
     ])
     ->setFinder(
         (new Finder())
+            ->notPath('#^demo/[^/]+/config/(bundles|reference)\.php$#')
             ->in(__DIR__ . '/src')
             ->in(__DIR__ . '/tests')
             ->exclude(['vendor', 'var', 'coverage', '.phpunit.cache'])
