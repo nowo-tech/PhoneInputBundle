@@ -51,7 +51,7 @@ See [docs/INSTALLATION.md](docs/INSTALLATION.md) for form theme, CSS assets, and
 
 ## Requirements
 
-- PHP >= 8.2, < 8.6
+- PHP >= 8.2, < 8.7
 - Symfony ^6.4 || ^7.0 || ^8.0
 
 ## Demo
